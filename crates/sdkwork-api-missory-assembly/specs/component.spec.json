@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-api-missory-assembly",
+    "displayName": "SDKWork Missory API Assembly",
+    "version": "0.1.0",
+    "type": "rust-api-assembly",
+    "root": "crates/sdkwork-api-missory-assembly",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "api-assembly",
+    "languages": [
+      "rust"
+    ],
+    "generated": false,
+    "manifests": [
+      "Cargo.toml",
+      "assembly-manifest.json"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "COMPONENT_SPEC.md",
+      "path": "../../../sdkwork-specs/COMPONENT_SPEC.md",
+      "purpose": "Component-local contract and discovery rules."
+    },
+    {
+      "file": "CODE_STYLE_SPEC.md",
+      "path": "../../../sdkwork-specs/CODE_STYLE_SPEC.md",
+      "purpose": "Authored code style baseline."
+    },
+    {
+      "file": "NAMING_SPEC.md",
+      "path": "../../../sdkwork-specs/NAMING_SPEC.md",
+      "purpose": "Rust naming and dependency declaration integrity."
+    },
+    {
+      "file": "RUST_CODE_SPEC.md",
+      "path": "../../../sdkwork-specs/RUST_CODE_SPEC.md",
+      "purpose": "Rust crate layout and verification."
+    },
+    {
+      "file": "API_ASSEMBLY_SPEC.md",
+      "path": "../../../sdkwork-specs/API_ASSEMBLY_SPEC.md",
+      "purpose": "Assembly manifest ownership and thin-gateway merge rules."
+    }
+  ],
+  "contracts": {
+    "layerRole": "runtime-composition",
+    "publicExports": [],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": [
+      "assemble_api_router",
+      "assemble_api_router_from_env"
+    ],
+    "routeManifest": null,
+    "sdkClients": [],
+    "sdkDependencies": [],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": [],
+    "surface": "api-assembly"
+  },
+  "verification": {
+    "commands": [
+      "pnpm api:assembly:validate"
+    ]
+  }
+}

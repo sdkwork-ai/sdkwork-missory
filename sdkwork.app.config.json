@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 3,
+  "kind": "sdkwork.app",
+  "app": {
+    "key": "sdkwork-missory",
+    "name": "SDKWork Missory",
+    "displayName": "念忆 · Missory",
+    "description": "SDKWork Missory (念忆) — AI personal social memory: people, relationships, memories, stories, reminders, and a draft-only social AI agent.",
+    "vendor": "SDKWork",
+    "officialWebsiteUrl": "https://sdkwork.com/apps/sdkwork-missory",
+    "supportUrl": "https://sdkwork.com/support",
+    "privacyPolicyUrl": "https://sdkwork.com/privacy",
+    "termsOfServiceUrl": "https://sdkwork.com/terms",
+    "iconUrl": "https://cdn.sdkwork.com/apps/sdkwork-missory/assets/icon-1024.png",
+    "appType": "SDK",
+    "versionSource": "manifest",
+    "identifiers": {
+      "packageName": null,
+      "bundleId": null,
+      "desktopAppId": null,
+      "containerImage": "registry.sdkwork.com/apps/sdkwork-missory"
+    }
+  },
+  "backend": {
+    "profileKey": "backend-root-admin",
+    "ownerMode": "tenant",
+    "grantMode": "current",
+    "platform": "API",
+    "appId": "sdkwork-missory",
+    "tenantId": "100001",
+    "organizationId": "0"
+  },
+  "runtime": {
+    "family": "server",
+    "framework": "rust-service",
+    "runtimes": [
+      "API"
+    ],
+    "deliveryModes": [
+      "CONTAINER_IMAGE"
+    ],
+    "defaultPlatform": "API",
+    "defaultArchitecture": "x64",
+    "supportedDeploymentProfiles": [
+      "standalone",
+      "cloud"
+    ],
+    "defaultDeploymentProfile": "cloud"
+  },
+  "media": {
+    "icons": {
+      "primary": {
+        "id": "sdkwork-missory-primary-icon",
+        "type": "ICON",
+        "purpose": "PRIMARY",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-missory/assets/icon-1024.png",
+        "platform": "API",
+        "locale": "en-US",
+        "width": 1024,
+        "height": 1024,
+        "format": "PNG",
+        "fileSizeBytes": 524288,
+        "alphaChannel": false,
+        "sortOrder": 0,
+        "enabled": true,
+        "metadata": {
+          "hostedOn": "sdkwork-cdn",
+          "assetVersion": "0.1.0"
+        }
+      },
+      "platform": [],
+      "metadata": {
+        "generatedBy": "tools/materialize_phase1_contracts.mjs",
+        "hostedOn": "sdkwork-cdn"
+      }
+    },
+    "screenshots": [],
+    "previews": [
+      {
+        "id": "sdkwork-missory-catalog-preview",
+        "type": "PREVIEW_IMAGE",
+        "purpose": "CATALOG_PREVIEW",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-missory/media/preview-cover.png",
+        "platform": "API",
+        "locale": "en-US",
+        "width": 1600,
+        "height": 900,
+        "format": "PNG",
+        "fileSizeBytes": 786432,
+        "alphaChannel": false,
+        "caption": "SDKWork Memory service preview.",
+        "sortOrder": 0,
+        "enabled": true,
+        "metadata": {
+          "hostedOn": "sdkwork-cdn",
+          "assetVersion": "0.1.0",
+          "altText": "SDKWork Memory service preview cover."
+        }
+      }
+    ],
+    "metadata": {
+      "assetVersion": "0.1.0",
+      "defaultLocale": "en-US"
+    }
+  },
+  "publish": {
+    "status": "INTERNAL",
+    "installSkill": {
+      "name": "sdkwork-skills-app"
+    },
+    "platforms": [
+      "API"
+    ],
+    "installPlatforms": [
+      "API"
+    ],
+    "defaultPackageId": "container-x64-cloud-container-oci",
+    "storeUrl": "https://sdkwork.com/apps/sdkwork-missory",
+    "stores": [],
+    "config": {
+      "workspaceRoot": "sdkwork-missory",
+      "framework": "rust-service",
+      "managedBy": "tools/materialize_phase1_contracts.mjs"
+    }
+  },
+  "artifacts": {
+    "installConfig": {
+      "defaultPackageId": "container-x64-cloud-container-oci",
+      "installCommand": "sdkwork install sdkwork-missory",
+      "launchCommand": "sdkwork open sdkwork-missory",
+      "uninstallCommand": "sdkwork uninstall sdkwork-missory",
+      "packages": [
+        {
+          "id": "container-x64-standalone-container-oci",
+          "name": "SDKWork Memory standalone Server Container",
+          "sourceType": "CONTAINER_IMAGE",
+          "packageFormat": "DOCKER_IMAGE",
+          "platform": "API",
+          "url": "oci://registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
+          "enabled": false,
+          "architecture": "x64",
+          "profileBinding": "fixed",
+          "deploymentProfile": "standalone",
+          "runtimeTarget": "container",
+          "metadata": {
+            "image": "registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
+            "digestRequiredBeforeRelease": true,
+            "releaseEvidenceState": "pending-ci"
+          }
+        },
+        {
+          "id": "container-x64-cloud-container-oci",
+          "name": "SDKWork Memory cloud Server Container",
+          "sourceType": "CONTAINER_IMAGE",
+          "packageFormat": "DOCKER_IMAGE",
+          "platform": "API",
+          "url": "oci://registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
+          "enabled": false,
+          "architecture": "x64",
+          "profileBinding": "fixed",
+          "deploymentProfile": "cloud",
+          "runtimeTarget": "container",
+          "metadata": {
+            "image": "registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
+            "digestRequiredBeforeRelease": true,
+            "releaseEvidenceState": "pending-ci"
+          }
+        }
+      ],
+      "metadata": {
+        "workspaceRoot": "sdkwork-missory",
+        "framework": "rust-service",
+        "packageManager": "cargo",
+        "contractState": "release-candidate"
+      }
+    }
+  },
+  "release": {
+    "currentVersion": "0.1.0",
+    "defaultChannel": "DEV",
+    "latest": {
+      "DEV": "0.1.0"
+    },
+    "notes": [
+      {
+        "version": "0.1.0",
+        "releaseChannel": "DEV",
+        "title": "SDKWork Memory 0.1.0 Internal Release Candidate",
+        "summary": "Internal validation candidate for the Memory service and PC operations surfaces; production publication remains blocked until immutable container, migration, PostgreSQL, load, recovery, and security evidence is complete.",
+        "content": "SDKWork Memory currently provides an embedding-optional native SQL baseline, tenant-scoped governance, isolated Console and Admin SDK boundaries, and draft Kubernetes assets. It is not approved for production publication.",
+        "highlights": [
+          "Space-isolated memory access with fail-closed production auth",
+          "Privacy export and outbox flows under production hardening",
+          "Draft Kubernetes migration, autoscaling, disruption, and monitoring descriptors",
+          "Release evidence pipeline pending immutable OCI publication and signing"
+        ],
+        "packageIds": [
+          "container-x64-standalone-container-oci",
+          "container-x64-cloud-container-oci"
+        ],
+        "current": true,
+        "forceUpdate": false,
+        "minSupportedVersion": "0.1.0",
+        "metadata": {
+          "draft": true,
+          "contractState": "release-candidate"
+        }
+      }
+    ]
+  },
+  "security": {
+    "checksumRequired": true,
+    "signatureRequired": true,
+    "sbomRequired": true
+  },
+  "metadata": {
+    "deploymentConfig": "etc/sdkwork.deployment.config.json",
+    "standardOwner": "sdkwork-platform"
+  }
+}

@@ -1,0 +1,10 @@
+# Missory runtime config example. Installers write /etc/sdkwork/missory/config.toml.
+# Local override: SDKWORK_MISSORY_CONFIG_FILE. Precedence: env vars > this file > defaults.
+
+[profile]
+deployment_profile = "standalone"
+environment = "development"
+profile_id = "standalone.development"
+
+[server]
+public_ingress_bind = "127.0.0.1:8460"

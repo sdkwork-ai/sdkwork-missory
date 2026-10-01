@@ -1,0 +1,24 @@
+[package]
+name = "sdkwork-api-missory-assembly"
+rust-version.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+description = "Generated API assembly for sdkwork-missory application HTTP plane."
+
+[lints]
+workspace = true
+
+[lib]
+name = "sdkwork_api_missory_assembly"
+path = "src/lib.rs"
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+sdkwork-web-bootstrap.workspace = true
+sdkwork-web-core.workspace = true
+sdkwork-communication-missory-service.workspace = true
+sdkwork-missory-plugin-store-memory.workspace = true
+tracing.workspace = true
+sdkwork-routes-missory-app-api.workspace = true

@@ -1,0 +1,39 @@
+{
+  "name": "sdkwork-missory-workspace",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@sdkwork/app-topology": "workspace:*"
+  },
+  "scripts": {
+    "stop": "pnpm exec sdkwork-app stop",
+    "dev": "pnpm dev:standalone",
+    "dev:standalone": "pnpm exec sdkwork-app dev --deployment-profile standalone",
+    "dev:cloud": "pnpm exec sdkwork-app dev --deployment-profile cloud",
+    "gateway:run:standalone": "node scripts/run-missory-standalone-gateway.mjs",
+    "build": "pnpm exec sdkwork-app build",
+    "test": "pnpm exec sdkwork-app test",
+    "check": "pnpm exec sdkwork-app check",
+    "verify": "pnpm exec sdkwork-app verify",
+    "clean": "pnpm exec sdkwork-app clean",
+    "check:app-composition": "node ../sdkwork-specs/tools/verify-repo.mjs --root .",
+    "check:cors-standard": "node ../sdkwork-specs/tools/check-cors-standard.mjs --root .",
+    "check:repository-docs": "node ../sdkwork-specs/tools/check-repository-docs-standard.mjs --root .",
+    "check:pnpm-script-standard": "node ../sdkwork-specs/tools/check-pnpm-script-standard.mjs --root . --application-code-prefix missory",
+    "check:architecture-alignment": "node --test tests/contracts/missory-standard-architecture.test.mjs",
+    "topology:validate": "node ../sdkwork-app-topology/scripts/sdkwork-topology.mjs validate --root . --spec specs/topology.spec.json",
+    "api:materialize": "node tools/materialize-missory-contracts.mjs --root .",
+    "api:assembly:materialize": "node ../sdkwork-specs/tools/materialize-api-assembly.mjs --root .",
+    "api:assembly:validate": "node ../sdkwork-specs/tools/validate-api-assembly.mjs --root .",
+    "_sdkwork:build": "cargo build --workspace",
+    "_sdkwork:test": "cargo test --workspace && pnpm topology:validate && pnpm check:architecture-alignment",
+    "_sdkwork:check": "pnpm run check:app-composition && cargo check --workspace && pnpm check:pnpm-script-standard && pnpm topology:validate && pnpm api:assembly:validate",
+    "_sdkwork:verify": "cargo test --workspace && pnpm run check:app-composition && pnpm check:cors-standard && pnpm check:repository-docs",
+    "_sdkwork:clean": "cargo clean"
+  }
+}

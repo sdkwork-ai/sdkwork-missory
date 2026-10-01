@@ -1,0 +1,19 @@
+[package]
+rust-version.workspace = true
+name = "sdkwork-missory-spi"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Store and model ports (SPI) for SDKWork Missory persistence adapters."
+
+[lib]
+name = "sdkwork_missory_spi"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait.workspace = true
+sdkwork-missory-contract.workspace = true
+thiserror.workspace = true

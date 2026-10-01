@@ -1,0 +1,18 @@
+kind: sdkwork.docs.index
+schemaVersion: 1
+canon:
+  prd: docs/product/prd/PRD.md
+  techArchitecture: docs/architecture/tech/TECH_ARCHITECTURE.md
+entries:
+  - id: REQ-2026-0001
+    title: Missory PRD V1.0 product baseline
+    path: docs/product/prd/PRD.md
+    status: approved
+  - id: TECH-2026-0001
+    title: Missory technical architecture
+    path: docs/architecture/tech/TECH_ARCHITECTURE.md
+    status: approved
+domains:
+  - key: communication
+    capability: missory
+    description: AI personal social memory — people, relationships, memories, stories, reminders, and the social AI agent.

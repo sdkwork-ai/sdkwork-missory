@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-missory-spi",
+    "displayName": "SDKWork Missory SPI",
+    "version": "0.1.0",
+    "type": "rust-crate",
+    "root": "crates/sdkwork-missory-spi",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "backend-service",
+    "languages": [
+      "rust"
+    ],
+    "generated": false,
+    "manifests": [
+      "Cargo.toml"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "COMPONENT_SPEC.md",
+      "path": "../../../sdkwork-specs/COMPONENT_SPEC.md",
+      "purpose": "Component-local contract and discovery rules."
+    },
+    {
+      "file": "CODE_STYLE_SPEC.md",
+      "path": "../../../sdkwork-specs/CODE_STYLE_SPEC.md",
+      "purpose": "Authored code style baseline."
+    },
+    {
+      "file": "NAMING_SPEC.md",
+      "path": "../../../sdkwork-specs/NAMING_SPEC.md",
+      "purpose": "Rust naming and dependency declaration integrity."
+    },
+    {
+      "file": "RUST_CODE_SPEC.md",
+      "path": "../../../sdkwork-specs/RUST_CODE_SPEC.md",
+      "purpose": "Rust crate layout and verification."
+    },
+    {
+      "file": "APPLICATION_LAYERED_ARCHITECTURE_SPEC.md",
+      "path": "../../../sdkwork-specs/APPLICATION_LAYERED_ARCHITECTURE_SPEC.md",
+      "purpose": "Store port boundary rules."
+    }
+  ],
+  "contracts": {
+    "layerRole": "backend-repository",
+    "publicExports": [],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": [
+      "MissoryStore",
+      "SocialTextModel"
+    ],
+    "routeManifest": null,
+    "sdkClients": [],
+    "sdkDependencies": [],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": []
+  },
+  "verification": {
+    "commands": [
+      "cargo test -p sdkwork-missory-spi"
+    ]
+  }
+}

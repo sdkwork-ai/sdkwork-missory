@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-routes-missory-app-api",
+    "displayName": "SDKWork Missory App API Router",
+    "version": "0.1.0",
+    "type": "rust-route-crate",
+    "root": "crates/sdkwork-routes-missory-app-api",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "app-api",
+    "languages": [
+      "rust"
+    ],
+    "generated": false,
+    "manifests": [
+      "Cargo.toml"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "COMPONENT_SPEC.md",
+      "path": "../../../sdkwork-specs/COMPONENT_SPEC.md",
+      "purpose": "Component-local contract and discovery rules."
+    },
+    {
+      "file": "CODE_STYLE_SPEC.md",
+      "path": "../../../sdkwork-specs/CODE_STYLE_SPEC.md",
+      "purpose": "Authored code style baseline."
+    },
+    {
+      "file": "NAMING_SPEC.md",
+      "path": "../../../sdkwork-specs/NAMING_SPEC.md",
+      "purpose": "Rust naming and dependency declaration integrity."
+    },
+    {
+      "file": "RUST_CODE_SPEC.md",
+      "path": "../../../sdkwork-specs/RUST_CODE_SPEC.md",
+      "purpose": "Rust crate layout and verification."
+    },
+    {
+      "file": "API_SPEC.md",
+      "path": "../../../sdkwork-specs/API_SPEC.md",
+      "purpose": "HTTP/OpenAPI surface, route manifest, auth, and ownership rules."
+    },
+    {
+      "file": "PAGINATION_SPEC.md",
+      "path": "../../../sdkwork-specs/PAGINATION_SPEC.md",
+      "purpose": "List/search pagination contract."
+    },
+    {
+      "file": "WEB_BACKEND_SPEC.md",
+      "path": "../../../sdkwork-specs/WEB_BACKEND_SPEC.md",
+      "purpose": "Route/handler and service boundary rules."
+    },
+    {
+      "file": "TEST_SPEC.md",
+      "path": "../../../sdkwork-specs/TEST_SPEC.md",
+      "purpose": "Verification and contract testing expectations."
+    }
+  ],
+  "contracts": {
+    "layerRole": "backend-route",
+    "publicExports": [],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": [
+      "build_router",
+      "build_router_with_app_api",
+      "gateway_mount"
+    ],
+    "routeManifest": "sdks/_route-manifests/app-api/sdkwork-routes-missory-app-api.route-manifest.json",
+    "sdkClients": [],
+    "sdkDependencies": [],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": [],
+    "apiAuthority": "sdkwork-missory-app-api",
+    "sdkFamily": "sdkwork-missory-app-sdk",
+    "prefix": "/app/v3/api",
+    "authMode": "header-context",
+    "surface": "app-api"
+  },
+  "verification": {
+    "commands": [
+      "cargo test -p sdkwork-routes-missory-app-api"
+    ]
+  }
+}

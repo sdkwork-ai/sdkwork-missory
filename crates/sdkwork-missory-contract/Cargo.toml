@@ -1,0 +1,21 @@
+[package]
+rust-version.workspace = true
+name = "sdkwork-missory-contract"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "HTTP contracts, service ports, request context, and typed errors for SDKWork Missory."
+
+[lib]
+name = "sdkwork_missory_contract"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait.workspace = true
+sdkwork-utils-rust.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true

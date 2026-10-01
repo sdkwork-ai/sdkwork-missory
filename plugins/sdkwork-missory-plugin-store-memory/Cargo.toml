@@ -1,0 +1,24 @@
+[package]
+rust-version.workspace = true
+name = "sdkwork-missory-plugin-store-memory"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "In-memory MissoryStore adapter implementing the sdkwork-missory-spi ports."
+
+[lib]
+name = "sdkwork_missory_plugin_store_memory"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait.workspace = true
+sdkwork-missory-contract.workspace = true
+sdkwork-missory-spi.workspace = true
+time.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true

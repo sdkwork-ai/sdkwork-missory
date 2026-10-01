@@ -1,0 +1,82 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/sdkwork-missory-contract",
+  "crates/sdkwork-missory-spi",
+  "crates/sdkwork-communication-missory-service",
+  "crates/sdkwork-missory-test-support",
+  "crates/sdkwork-routes-missory-app-api",
+  "crates/sdkwork-api-missory-assembly",
+  "crates/sdkwork-api-missory-standalone-gateway",
+  "plugins/sdkwork-missory-plugin-store-memory",
+]
+
+[workspace.package]
+rust-version = "1.85"
+edition = "2021"
+version = "0.1.0"
+license = "AGPL-3.0-or-later"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+unsafe_op_in_unsafe_fn = "deny"
+missing_docs = "warn"
+rust_2018_idioms = { level = "warn", priority = -1 }
+trivial_casts = "warn"
+trivial_numeric_casts = "warn"
+unused_qualifications = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
+panic = "deny"
+exit = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+module_name_repetitions = "allow"
+# Pedantic allowances aligned with fleet practice (axum handler style, wire casts,
+# doc conventions); semantic lints above stay enforced.
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+doc_markdown = "allow"
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_sign_loss = "allow"
+needless_pass_by_value = "allow"
+
+[workspace.dependencies]
+# Sibling SDKWork platform crates (single declaration point; NAMING_SPEC section 3.2).
+sdkwork-utils-rust = { path = "../sdkwork-utils/packages/sdkwork-utils-rust" }
+sdkwork-web-bootstrap = { path = "../sdkwork-web-framework/crates/sdkwork-web-bootstrap" }
+sdkwork-web-core = { path = "../sdkwork-web-framework/crates/sdkwork-web-core" }
+
+# SDKWork Missory workspace crates (single declaration point; NAMING_SPEC section 3.2).
+sdkwork-missory-contract = { path = "crates/sdkwork-missory-contract" }
+sdkwork-missory-spi = { path = "crates/sdkwork-missory-spi" }
+sdkwork-communication-missory-service = { path = "crates/sdkwork-communication-missory-service" }
+sdkwork-missory-plugin-store-memory = { path = "plugins/sdkwork-missory-plugin-store-memory" }
+sdkwork-routes-missory-app-api = { path = "crates/sdkwork-routes-missory-app-api" }
+sdkwork-api-missory-assembly = { path = "crates/sdkwork-api-missory-assembly" }
+sdkwork-missory-test-support = { path = "crates/sdkwork-missory-test-support" }
+
+# Third-party dependencies (versions pinned once here).
+async-trait = "0.1"
+axum = "0.8"
+http = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_urlencoded = "0.7"
+thiserror = "2"
+time = { version = "0.3", features = ["parsing", "formatting"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "time"] }
+tower = { version = "0.5", features = ["util"] }
+tracing = { version = "0.1", features = ["attributes"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1", features = ["v4"] }
+
+[profile.release]
+overflow-checks = true

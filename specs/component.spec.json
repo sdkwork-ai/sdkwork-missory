@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-missory",
+    "displayName": "SDKWork Missory (念忆)",
+    "version": "0.1.0",
+    "type": "web-backend-service",
+    "root": "sdkwork-missory",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "backend-service",
+    "languages": ["rust"],
+    "generated": false,
+    "status": "active",
+    "manifests": [
+      "sdkwork.app.config.json",
+      "AGENTS.md",
+      "specs/component.spec.json",
+      "Cargo.toml"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "SOUL.md",
+      "path": "../sdkwork-specs/SOUL.md",
+      "purpose": "SDKWork execution soul."
+    },
+    {
+      "file": "COMPONENT_SPEC.md",
+      "path": "../sdkwork-specs/COMPONENT_SPEC.md",
+      "purpose": "Component-local contract and discovery rules."
+    },
+    {
+      "file": "NAMING_SPEC.md",
+      "path": "../sdkwork-specs/NAMING_SPEC.md",
+      "purpose": "Canonical naming for domains, APIs, SDKs, tables, and events."
+    },
+    {
+      "file": "DOMAIN_SPEC.md",
+      "path": "../sdkwork-specs/DOMAIN_SPEC.md",
+      "purpose": "Canonical domain and capability boundaries."
+    },
+    {
+      "file": "API_SPEC.md",
+      "path": "../sdkwork-specs/API_SPEC.md",
+      "purpose": "HTTP/OpenAPI and generated SDK contract rules."
+    },
+    {
+      "file": "PAGINATION_SPEC.md",
+      "path": "../sdkwork-specs/PAGINATION_SPEC.md",
+      "purpose": "List and search pagination contract."
+    },
+    {
+      "file": "RUST_CODE_SPEC.md",
+      "path": "../sdkwork-specs/RUST_CODE_SPEC.md",
+      "purpose": "Rust crate layout, lints baseline, and route crate structure."
+    },
+    {
+      "file": "APPLICATION_LAYERED_ARCHITECTURE_SPEC.md",
+      "path": "../sdkwork-specs/APPLICATION_LAYERED_ARCHITECTURE_SPEC.md",
+      "purpose": "Route/service/repository layering and dependency direction."
+    },
+    {
+      "file": "WEB_BACKEND_SPEC.md",
+      "path": "../sdkwork-specs/WEB_BACKEND_SPEC.md",
+      "purpose": "Backend route, service, repository, provider, and request-context boundaries."
+    },
+    {
+      "file": "PRIVACY_SPEC.md",
+      "path": "../sdkwork-specs/PRIVACY_SPEC.md",
+      "purpose": "Privacy, sensitive data, retention, export, and deletion rules for personal relationship data."
+    },
+    {
+      "file": "TEST_SPEC.md",
+      "path": "../sdkwork-specs/TEST_SPEC.md",
+      "purpose": "Verification, contract testing, and evidence-before-completion rules."
+    }
+  ],
+  "contracts": {
+    "publicExports": [],
+    "runtimeEntrypoints": [],
+    "routeManifest": null,
+    "apiAuthorities": [
+      {
+        "name": "sdkwork-missory-app-api",
+        "prefix": "/app/v3/api",
+        "authorityOpenApi": "apis/app-api/communication/missory-app-api.openapi.yaml",
+        "sdkFamily": "sdkwork-missory-app-sdk"
+      }
+    ],
+    "sdkClients": [],
+    "sdkDependencies": [
+      {
+        "workspace": "sdkwork-utils",
+        "role": "cross-language-utility-runtime",
+        "required": true,
+        "dependencyMode": "platform-framework",
+        "generatedTransportImportPolicy": "forbidden"
+      }
+    ],
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [
+      "missory.person.created",
+      "missory.person.updated",
+      "missory.person.deleted",
+      "missory.relationship.created",
+      "missory.memory.created",
+      "missory.memory.confirmed",
+      "missory.memory.rejected",
+      "missory.story.created",
+      "missory.reminder.dismissed"
+    ],
+    "configKeys": [
+      "SDKWORK_MISSORY_ENVIRONMENT",
+      "SDKWORK_MISSORY_DEPLOYMENT_PROFILE",
+      "SDKWORK_MISSORY_PROFILE_ID",
+      "SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND",
+      "SDKWORK_MISSORY_SNOWFLAKE_NODE_ID"
+    ]
+  },
+  "integration": {
+    "authority": "Root SDKWork specs remain authoritative. Local specs may extend but must not contradict them.",
+    "factPolicy": "Person facts and AI inferences are separated at the data, service, and API layers; inferences carry confidence, source, and reason and are never auto-promoted to facts.",
+    "assistantPolicy": "The social agent is draft-only: it never sends messages and never contacts third parties. Language generation is a pluggable port with a deterministic rule-based default implementation.",
+    "storagePolicy": "Phase 1 persists through SPI store ports with an in-memory adapter; the SQLx/PostgreSQL authoritative adapter is the phase-2 replacement behind the same ports."
+  },
+  "verification": {
+    "commands": [
+      "cargo test --workspace",
+      "node ../sdkwork-specs/tools/verify-repo.mjs --root .",
+      "node ../sdkwork-specs/tools/check-rust-crate-naming-standard.mjs --root .",
+      "pnpm api:assembly:validate"
+    ]
+  },
+  "metadata": {
+    "standardVersion": "2026-10-01",
+    "status": "active"
+  }
+}

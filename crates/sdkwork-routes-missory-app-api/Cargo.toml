@@ -1,0 +1,31 @@
+[package]
+rust-version.workspace = true
+name = "sdkwork-routes-missory-app-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "App API HTTP route adapter for SDKWork Missory (/app/v3/api/missory/*)."
+
+[lib]
+name = "sdkwork_routes_missory_app_api"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait.workspace = true
+axum.workspace = true
+http.workspace = true
+sdkwork-missory-contract.workspace = true
+sdkwork-communication-missory-service.workspace = true
+sdkwork-utils-rust.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+serde_urlencoded.workspace = true
+tokio.workspace = true
+tower.workspace = true
+sdkwork-missory-plugin-store-memory.workspace = true

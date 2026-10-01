@@ -1,0 +1,24 @@
+[package]
+rust-version.workspace = true
+name = "sdkwork-api-missory-standalone-gateway"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Standalone gateway binary hosting the sdkwork-missory application HTTP plane."
+
+[[bin]]
+name = "sdkwork-api-missory-standalone-gateway"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+axum.workspace = true
+http.workspace = true
+sdkwork-api-missory-assembly.workspace = true
+sdkwork-missory-contract.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

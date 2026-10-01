@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-api-missory-standalone-gateway",
+    "displayName": "SDKWork Missory Standalone Gateway",
+    "version": "0.1.0",
+    "type": "rust-crate",
+    "root": "crates/sdkwork-api-missory-standalone-gateway",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "gateway-api",
+    "languages": [
+      "rust"
+    ],
+    "generated": false,
+    "manifests": [
+      "Cargo.toml"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "COMPONENT_SPEC.md",
+      "path": "../../../sdkwork-specs/COMPONENT_SPEC.md",
+      "purpose": "Component-local contract and discovery rules."
+    },
+    {
+      "file": "CODE_STYLE_SPEC.md",
+      "path": "../../../sdkwork-specs/CODE_STYLE_SPEC.md",
+      "purpose": "Authored code style baseline."
+    },
+    {
+      "file": "NAMING_SPEC.md",
+      "path": "../../../sdkwork-specs/NAMING_SPEC.md",
+      "purpose": "Rust naming and dependency declaration integrity."
+    },
+    {
+      "file": "RUST_CODE_SPEC.md",
+      "path": "../../../sdkwork-specs/RUST_CODE_SPEC.md",
+      "purpose": "Rust crate layout and verification."
+    },
+    {
+      "file": "API_ASSEMBLY_SPEC.md",
+      "path": "../../../sdkwork-specs/API_ASSEMBLY_SPEC.md",
+      "purpose": "Standalone gateway hosting rules."
+    },
+    {
+      "file": "DEPLOYMENT_SPEC.md",
+      "path": "../../../sdkwork-specs/DEPLOYMENT_SPEC.md",
+      "purpose": "Deployment profile parity."
+    }
+  ],
+  "contracts": {
+    "layerRole": "runtime-gateway",
+    "publicExports": [],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": [
+      "main"
+    ],
+    "routeManifest": null,
+    "sdkClients": [],
+    "sdkDependencies": [],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": []
+  },
+  "verification": {
+    "commands": [
+      "cargo build -p sdkwork-api-missory-standalone-gateway"
+    ]
+  }
+}

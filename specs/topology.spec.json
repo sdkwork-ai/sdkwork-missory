@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 5,
+  "kind": "sdkwork.app.topology",
+  "appId": "sdkwork-missory",
+  "applicationCode": "missory",
+  "archetype": "application-http-gateway",
+  "profileRoot": "etc/topology",
+  "profilePattern": "{deploymentProfile}.{environment}.env",
+  "vocabulary": {
+    "environment": {
+      "allowed": [
+        "development",
+        "test",
+        "staging",
+        "production",
+        "demo"
+      ]
+    },
+    "deploymentProfile": {
+      "allowed": [
+        "standalone",
+        "cloud"
+      ]
+    }
+  },
+  "defaults": {
+    "developmentProfileId": "standalone.development",
+    "productionProfileId": "cloud.production",
+    "gatewayBind": "127.0.0.1:8460"
+  },
+  "profileFiles": {
+    "standalone.development": "etc/topology/standalone.development.env",
+    "standalone.test": "etc/topology/standalone.test.env",
+    "standalone.staging": "etc/topology/standalone.staging.env",
+    "standalone.production": "etc/topology/standalone.production.env",
+    "standalone.demo": "etc/topology/standalone.demo.env",
+    "cloud.development": "etc/topology/cloud.development.env",
+    "cloud.test": "etc/topology/cloud.test.env",
+    "cloud.staging": "etc/topology/cloud.staging.env",
+    "cloud.production": "etc/topology/cloud.production.env",
+    "cloud.demo": "etc/topology/cloud.demo.env"
+  },
+  "envKeys": {
+    "environment": "SDKWORK_MISSORY_ENVIRONMENT",
+    "profileId": "SDKWORK_MISSORY_PROFILE_ID",
+    "standaloneGatewayBind": "SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND",
+    "deploymentProfile": "SDKWORK_MISSORY_DEPLOYMENT_PROFILE"
+  },
+  "surfaces": {
+    "application.public-ingress": {
+      "connectivityPlane": "application",
+      "protocols": ["http"],
+      "bindEnv": "SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND",
+      "httpUrlEnv": "SDKWORK_MISSORY_APPLICATION_PUBLIC_HTTP_URL"
+    }
+  },
+  "components": {
+    "applicationServer": {
+      "crate": "sdkwork-api-missory-standalone-gateway",
+      "binary": "sdkwork-api-missory-standalone-gateway"
+    }
+  },
+  "orchestration": {
+    "profiles": {
+      "standalone.development": {
+        "processes": [
+          {
+            "id": "application.public-ingress",
+            "crate": "sdkwork-api-missory-standalone-gateway",
+            "binary": "sdkwork-api-missory-standalone-gateway",
+            "required": true,
+            "role": "api-standalone-gateway"
+          }
+        ],
+        "healthSurfaces": ["application.public-ingress"],
+        "browserDeliveries": []
+      },
+      "cloud.development": {
+        "processes": [],
+        "healthSurfaces": ["application.public-ingress"]
+      },
+      "cloud.production": {
+        "processes": [
+          {
+            "id": "application.public-ingress",
+            "crate": "sdkwork-api-missory-standalone-gateway",
+            "binary": "sdkwork-api-missory-standalone-gateway",
+            "required": true,
+            "role": "api-standalone-gateway"
+          }
+        ],
+        "healthSurfaces": ["application.public-ingress"]
+      },
+      "standalone.production": {
+        "processes": [
+          {
+            "id": "application.public-ingress",
+            "crate": "sdkwork-api-missory-standalone-gateway",
+            "binary": "sdkwork-api-missory-standalone-gateway",
+            "required": true,
+            "role": "api-standalone-gateway"
+          }
+        ],
+        "healthSurfaces": ["application.public-ingress"],
+        "browserDeliveries": []
+      },
+      "standalone.test": {
+        "processes": [
+          {
+            "id": "application.public-ingress",
+            "crate": "sdkwork-api-missory-standalone-gateway",
+            "binary": "sdkwork-api-missory-standalone-gateway",
+            "required": true,
+            "role": "api-standalone-gateway"
+          }
+        ],
+        "healthSurfaces": ["application.public-ingress"],
+        "browserDeliveries": []
+      },
+      "standalone.staging": {
+        "processes": [
+          {
+            "id": "application.public-ingress",
+            "crate": "sdkwork-api-missory-standalone-gateway",
+            "binary": "sdkwork-api-missory-standalone-gateway",
+            "required": true,
+            "role": "api-standalone-gateway"
+          }
+        ],
+        "healthSurfaces": ["application.public-ingress"],
+        "browserDeliveries": []
+      },
+      "cloud.test": {
+        "processes": [],
+        "healthSurfaces": ["application.public-ingress"]
+      },
+      "cloud.staging": {
+        "processes": [
+          {
+            "id": "application.public-ingress",
+            "crate": "sdkwork-api-missory-standalone-gateway",
+            "binary": "sdkwork-api-missory-standalone-gateway",
+            "required": true,
+            "role": "api-standalone-gateway"
+          }
+        ],
+        "healthSurfaces": ["application.public-ingress"]
+      },
+      "standalone.demo": {
+        "processes": [],
+        "healthSurfaces": [],
+        "browserDeliveries": []
+      },
+      "cloud.demo": {
+        "processes": [],
+        "healthSurfaces": []
+      }
+    }
+  },
+  "packaging": {
+    "cloudConfigFiles": [],
+    "targets": []
+  },
+  "retired": {
+    "envKeys": [
+      "SDKWORK_MISSORY_BIND_ADDRESS",
+      "SDKWORK_MISSORY_TOPOLOGY"
+    ],
+    "cliFlags": ["--topology"],
+    "vocabulary": {
+      "hosting": [
+        "self-hosted",
+        "cloud-hosted"
+      ]
+    }
+  }
+}

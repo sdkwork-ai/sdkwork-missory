@@ -1,0 +1,15 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@sdkwork/app-topology':
+        specifier: workspace:*
+        version: link:../sdkwork-app-topology
+
+  ../sdkwork-app-topology: {}

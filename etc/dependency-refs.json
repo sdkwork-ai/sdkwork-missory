@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Immutable dependency pins for release builds. Each entry is the exact sibling-repository commit SHA this release commit was built and verified against. Update an entry by committing the new pin, never by pointing it at a moving ref.",
+  "SDKWORK_UTILS_REF": "f519afcc4acfea3398f594b5b9dddab18b0b9634",
+  "SDKWORK_APP_TOPOLOGY_REF": "429c7e85e1fefbe0fc5f935736c9773717d36054"
+}

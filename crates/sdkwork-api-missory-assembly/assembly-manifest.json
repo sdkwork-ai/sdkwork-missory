@@ -1,0 +1,21 @@
+{
+  "kind": "sdkwork.api.assembly",
+  "schemaVersion": 1,
+  "applicationCode": "missory",
+  "apiMode": "served",
+  "packageName": "sdkwork-api-missory-assembly",
+  "crateDir": "crates/sdkwork-api-missory-assembly",
+  "routeCrates": [
+    {
+      "packageName": "sdkwork-routes-missory-app-api",
+      "memberDir": "crates/sdkwork-routes-missory-app-api",
+      "libName": "sdkwork_routes_missory_app_api",
+      "surface": "app-api",
+      "pathPrefix": "/app/v3/api",
+      "mountOrder": 0,
+      "componentRef": "crates/sdkwork-routes-missory-app-api/specs/component.spec.json",
+      "routeManifestRef": "sdks/_route-manifests/app-api/sdkwork-routes-missory-app-api.route-manifest.json",
+      "sourceRef": "crates/sdkwork-routes-missory-app-api/Cargo.toml"
+    }
+  ]
+}
