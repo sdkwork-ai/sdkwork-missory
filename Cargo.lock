@@ -1466,6 +1466,7 @@ dependencies = [
  "http",
  "sdkwork-api-missory-assembly",
  "sdkwork-missory-contract",
+ "sdkwork-web-bootstrap",
  "serde_json",
  "tokio",
  "tracing",

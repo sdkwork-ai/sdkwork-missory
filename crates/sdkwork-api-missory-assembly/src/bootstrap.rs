@@ -75,7 +75,26 @@ impl ApiAssembly {
 }
 
 /// Composes the application router from the owned route crates.
+///
+/// Infrastructure health routes (`/healthz`, `/livez`, `/readyz`, `/metrics`)
+/// are mounted through the shared web-framework service router — gateways must
+/// not fork local health handlers (HEALTH_CHECK_SPEC §11). Phase 1 reports
+/// always-ready because the in-memory store has no external dependencies; the
+/// SQLx adapter swaps in a real readiness probe.
 pub fn assemble_api_router(service: Arc<MissoryService>) -> Router {
+    let business_router = assemble_business_router(service);
+    sdkwork_web_bootstrap::service_router(
+        business_router,
+        sdkwork_web_bootstrap::ServiceRouterConfig::default().with_always_ready(),
+    )
+}
+
+/// Composes the business-only router (no infrastructure health routes).
+///
+/// The standalone gateway uses this so its request-context middleware applies
+/// to business routes only — `/healthz` and `/readyz` stay unauthenticated
+/// (HEALTH_CHECK_SPEC §11).
+pub fn assemble_business_router(service: Arc<MissoryService>) -> Router {
     missory_routes::gateway_mount(service)
 }
 
@@ -84,10 +103,20 @@ pub fn assemble_api_router(service: Arc<MissoryService>) -> Router {
 /// Phase 1 wires the in-memory store; the phase-2 SQLx adapter swaps in behind
 /// the same SPI ports without changing this signature.
 pub fn assemble_api_router_from_env() -> Result<Router, String> {
+    let service = missory_service_from_env();
+    Ok(assemble_api_router(service))
+}
+
+/// Composes the business-only router from environment configuration.
+pub fn assemble_business_router_from_env() -> Result<Router, String> {
+    let service = missory_service_from_env();
+    Ok(assemble_business_router(service))
+}
+
+fn missory_service_from_env() -> Arc<MissoryService> {
     let store = InMemoryMissoryStore::from_env();
     // Phase 2: resolve a configured SocialTextModel provider here.
-    let service = MissoryService::new(Arc::new(store), None);
-    Ok(assemble_api_router(Arc::new(service)))
+    Arc::new(MissoryService::new(Arc::new(store), None))
 }
 
 /// Assembles the complete contribution from environment configuration.

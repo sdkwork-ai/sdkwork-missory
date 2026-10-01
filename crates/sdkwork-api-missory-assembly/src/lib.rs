@@ -5,7 +5,8 @@ pub mod bootstrap;
 mod generated;
 
 pub use bootstrap::{
-    assemble_api_assembly_from_env, assemble_api_router, assemble_api_router_from_env, ApiAssembly,
+    assemble_api_assembly_from_env, assemble_api_router, assemble_api_router_from_env,
+    assemble_business_router, assemble_business_router_from_env, ApiAssembly,
     MissoryReadinessCheck, OPENAPI_YAML, PERMISSION_CATALOG, ROUTE_MANIFEST_JSON,
 };
 

@@ -146,9 +146,13 @@ async fn main() {
     };
     tracing::info!(environment = %environment, "starting sdkwork-missory standalone gateway");
 
-    let router = sdkwork_api_missory_assembly::assemble_api_router_from_env()
+    let business_router = sdkwork_api_missory_assembly::assemble_business_router_from_env()
         .expect("assemble api router")
         .layer(middleware::from_fn(inject_request_context));
+    let router = sdkwork_web_bootstrap::service_router(
+        business_router,
+        sdkwork_web_bootstrap::ServiceRouterConfig::default().with_always_ready(),
+    );
 
     let bind = std::env::var(BIND_KEY).unwrap_or_else(|_| default_bind().to_string());
     let listener = match tokio::net::TcpListener::bind(&bind).await {
