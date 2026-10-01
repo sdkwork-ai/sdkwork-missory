@@ -1,12 +1,13 @@
 //! Standalone gateway for the sdkwork-missory application HTTP plane.
 //!
 //! Process concerns only: fail-closed environment validation, tracing, dev
-//! request-context injection, binding, and graceful shutdown.
+//! request-context injection, CORS, binding, and graceful shutdown.
 
+use std::sync::Arc;
 use std::time::Duration;
 
 use axum::extract::Request;
-use axum::http::{header, HeaderValue, StatusCode};
+use axum::http::{header, HeaderValue, Method, StatusCode};
 use axum::middleware::{self, Next};
 use axum::response::{IntoResponse, Response};
 use axum::Json;
@@ -16,10 +17,18 @@ use sdkwork_missory_contract::context::MissoryRequestContext;
 const ENVIRONMENT_KEY: &str = "SDKWORK_MISSORY_ENVIRONMENT";
 const RUNTIME_TARGET_KEY: &str = "SDKWORK_MISSORY_RUNTIME_TARGET";
 const BIND_KEY: &str = "SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND";
+/// Dev-only identity bypass (`CORS_SPEC.md`/ENVIRONMENT_SPEC: development topologies only).
+const DEV_AUTH_BYPASS_KEY: &str = "SDKWORK_MISSORY_DEV_AUTH_BYPASS";
+/// Shared browser-origin allowlist (`CORS_SPEC.md` section 5; app-scoped keys are retired).
+const CORS_ORIGINS_KEY: &str = "SDKWORK_CORS_ALLOWED_ORIGINS";
 /// Header carrying the resolved tenant id (pre-IAM local topology).
 const TENANT_HEADER: &str = "x-sdkwork-tenant-id";
 /// Header carrying the resolved user id (pre-IAM local topology).
 const USER_HEADER: &str = "x-sdkwork-user-id";
+
+/// Default development identity used when the dev bypass is active.
+pub const DEV_BYPASS_TENANT_ID: u64 = 1;
+pub const DEV_BYPASS_USER_ID: u64 = 1000;
 
 /// Allowed environments (`CONFIG_SPEC.md` §2).
 const ALLOWED_ENVIRONMENTS: [&str; 5] = ["development", "test", "staging", "demo", "production"];
@@ -45,6 +54,99 @@ fn resolve_environment() -> Result<String, String> {
     }
 }
 
+/// Resolves the dev identity bypass; fail-closed outside development.
+///
+/// The bypass exists so the standalone development topology (browser dev
+/// servers, Flutter local run, mini-program devtools) can reach the app-api
+/// before the IAM dual-token adapter lands. It MUST be false in every
+/// non-development environment: enabling it elsewhere refuses startup.
+fn resolve_dev_bypass(environment: &str) -> Result<bool, String> {
+    let raw = std::env::var(DEV_AUTH_BYPASS_KEY).unwrap_or_default();
+    let enabled = matches!(raw.as_str(), "true" | "1" | "yes");
+    if enabled && environment != "development" {
+        return Err(format!(
+            "refusing to start: {DEV_AUTH_BYPASS_KEY}=true is only allowed with {ENVIRONMENT_KEY}=development (got {environment})"
+        ));
+    }
+    Ok(enabled)
+}
+
+/// Parses the shared CORS allowlist into exact origins.
+///
+/// Values are comma- or semicolon-separated origin strings; entries without a
+/// scheme that look like hosts are left verbatim (the allowlist only ever
+/// matches exact `Origin` header values).
+fn parse_cors_origins(raw: &str) -> Vec<String> {
+    raw.split([',', ';'])
+        .map(|origin| origin.trim().to_string())
+        .filter(|origin| !origin.is_empty())
+        .collect()
+}
+
+/// CORS allowlist middleware (`CORS_SPEC.md`): preflight answers 204 with the
+/// exact allowlisted origin reflected; simple responses carry the allowlist
+/// headers. Non-allowlisted origins get no CORS headers and browsers block.
+async fn cors_allowlist(
+    origins: Arc<Vec<String>>,
+    request: Request,
+    next: Next,
+) -> Response {
+    let request_origin = request
+        .headers()
+        .get(header::ORIGIN)
+        .and_then(|value| value.to_str().ok())
+        .map(str::to_string);
+    let mut response = next.run(request).await;
+    let Some(origin) = request_origin else {
+        return response;
+    };
+    if !origins.iter().any(|allowed| allowed == &origin) {
+        return response;
+    }
+    let headers = response.headers_mut();
+    if let Ok(value) = HeaderValue::from_str(&origin) {
+        headers.insert(header::ACCESS_CONTROL_ALLOW_ORIGIN, value);
+    }
+    headers.insert(
+        header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
+        HeaderValue::from_static("true"),
+    );
+    headers.insert(
+        header::ACCESS_CONTROL_EXPOSE_HEADERS,
+        HeaderValue::from_static("x-sdkwork-trace-id"),
+    );
+    headers.insert(header::VARY, HeaderValue::from_static("Origin"));
+    response
+}
+
+fn preflight_response(origin: &str) -> Response {
+    let mut response = StatusCode::NO_CONTENT.into_response();
+    let headers = response.headers_mut();
+    if let Ok(value) = HeaderValue::from_str(origin) {
+        headers.insert(header::ACCESS_CONTROL_ALLOW_ORIGIN, value);
+    }
+    headers.insert(
+        header::ACCESS_CONTROL_ALLOW_METHODS,
+        HeaderValue::from_static("GET,POST,PUT,PATCH,DELETE,OPTIONS"),
+    );
+    headers.insert(
+        header::ACCESS_CONTROL_ALLOW_HEADERS,
+        HeaderValue::from_static(
+            "authorization,content-type,access-token,x-sdkwork-tenant-id,x-sdkwork-user-id",
+        ),
+    );
+    headers.insert(
+        header::ACCESS_CONTROL_MAX_AGE,
+        HeaderValue::from_static("600"),
+    );
+    headers.insert(
+        header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
+        HeaderValue::from_static("true"),
+    );
+    headers.insert(header::VARY, HeaderValue::from_static("Origin"));
+    response
+}
+
 fn parse_header_id(request: &Request, name: &str) -> Option<u64> {
     request
         .headers()
@@ -53,21 +155,34 @@ fn parse_header_id(request: &Request, name: &str) -> Option<u64> {
         .and_then(|raw| raw.parse::<u64>().ok())
 }
 
-/// Injects the request context from tenant/user headers until the IAM adapter
-/// replaces this middleware (TECH_ARCHITECTURE.md §8).
-async fn inject_request_context(mut request: Request, next: Next) -> Response {
-    if request
-        .extensions()
-        .get::<MissoryRequestContext>()
-        .is_none()
-    {
-        let Some(user_id) = parse_header_id(&request, USER_HEADER) else {
-            return problem_unauthorized();
+/// Context-injection middleware: explicit headers (pre-IAM local topology)
+/// first, then the development bypass default, then a 401 problem. The bypass
+/// is gated at startup by [`resolve_dev_bypass`].
+async fn context_injection(
+    axum::extract::State(dev_bypass): axum::extract::State<bool>,
+    mut request: Request,
+    next: Next,
+) -> Response {
+    if request.extensions().get::<MissoryRequestContext>().is_none() {
+        let header_user = parse_header_id(&request, USER_HEADER);
+        let context = match header_user {
+            Some(user_id) => {
+                let tenant_id = parse_header_id(&request, TENANT_HEADER).unwrap_or(1);
+                Some(MissoryRequestContext::new(tenant_id, 0, user_id))
+            }
+            None if dev_bypass => Some(MissoryRequestContext::new(
+                DEV_BYPASS_TENANT_ID,
+                0,
+                DEV_BYPASS_USER_ID,
+            )),
+            None => None,
         };
-        let tenant_id = parse_header_id(&request, TENANT_HEADER).unwrap_or(1);
-        request
-            .extensions_mut()
-            .insert(MissoryRequestContext::new(tenant_id, 0, user_id));
+        match context {
+            Some(context) => {
+                request.extensions_mut().insert(context);
+            }
+            None => return problem_unauthorized(),
+        }
     }
     next.run(request).await
 }
@@ -144,11 +259,46 @@ async fn main() {
             std::process::exit(2);
         }
     };
-    tracing::info!(environment = %environment, "starting sdkwork-missory standalone gateway");
+    let dev_bypass = match resolve_dev_bypass(&environment) {
+        Ok(value) => value,
+        Err(reason) => {
+            tracing::error!("{reason}");
+            std::process::exit(2);
+        }
+    };
+    let cors_origins: Arc<Vec<String>> = Arc::new(parse_cors_origins(
+        &std::env::var(CORS_ORIGINS_KEY).unwrap_or_default(),
+    ));
+    tracing::info!(
+        environment = %environment,
+        dev_bypass,
+        cors_origins = cors_origins.len(),
+        "starting sdkwork-missory standalone gateway"
+    );
 
     let business_router = sdkwork_api_missory_assembly::assemble_business_router_from_env()
         .expect("assemble api router")
-        .layer(middleware::from_fn(inject_request_context));
+        .layer(middleware::from_fn_with_state(dev_bypass, context_injection))
+        .layer(middleware::from_fn_with_state(
+            cors_origins.clone(),
+            |axum::extract::State(state): axum::extract::State<Arc<Vec<String>>>,
+             request: Request,
+             next: Next| async move {
+                if request.method() == Method::OPTIONS {
+                    let origin = request
+                        .headers()
+                        .get(header::ORIGIN)
+                        .and_then(|value| value.to_str().ok())
+                        .map(str::to_string);
+                    if let Some(origin) =
+                        origin.filter(|value| state.iter().any(|allowed| allowed == value))
+                    {
+                        return preflight_response(&origin);
+                    }
+                }
+                cors_allowlist(state, request, next).await
+            },
+        ));
     let router = sdkwork_web_bootstrap::service_router(
         business_router,
         sdkwork_web_bootstrap::ServiceRouterConfig::default().with_always_ready(),
@@ -169,5 +319,48 @@ async fn main() {
     {
         tracing::error!("server error: {error}");
         std::process::exit(1);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn given_bypass_outside_development_then_startup_refuses() {
+        std::env::set_var(DEV_AUTH_BYPASS_KEY, "true");
+        let result = resolve_dev_bypass("production");
+        std::env::remove_var(DEV_AUTH_BYPASS_KEY);
+        assert!(result.is_err(), "bypass must fail closed outside development");
+    }
+
+    #[test]
+    fn given_bypass_in_development_then_startup_allows() {
+        std::env::set_var(DEV_AUTH_BYPASS_KEY, "true");
+        let result = resolve_dev_bypass("development");
+        std::env::remove_var(DEV_AUTH_BYPASS_KEY);
+        assert!(result.expect("allowed"));
+    }
+
+    #[test]
+    fn given_unset_bypass_then_disabled() {
+        std::env::remove_var(DEV_AUTH_BYPASS_KEY);
+        assert!(!resolve_dev_bypass("development").expect("ok"));
+    }
+
+    #[test]
+    fn given_cors_list_when_parsing_then_entries_are_trimmed_and_exact() {
+        let origins = parse_cors_origins(
+            "http://127.0.0.1:3910 ; https://a.example.com,app://dsh,,https://servicewechat.com",
+        );
+        assert_eq!(
+            origins,
+            vec![
+                "http://127.0.0.1:3910",
+                "https://a.example.com",
+                "app://dsh",
+                "https://servicewechat.com"
+            ]
+        );
     }
 }

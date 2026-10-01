@@ -10,7 +10,9 @@
     "domain": "communication",
     "capability": "missory",
     "surface": "backend-service",
-    "languages": ["rust"],
+    "languages": [
+      "rust"
+    ],
     "generated": false,
     "status": "active",
     "manifests": [
@@ -117,7 +119,9 @@
       "SDKWORK_MISSORY_DEPLOYMENT_PROFILE",
       "SDKWORK_MISSORY_PROFILE_ID",
       "SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND",
-      "SDKWORK_MISSORY_SNOWFLAKE_NODE_ID"
+      "SDKWORK_MISSORY_SNOWFLAKE_NODE_ID",
+      "SDKWORK_MISSORY_DEV_AUTH_BYPASS",
+      "SDKWORK_CORS_ALLOWED_ORIGINS"
     ]
   },
   "integration": {
