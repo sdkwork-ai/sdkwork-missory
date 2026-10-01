@@ -70,3 +70,18 @@ __pycache__/
 # Compiler emit beside authored TypeScript is enforced against tracked files by
 # sdkwork-specs/tools/check-repository-baseline-content.mjs instead of broad globs,
 # so no `**/src/**/*.js` style ignore rules appear here.
+
+# --- Client app surfaces: local build/runtime artifacts (never commit) ---
+apps/*/public/runtime-env.json
+apps/*/.env
+apps/*/.env.*
+!apps/*/.env.example
+apps/*/dist/
+**/dist/
+apps/sdkwork-missory-flutter-mobile/.dart_tool/
+apps/sdkwork-missory-flutter-mobile/build/
+apps/sdkwork-missory-flutter-mobile/android/.gradle/
+apps/sdkwork-missory-flutter-mobile/android/local.properties
+apps/sdkwork-missory-flutter-mobile/ios/Pods/
+apps/sdkwork-missory-flutter-mobile/*.iml
+apps/sdkwork-missory-mini-program/src/runtime/*.js

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "generator": "@sdkwork/sdk-generator",
+  "sdk": {
+    "name": "sdkwork-missory-app-sdk",
+    "version": "0.1.0",
+    "language": "dart",
+    "sdkType": "app",
+    "protocol": "http",
+    "packageName": "sdkwork_missory_app_sdk"
+  },
+  "changeFingerprint": "30d16f9c3839f67aaa55e0b06b5ee0884f8282df8daf7e578632228a93f74d25",
+  "changes": {
+    "createdGeneratedFiles": [],
+    "updatedGeneratedFiles": [],
+    "unchangedGeneratedFiles": [
+      "analysis_options.yaml",
+      "bin/publish-core.mjs",
+      "bin/publish.ps1",
+      "bin/publish.sh",
+      "CHANGELOG.md",
+      "lib/app_client.dart",
+      "lib/sdkwork_missory_app_sdk.dart",
+      "lib/src/api/api.dart",
+      "lib/src/api/missory_assistant.dart",
+      "lib/src/api/missory.dart",
+      "lib/src/api/paths.dart",
+      "lib/src/api/response_helpers.dart",
+      "lib/src/http/client.dart",
+      "lib/src/http/sdk_config.dart",
+      "lib/src/models.dart",
+      "LICENSE",
+      "pubspec.yaml",
+      "README.md",
+      "sdkwork-sdk.json"
+    ],
+    "deletedGeneratedFiles": [],
+    "scaffoldedFiles": [],
+    "preservedScaffoldFiles": [
+      "custom/README.md"
+    ],
+    "backedUpFiles": []
+  },
+  "impact": {
+    "schemaVersion": 1,
+    "areas": [],
+    "details": [],
+    "requiresVerification": false,
+    "summary": "No generated, scaffold, or backup changes detected. Verification can be skipped."
+  },
+  "verificationPlan": {
+    "shouldRun": false,
+    "runPhase": "skip",
+    "summary": "No generated, scaffold, or backup changes detected. Verification can be skipped.",
+    "steps": []
+  },
+  "executionDecision": {
+    "schemaVersion": 1,
+    "riskLevel": "low",
+    "nextAction": "skip",
+    "requiresManualReview": false,
+    "applyRequiresExpectedFingerprint": false,
+    "summary": "No actionable changes were detected. No apply or verification step is required.",
+    "reasons": [
+      "no-actionable-changes"
+    ]
+  },
+  "preservedLegacyFiles": false
+}

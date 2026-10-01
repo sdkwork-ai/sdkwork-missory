@@ -1,2 +1,28 @@
 packages:
+  - "apps/*"
+  - "apps/*/packages/*"
+  - "sdks/sdkwork-missory-app-sdk/sdkwork-missory-app-sdk-typescript"
   - "../sdkwork-app-topology"
+  - "../sdkwork-sdk-commons/sdkwork-sdk-common-typescript"
+  - "../sdkwork-utils/packages/sdkwork-utils-typescript"
+
+catalog:
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  "@types/react": ^19.2.14
+  "@types/react-dom": ^19.2.3
+  typescript: ^6.0.2
+  vite: ^8.0.3
+  "@vitejs/plugin-react": ^6.0.5
+  vitest: ^4.1.10
+  tsx: ^4.23.12
+  tailwindcss: ^4.3.3
+  "@tailwindcss/vite": ^4.3.3
+  react-router-dom: ^7.18.2
+  zustand: ^5.0.12
+  lucide-react: ^1.31.0
+  clsx: ^2.1.1
+  tailwind-merge: ^3.6.0
+  esbuild: ^0.25.10
+  miniprogram-api-typings: ^4.1.0
+  "@types/node": ^25.9.2

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-missory-app-sdk",
+    "displayName": "SDKWork Missory App SDK",
+    "version": "0.1.0",
+    "type": "sdk-family",
+    "root": "sdks/sdkwork-missory-app-sdk",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "app",
+    "languages": ["typescript", "dart"],
+    "generated": false,
+    "manifests": ["sdk-manifest.json"]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "SDK_SPEC.md",
+      "path": "../../../sdkwork-specs/SDK_SPEC.md",
+      "purpose": "Primary SDK semantics and consumer naming."
+    },
+    {
+      "file": "SDK_WORKSPACE_GENERATION_SPEC.md",
+      "path": "../../../sdkwork-specs/SDK_WORKSPACE_GENERATION_SPEC.md",
+      "purpose": "Family layout, authority snapshot, and generation ownership."
+    },
+    {
+      "file": "SDK_MANIFEST_SPEC.md",
+      "path": "../../../sdkwork-specs/SDK_MANIFEST_SPEC.md",
+      "purpose": "sdk-manifest.json field contract."
+    }
+  ],
+  "contracts": {
+    "layerRole": "generated-sdk-family",
+    "publicExports": ["@sdkwork/missory-app-sdk", "sdkwork_missory_app_sdk"],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": [],
+    "routeManifest": null,
+    "sdkClients": ["SdkworkMissoryAppClient"],
+    "sdkDependencies": [],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": []
+  },
+  "verification": {
+    "commands": ["pnpm sdk:check"]
+  }
+}

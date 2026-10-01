@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "sdkName": "sdkwork-missory-app-sdk",
+  "sdkFamily": "sdkwork-missory-app-sdk",
+  "sdkOwner": "sdkwork-missory",
+  "sdkType": "app",
+  "apiAuthority": "sdkwork-missory-app-api",
+  "apiPrefix": "/app/v3/api",
+  "authoritySpec": "openapi/sdkwork-missory-app-api.openapi.yaml",
+  "generationInputSpec": "openapi/sdkwork-missory-app-api.sdkgen.yaml",
+  "packageName": "@sdkwork/missory-app-sdk",
+  "transportPackageName": "sdkwork-missory-app-sdk-generated-typescript",
+  "typescript": {
+    "composedRoot": "sdkwork-missory-app-sdk-typescript",
+    "composedEntry": "sdkwork-missory-app-sdk-typescript/src/index.ts",
+    "transportRoot": "sdkwork-missory-app-sdk-typescript/generated/server-openapi",
+    "transportEntry": "sdkwork-missory-app-sdk-typescript/generated/server-openapi/src/index.ts"
+  },
+  "sdkDependencies": [],
+  "dependencyApiExports": [],
+  "dependencyApiSurfaces": [],
+  "standardProfile": "sdkwork-v3",
+  "discoverySurface": {
+    "sdkTarget": "app",
+    "apiPrefix": "/app/v3/api",
+    "generatedProtocols": ["http-openapi"]
+  },
+  "languages": [
+    {
+      "language": "typescript",
+      "workspace": "sdkwork-missory-app-sdk-typescript",
+      "generationState": "generated",
+      "generatedPath": "sdkwork-missory-app-sdk-typescript/generated/server-openapi",
+      "consumerPackageName": "@sdkwork/missory-app-sdk",
+      "transportPackageName": "sdkwork-missory-app-sdk-generated-typescript",
+      "transportEntry": "sdkwork-missory-app-sdk-typescript/generated/server-openapi/src/index.ts"
+    },
+    {
+      "language": "dart",
+      "workspace": "sdkwork-missory-app-sdk-dart",
+      "generationState": "generated",
+      "generatedPath": "sdkwork-missory-app-sdk-dart/generated/server-openapi",
+      "consumerPackageName": "sdkwork_missory_app_sdk",
+      "transportPackageName": "sdkwork_missory_app_sdk",
+      "transportEntry": "sdkwork-missory-app-sdk-dart/generated/server-openapi/lib/sdkwork_missory_app_sdk.dart"
+    }
+  ]
+}

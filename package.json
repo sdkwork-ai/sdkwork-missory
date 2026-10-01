@@ -34,6 +34,20 @@
     "_sdkwork:test": "cargo test --workspace && pnpm topology:validate && pnpm check:architecture-alignment",
     "_sdkwork:check": "pnpm run check:app-composition && cargo check --workspace && pnpm check:pnpm-script-standard && pnpm topology:validate && pnpm api:assembly:validate",
     "_sdkwork:verify": "cargo test --workspace && pnpm run check:app-composition && pnpm check:cors-standard && pnpm check:repository-docs",
-    "_sdkwork:clean": "cargo clean"
+    "_sdkwork:clean": "cargo clean",
+    "sdk:generate": "node scripts/generate-missory-app-sdk.mjs",
+    "sdk:check": "node scripts/generate-missory-app-sdk.mjs --check",
+    "check:sdk-standard": "node ../sdkwork-specs/tools/check-sdk-standard.mjs --workspace ."
+  },
+  "pnpm": {
+    "overrides": {
+      "@sdkwork/sdk-common": "workspace:*",
+      "@sdkwork/utils": "workspace:*"
+    }
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:",
+    "rollup": "^4.52.5"
   }
 }

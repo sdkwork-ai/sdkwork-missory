@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "generator": "@sdkwork/sdk-generator",
+  "sdk": {
+    "name": "sdkwork-missory-app-sdk",
+    "version": "0.1.0",
+    "language": "typescript",
+    "sdkType": "app",
+    "protocol": "http",
+    "packageName": "@sdkwork/missory-app-sdk"
+  },
+  "generatedFiles": [
+    {
+      "path": "bin/publish-core.mjs",
+      "sha256": "a47e95119bf3eafcbcb2102f7024c147f967924e4e3f343d1a29effb4b6765df"
+    },
+    {
+      "path": "bin/publish.ps1",
+      "sha256": "78c6419400b988409d9393c2ecd85aa02dd6760f73edb3cc84cb28fefc51b41e"
+    },
+    {
+      "path": "bin/publish.sh",
+      "sha256": "899087c23e670b6951a12a13490fd557f761c96d78fabfb7e58a37e367db889f"
+    },
+    {
+      "path": "bin/sdk-gen.bat",
+      "sha256": "2d56891dc8276339ebbffc78ada3cc1bf73e2831453da89d95fcd2277bb4a05b"
+    },
+    {
+      "path": "bin/sdk-gen.sh",
+      "sha256": "c9bab3f87d5327833ca9a392f6b8e6b6d3386a46836cc3c48ef48313b603bd90"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "fb941a0806986a54fc192f98a98f6d9c282b8d350b2b19a3e71dda404e92d545"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "7840cc7d2b36ff364ac16c2fc5ec15b861bfe96854eecf81fb59b00edb8b1447"
+    },
+    {
+      "path": "package.json",
+      "sha256": "fa3110e4ea15f1b34e314923f6b6155a02673abdc389d5e6683dcf0502c30339"
+    },
+    {
+      "path": "README.md",
+      "sha256": "35365d1149fa41a8e3037e1d420b1f971fabc34bd953ec822a22cd8252a3aeaf"
+    },
+    {
+      "path": "sdkwork-sdk.json",
+      "sha256": "5c1f4a8bc9402f26a4245fa9ad8fed9344736f91bb44e32832678f5270bfacd9"
+    },
+    {
+      "path": "src/api/base.ts",
+      "sha256": "94d136c54a008dfe7602e373a0b2c79176bbf2fc6e7c899fc23b1f12f750380f"
+    },
+    {
+      "path": "src/api/index.ts",
+      "sha256": "4682c361b3903ab1665b07083cb9d0283ebf62944db3b8e516c80a3442cbf074"
+    },
+    {
+      "path": "src/api/missory-assistant.ts",
+      "sha256": "f8c784978c3444a13bad6fa4e1f2f0ca41c601799b306d8d86facd480ff2c1b5"
+    },
+    {
+      "path": "src/api/missory.ts",
+      "sha256": "e47dfd2b9f30438c2404cf3bcf83634487795629b0e71e79baea7674646a34a6"
+    },
+    {
+      "path": "src/api/paths.ts",
+      "sha256": "ed938eff098d6d91e8bb2e447cda882fcc2105c54922d70cafdb8e38327a882d"
+    },
+    {
+      "path": "src/auth/index.ts",
+      "sha256": "657fc63738bdcd61d83133120732a477dd127448cf2c51229b05d21f5e1f5c04"
+    },
+    {
+      "path": "src/http/client.ts",
+      "sha256": "f0e93f51af678aadaf96d3e4b26e2224cb5f551b3f4651980630bbe1c7f1ceac"
+    },
+    {
+      "path": "src/http/index.ts",
+      "sha256": "fc204fbe89750b9d25ecaffe41003e6ac243a1a895b65e65856202ab825d2dbe"
+    },
+    {
+      "path": "src/index.ts",
+      "sha256": "195ce455a2eb38ade4955520596070b761005fa384e4d2e0d45a723f9a89fa5f"
+    },
+    {
+      "path": "src/sdk.ts",
+      "sha256": "9e947f0c7ce95157a576f425210fd30d8b9e7542634693d8cba9124c4f381d07"
+    },
+    {
+      "path": "src/types/common.ts",
+      "sha256": "d2506be8c4bdbe8e7059393467e6e71d75ef1d8c018dbf997bb0ab2a77b6c7b6"
+    },
+    {
+      "path": "src/types/index.ts",
+      "sha256": "612c73ec885df33a91733d94f6d6e30e48f730b81f1bab5956ef7d628bd74d46"
+    },
+    {
+      "path": "src/types/int64-id.ts",
+      "sha256": "84537d3ebb2ca68d8275a35739416959629ecc672debface52aa2748b12c9f84"
+    },
+    {
+      "path": "src/types/memories-confirm-response.ts",
+      "sha256": "45da06418e69dfcabd768011e102cd769316e2209576a76f7f6039cb8d0e99a0"
+    },
+    {
+      "path": "src/types/memories-reject-response.ts",
+      "sha256": "8c59e1c2a13cc34c2c20897e7fdba76bc3a361bbcf43907e300d5ea0c2829ba5"
+    },
+    {
+      "path": "src/types/missory-assistant-answer-response.ts",
+      "sha256": "baa19ae7e7891dd6fd174e78c7e593b13c71eb80570f618758384039f717bf72"
+    },
+    {
+      "path": "src/types/missory-assistant-answer.ts",
+      "sha256": "ee8e90e43932e32ccc80292e5f159d37bacbf5c35e72c291adafe925b3f6f64a"
+    },
+    {
+      "path": "src/types/missory-assistant-query-request.ts",
+      "sha256": "265cec028a83f7aed67414688e62ef032da389a737055a806c91233596e45857"
+    },
+    {
+      "path": "src/types/missory-assistant-scenario.ts",
+      "sha256": "55a81c4ba76f6daca4605907a8ec836cf5c1b94a6b8479b6e8ed6e05da17fada"
+    },
+    {
+      "path": "src/types/missory-briefing-request.ts",
+      "sha256": "f8e29258774f2fd5caaa5f26e423b87b82c67f261cf39885118dd997a6f6b7c5"
+    },
+    {
+      "path": "src/types/missory-briefing-response.ts",
+      "sha256": "1428392dc84c22493ff9f0c37ec32451c0c90e6a5f6397aab051e6bc1f43a137"
+    },
+    {
+      "path": "src/types/missory-briefing.ts",
+      "sha256": "dda2af3d4c42beb5f28eb704920c6dec500d713f10ed292307f28dbe899c40b7"
+    },
+    {
+      "path": "src/types/missory-chat-summary-request.ts",
+      "sha256": "8f18522d9c1d1837a069db9a925a134e5fb523547907ded712dc2fa52cebd8a3"
+    },
+    {
+      "path": "src/types/missory-chat-summary-response.ts",
+      "sha256": "3653ea8ce70e5639df6becb2878aefcb1c68cbc1b5503038b7830416564b2114"
+    },
+    {
+      "path": "src/types/missory-chat-summary.ts",
+      "sha256": "316dec10a1ee2714b01c944224420ef999f5ebaa37b600a5815906744cfe65d2"
+    },
+    {
+      "path": "src/types/missory-citation.ts",
+      "sha256": "1b5e075c79ea5039b2136d386810801eece6c85a05792ede200db46a40218b95"
+    },
+    {
+      "path": "src/types/missory-home-digest-response.ts",
+      "sha256": "a3d26e107adb711d72811239a7fe67cfed8ac41d44e30c4f2d116d0a5a0b96b1"
+    },
+    {
+      "path": "src/types/missory-home-digest.ts",
+      "sha256": "1454b69c65fdc4c3e4e38690f9e734eff01e74b569fc99c720bf7ee983182dda"
+    },
+    {
+      "path": "src/types/missory-importance.ts",
+      "sha256": "381c2c1f3201d6b26434f49332120d02916570d9e436367fca8361e74eb94a25"
+    },
+    {
+      "path": "src/types/missory-memory-extract-request.ts",
+      "sha256": "511e4e9fb23c3adb80243bf097cc767f0504a927bc775a795f859bda74219b85"
+    },
+    {
+      "path": "src/types/missory-memory-origin.ts",
+      "sha256": "c0372feddc1cfda0507d6aa3778a702208279d1a36163c421af8a07963d0608e"
+    },
+    {
+      "path": "src/types/missory-memory-page-response.ts",
+      "sha256": "bbadc26e2ca9c0538a10b421b69eb2ca35bf22f9e45ee4d06ed88aecaa2bd988"
+    },
+    {
+      "path": "src/types/missory-memory-response.ts",
+      "sha256": "81cd2eb089a68fc5eaa56b1ca8479bfe379394e232784fcca4a7fa7e7db1bbf7"
+    },
+    {
+      "path": "src/types/missory-memory-status.ts",
+      "sha256": "df43e8f5376661098c6dd7a1524ab471ce42f1dad58b8e37196de2c4923fa55f"
+    },
+    {
+      "path": "src/types/missory-memory-type.ts",
+      "sha256": "0e9d49b3190ba5f10d308c2a301b8ab5ac025e4c4ffd62fa50a08a22bc1260ee"
+    },
+    {
+      "path": "src/types/missory-memory-upsert-request.ts",
+      "sha256": "817bc4f669274fb92c6fba1ebbce61ade955fa41aa5245d9f3f96bc84927b45e"
+    },
+    {
+      "path": "src/types/missory-memory.ts",
+      "sha256": "7f868045ab9b7cd3d65041b0593252bbe9d3b9c00bda0ad2f6eb5dd772ec8a64"
+    },
+    {
+      "path": "src/types/missory-message-draft-request.ts",
+      "sha256": "3d30340b62e4119ad36ded0fd397c3b72c8e8e6781e26d62c39a579678304b4d"
+    },
+    {
+      "path": "src/types/missory-message-draft-response.ts",
+      "sha256": "ad43ff158e12611700d8d0e3609c8229340d2c24a74025ef53fad03ef80dd361"
+    },
+    {
+      "path": "src/types/missory-message-draft.ts",
+      "sha256": "379e5e00716f679c71a0a6b50b0cb5555d297e64ce285003b7198438ca3e03e1"
+    },
+    {
+      "path": "src/types/missory-message-tone.ts",
+      "sha256": "b9130811c91fd81e3e5bcdee58f79b33f1adaac0e5e9a99df286e91d735ff5b0"
+    },
+    {
+      "path": "src/types/missory-my-profile-response.ts",
+      "sha256": "59ef52bf3afd0cbd23fcb01fa5b58f66f03c0515acc124c33e693b29e84a1daa"
+    },
+    {
+      "path": "src/types/missory-my-profile-upsert-request.ts",
+      "sha256": "42c07f50785dc32771badd27d51606d8c58e8e7d83ab2addaab27646da61efd0"
+    },
+    {
+      "path": "src/types/missory-my-profile.ts",
+      "sha256": "a0a8c040c40944d2a2254e3bed86db13e0d2b374e6ae5eb9512644875616da64"
+    },
+    {
+      "path": "src/types/missory-person-detail-response.ts",
+      "sha256": "b8a45753472eede181898fc184ee6e985d41ac9c4d001751f5e257ffb7b32d6a"
+    },
+    {
+      "path": "src/types/missory-person-detail.ts",
+      "sha256": "3c8f9992c06ed56fdf6cd7a5783349e4da03999a2b5133cc03bb44071cf1f37b"
+    },
+    {
+      "path": "src/types/missory-person-page-response.ts",
+      "sha256": "34bbde72dd375f799805419aa5469a88b1dfa6de82f67106cadc941ef8009e54"
+    },
+    {
+      "path": "src/types/missory-person-request-context.ts",
+      "sha256": "ce32f8268e3b9c69ac806f27054247f5d925f8a4c75b101bd627b3b1e9ca3343"
+    },
+    {
+      "path": "src/types/missory-person-response.ts",
+      "sha256": "73f7a3a146ca11eefe8a6d3ab398df38b613c62d91d3975b2574fe55012c24ab"
+    },
+    {
+      "path": "src/types/missory-person-upsert-request.ts",
+      "sha256": "87ec0e6b5a4848edb1eb049e51a0aeba3dd494c588d328107947a50aa532cf77"
+    },
+    {
+      "path": "src/types/missory-person.ts",
+      "sha256": "cd1a2332d2b35ca58f5b31d46d119a527d02a969cd9696c7839525f61e659fdd"
+    },
+    {
+      "path": "src/types/missory-relationship-response.ts",
+      "sha256": "8d25eef7c38d03ed16ea4264ffd1aedf0475e369d87e0b8f976314eb28b2f7a1"
+    },
+    {
+      "path": "src/types/missory-relationship-type.ts",
+      "sha256": "e398842c20c2ad0d1555f0a72814c96eec0ef4df63f0252718ca7f3c1f98fe70"
+    },
+    {
+      "path": "src/types/missory-relationship-upsert-request.ts",
+      "sha256": "7e37b764261b45ab5651b32e441371cd1a67cafa22b4ce7b93240bd6e42dfc41"
+    },
+    {
+      "path": "src/types/missory-relationship.ts",
+      "sha256": "17415648d1bf656a9c5913537f45eeb1648abf71cdbde4dcd5f09bbcc5226eb1"
+    },
+    {
+      "path": "src/types/missory-reminder-page-response.ts",
+      "sha256": "a51822f6cd60d76a9fb7316cbbeb9edb10401db0b54d636944c377215072892b"
+    },
+    {
+      "path": "src/types/missory-reminder-snooze-request.ts",
+      "sha256": "686462b5fb9c2b3ce2a9c4ddb64061d7d3615ba2a83e39f5e8f7c569ae443613"
+    },
+    {
+      "path": "src/types/missory-reminder-type.ts",
+      "sha256": "f2a64df8f04fab1c5c9f2b2e339c11c17e9d21d86293c1ac86aaea84d3712b1d"
+    },
+    {
+      "path": "src/types/missory-reminder.ts",
+      "sha256": "52f9adeecf25ecb629dad1fd0a0e32d17307e8211d6b79fcbacaef1020b7cbb7"
+    },
+    {
+      "path": "src/types/missory-source-kind.ts",
+      "sha256": "3d26d86383a98aee31a6770ec6c67e4cd49b4ab5ede910f70c0726e700faeed5"
+    },
+    {
+      "path": "src/types/missory-story-page-response.ts",
+      "sha256": "ddd432821cb75bb909a314d29c75400ca0490ca113e8483a9995d7a583ff3e36"
+    },
+    {
+      "path": "src/types/missory-story-response.ts",
+      "sha256": "96156e68c6de960b7cc091bff72ea800d64db3113c9f3fbedfac60cdae6def0d"
+    },
+    {
+      "path": "src/types/missory-story-upsert-request.ts",
+      "sha256": "bea55907e5b1b0b0a5da5d455773b3334e096d9912a3f10e02b8e527c30cf6c8"
+    },
+    {
+      "path": "src/types/missory-story.ts",
+      "sha256": "f039b04934b3ffb8ee89aae4ab9ac0c16a7e269f45cbb4c3775295ce56945b74"
+    },
+    {
+      "path": "src/types/missory-timeline-entry-page-response.ts",
+      "sha256": "e56f7d32bbf96555edcc44e1704ce102773f022a1a71344fc9bb0df7281689e2"
+    },
+    {
+      "path": "src/types/missory-timeline-entry.ts",
+      "sha256": "03ca5d288f579dacc176369cdd804a5df170467b524a92d3243c71968689c70f"
+    },
+    {
+      "path": "src/types/page-info.ts",
+      "sha256": "7629917241738413c7655b80cf6d0560dc9c1267964d4cd7e374701084408511"
+    },
+    {
+      "path": "src/types/problem-detail.ts",
+      "sha256": "1883ea82275af9d250e79fdc6403d4d8dd37ee45de827a373ce67431dd1cbb90"
+    },
+    {
+      "path": "src/types/reminders-dismiss-response.ts",
+      "sha256": "a49b9c39c304964c621540a8cdb3c02a16dac7616bc7858783cfe629a68d58ca"
+    },
+    {
+      "path": "src/types/reminders-snooze-response.ts",
+      "sha256": "b54d5595af1d12d1e6758f3ea7a17b5ade158a6579a589bb5195c7ef3e931c4a"
+    },
+    {
+      "path": "src/types/sdk-work-api-response.ts",
+      "sha256": "79cef2c8e584ba8b8e96c6c77ccf6bda087b0c68cbed63cb97d5fb1ff3e47e1a"
+    },
+    {
+      "path": "src/types/sdk-work-command-data.ts",
+      "sha256": "310e0d33a18891eac25d3393ebe895be4efe78dcea91be72e4704cc99e8da75b"
+    },
+    {
+      "path": "src/types/sdk-work-command-response.ts",
+      "sha256": "36f82aede9b7b352a9b57545705da4003816785c7913fb2436df633f5c2e8447"
+    },
+    {
+      "path": "src/types/sdk-work-list-response.ts",
+      "sha256": "eeb07e413d7e912345eda1cb1093e8e6abfe9b42d8350482f7b580138c7936c5"
+    },
+    {
+      "path": "src/types/sdk-work-page-data.ts",
+      "sha256": "cc79bed80f0b41c642dd9c27d2cb1b5e4cbc56bf85b3b50758526c9a2b8af6bd"
+    },
+    {
+      "path": "src/types/sdk-work-resource-data.ts",
+      "sha256": "22848ec391eb697d75968a9d892c1faf4c35ad2e097ec7e3500141d66580babf"
+    },
+    {
+      "path": "src/types/sdk-work-resource-response.ts",
+      "sha256": "89c05f5549bef773335245f56f61ca1a6959978726799391d584a6bd25d12fdc"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "35f6f0baf03ca4245339f0a532b02c6b0c8e64d66852a2f77d38ae063b2024b8"
+    }
+  ],
+  "scaffoldFiles": [
+    "custom/build-runtime.mjs",
+    "custom/README.md"
+  ],
+  "customRoots": [
+    "custom/"
+  ]
+}
