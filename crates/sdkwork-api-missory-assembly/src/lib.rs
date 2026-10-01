@@ -1,5 +1,6 @@
 //! API assembly for sdkwork-missory.
 //! Application bootstrap lives in `bootstrap.rs`; route inventory is in `assembly-manifest.json`.
+// SDKWORK-ASSEMBLY-LIB-CUSTOM
 
 pub mod bootstrap;
 mod generated;
