@@ -7,5 +7,7 @@ environment:
   sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
+  http: ^1.2.0
+  shared_preferences: ^2.5.5
   sdkwork_missory_app_sdk:
     path: ../../../../sdks/sdkwork-missory-app-sdk/sdkwork-missory-app-sdk-dart/generated/server-openapi

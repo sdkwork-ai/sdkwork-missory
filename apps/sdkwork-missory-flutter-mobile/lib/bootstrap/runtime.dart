@@ -8,7 +8,7 @@ export 'package:sdkwork_missory_flutter_mobile_core/sdkwork_missory_flutter_mobi
 /// Bootstrap order (FLUTTER_APP_MOBILE_ARCHITECTURE_SPEC section 2):
 /// environment -> runtime (SDK clients + services). Host adapters land with
 /// the IAM phase-2 adoption.
-MissoryRuntime bootstrap() {
+Future<MissyRuntime> bootstrap() async {
   final environment = resolveMissoryEnvironment();
   return MissoryRuntime.bootstrap(environment);
 }

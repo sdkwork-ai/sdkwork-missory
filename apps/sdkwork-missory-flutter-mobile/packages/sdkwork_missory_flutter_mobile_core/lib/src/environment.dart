@@ -6,12 +6,18 @@ class MissoryEnvironment {
     required this.deploymentProfile,
     required this.profileId,
     required this.appApiBaseUrl,
+    this.authBootstrapAccessToken = '',
   });
 
   final String environment;
   final String deploymentProfile;
   final String profileId;
   final String appApiBaseUrl;
+
+  /// Deployment-provisioned credential-entry bootstrap `Access-Token` (IAM
+  /// login/registration tenant isolation); empty in development profiles where
+  /// the gateway IAM dev authentication fallback accepts any value.
+  final String authBootstrapAccessToken;
 
   static const _knownEnvironments = {'development', 'test', 'staging', 'demo', 'production'};
   static const _knownProfiles = {'standalone', 'cloud'};
@@ -22,6 +28,7 @@ class MissoryEnvironment {
     String deploymentProfile = '',
     String profileId = '',
     String appApiBaseUrl = '',
+    String authBootstrapAccessToken = '',
   }) {
     final resolvedEnvironment = environment.isNotEmpty ? environment : 'development';
     final resolvedProfile = deploymentProfile.isNotEmpty ? deploymentProfile : 'standalone';
@@ -42,6 +49,7 @@ class MissoryEnvironment {
       profileId:
           profileId.isNotEmpty ? profileId : '$resolvedProfile.$resolvedEnvironment',
       appApiBaseUrl: resolvedBase.replaceAll(RegExp(r'/+$'), ''),
+      authBootstrapAccessToken: authBootstrapAccessToken,
     );
   }
 }

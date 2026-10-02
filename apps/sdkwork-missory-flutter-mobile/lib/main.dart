@@ -5,6 +5,6 @@ import 'bootstrap/runtime.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final runtime = bootstrap();
+  final runtime = await bootstrap();
   runApp(MissoryApp(runtime: runtime));
 }

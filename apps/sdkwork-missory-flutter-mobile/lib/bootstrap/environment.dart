@@ -10,6 +10,9 @@ MissoryEnvironment resolveMissoryEnvironment() {
     appApiBaseUrl: const String.fromEnvironment(
       'SDKWORK_MISSORY_FLUTTER_APP_API_BASE_URL',
     ),
+    authBootstrapAccessToken: const String.fromEnvironment(
+      'SDKWORK_MISSORY_AUTH_BOOTSTRAP_ACCESS_TOKEN',
+    ),
   );
 }
 

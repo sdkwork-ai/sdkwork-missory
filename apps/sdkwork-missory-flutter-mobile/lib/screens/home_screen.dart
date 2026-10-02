@@ -13,9 +13,10 @@ class HomeRow {
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.runtime});
+  const HomeScreen({super.key, required this.runtime, this.onSessionEnded});
 
   final MissoryRuntime runtime;
+  final VoidCallback? onSessionEnded;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,7 +47,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('今天，有谁值得你想起？')),
+      appBar: AppBar(
+        title: const Text('今天，有谁值得你想起？'),
+        actions: [
+          IconButton(
+            tooltip: '退出登录',
+            icon: const Icon(Icons.logout_outlined),
+            onPressed: () async {
+              await widget.runtime.session.logout();
+              widget.onSessionEnded?.call();
+            },
+          ),
+        ],
+      ),
       bottomNavigationBar: MissoryNavBar(currentIndex: 0),
       body: FutureBuilder<List<HomeRow>>(
         future: _future,

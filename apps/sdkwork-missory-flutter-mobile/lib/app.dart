@@ -3,25 +3,47 @@ import 'package:flutter/material.dart';
 import 'bootstrap/runtime.dart';
 import 'screens/assistant_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
 import 'screens/memories_screen.dart';
 import 'screens/people_screen.dart';
 
-class MissoryApp extends StatelessWidget {
+/// Session gate: development with the gateway bypass runs signed-in by
+/// default (dev identity seeded in the client); every other environment
+/// renders the credential-entry login until a dual-token session exists.
+/// Stateful so login/logout transitions rebuild the console root.
+class MissoryApp extends StatefulWidget {
   const MissoryApp({super.key, required this.runtime});
 
   final MissoryRuntime runtime;
 
   @override
+  State<MissyApp> createState() => _MissoryAppState();
+}
+
+class _MissoryAppState extends State<MissyApp> {
+  @override
   Widget build(BuildContext context) {
+    final bypassed = widget.runtime.environment.environment == 'development';
+    final authenticated = bypassed || widget.runtime.session.isAuthenticated;
     return MaterialApp(
       title: '念忆 · Missory',
       theme: ThemeData(colorSchemeSeed: const Color(0xFF0F766E), useMaterial3: true),
-      home: HomeScreen(runtime: runtime),
-      routes: {
-        '/people': (context) => PeopleScreen(runtime: runtime),
-        '/memories': (context) => MemoriesScreen(runtime: runtime),
-        '/assistant': (context) => AssistantScreen(runtime: runtime),
-      },
+      home: authenticated
+          ? HomeScreen(
+              runtime: widget.runtime,
+              onSessionEnded: () => setState(() {}),
+            )
+          : LoginScreen(
+              runtime: widget.runtime,
+              onSessionEstablished: () => setState(() {}),
+            ),
+      routes: authenticated
+          ? {
+              '/people': (context) => PeopleScreen(runtime: widget.runtime),
+              '/memories': (context) => MemoriesScreen(runtime: widget.runtime),
+              '/assistant': (context) => AssistantScreen(runtime: widget.runtime),
+            }
+          : const <String, WidgetBuilder>{},
     );
   }
 }
