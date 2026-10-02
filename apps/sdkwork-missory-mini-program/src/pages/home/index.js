@@ -21,3 +21,9 @@ Page({
     this.refresh();
   },
 });
+  logout() {
+    const { page } = getApp().runtime;
+    page.session.logout();
+    wx.reLaunch({ url: "/pages/login/index" });
+  },
+});

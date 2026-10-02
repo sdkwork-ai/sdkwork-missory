@@ -36,6 +36,13 @@ export function resolveMissoryMpEnvironment(input: MissoryMpEnvironment): Missor
   return input;
 }
 
+function resolveClientConfig(environment: MissoryMpEnvironment) {
+  const bootstrapToken = (environment.authBootstrapAccessToken ?? "").trim();
+  return bootstrapToken.length > 0
+    ? { baseUrl: environment.appApiBaseUrl, platform: "mini-program" as const, accessToken: bootstrapToken }
+    : { baseUrl: environment.appApiBaseUrl, platform: "mini-program" as const };
+}
+
 export function bootstrapMissoryMpRuntime(environment: MissoryMpEnvironment): MissoryMpRuntime {
   const wxFetch = createWxFetchAdapter();
   (globalThis as { fetch?: unknown }).fetch = wxFetch as unknown as typeof fetch;

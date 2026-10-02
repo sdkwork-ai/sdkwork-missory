@@ -1,0 +1,13 @@
+<view class="login">
+  <view class="login-title">念忆 · Missory 登录</view>
+  <view class="login-field">
+    <text class="login-label">账号（用户名 / 邮箱 / 手机号）</text>
+    <input class="login-input" value="{{account}}" bindinput="onAccount" placeholder="请输入账号" />
+  </view>
+  <view class="login-field">
+    <text class="login-label">密码</text>
+    <input class="login-input" password value="{{password}}" bindinput="onPassword" placeholder="请输入密码" />
+  </view>
+  <view wx:if="{{error}}" class="login-error">{{error}}</view>
+  <button class="login-submit" type="primary" loading="{{pending}}" bindtap="submit">登录</button>
+</view>

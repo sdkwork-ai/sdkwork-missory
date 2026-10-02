@@ -55,3 +55,9 @@ page {
   font-size: 22rpx;
   margin-right: 8rpx;
 }
+
+.logout {
+  margin-top: 24rpx;
+  color: #64748b;
+  font-size: 26rpx;
+}

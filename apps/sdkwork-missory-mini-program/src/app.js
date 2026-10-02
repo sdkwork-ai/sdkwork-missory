@@ -1,10 +1,16 @@
-// 念忆 mini-program entry. The bundled runtime (dist/runtime/runtime.js)
-// materializes config/mini-program runtime-env values before pages read them.
-const runtime = require('../dist/runtime/runtime.js');
+// 念忆 mini-program entry. The bundled runtime (src/runtime/runtime.js,
+// materialized by `pnpm build:mini-program`) registers the host adapters and
+// the IAM dual-token SDK client before pages read it.
+const runtimeModule = require('./runtime/runtime.js');
 
 App({
-  runtime,
+  runtime: runtimeModule,
   onLaunch() {
-    runtime.bootstrap();
+    const app = runtimeModule.bootstrap();
+    // Session gate: non-development environments require a signed-in
+    // dual-token session; development rides the gateway dev bypass.
+    if (app.environment.environment !== "development" && !app.session.isAuthenticated()) {
+      wx.reLaunch({ url: '/pages/login/index' });
+    }
   },
 });

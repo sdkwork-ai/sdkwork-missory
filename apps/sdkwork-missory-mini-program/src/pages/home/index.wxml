@@ -24,3 +24,5 @@
     <view wx:if="{{persons.length === 0}}" class="muted">还没有人物</view>
   </view>
 </view>
+  <button class="logout" bindtap="logout">退出登录</button>
+</view>

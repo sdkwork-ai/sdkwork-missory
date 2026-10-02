@@ -8,9 +8,14 @@ const env = {
   deploymentProfile: "__SDKWORK_MISSORY_DEPLOYMENT_PROFILE__",
   profileId: "__SDKWORK_MISSORY_PROFILE_ID__",
   appApiBaseUrl: "__SDKWORK_MISSORY_MP_APP_API_BASE_URL__",
+  authBootstrapAccessToken: "__SDKWORK_MISSORY_AUTH_BOOTSTRAP_ACCESS_TOKEN__",
 };
 
 const runtime = bootstrapMissoryMpRuntime(env);
+
+// Pages destructure `{ page }` from the app-level runtime module; keep the
+// namespace alias so page JS stays `page.client.missory...`.
+export const page = runtime;
 
 export function bootstrap() {
   return runtime;

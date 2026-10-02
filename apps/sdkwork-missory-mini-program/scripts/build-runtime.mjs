@@ -38,6 +38,14 @@ const define = {
   "__SDKWORK_MISSORY_DEPLOYMENT_PROFILE__": JSON.stringify(doc.SDKWORK_DEPLOYMENT_PROFILE),
   "__SDKWORK_MISSORY_PROFILE_ID__": JSON.stringify(doc.SDKWORK_PROFILE_ID),
   "__SDKWORK_MISSORY_MP_APP_API_BASE_URL__": JSON.stringify(doc.SDKWORK_MISSORY_MP_APP_API_BASE_URL),
+  // Deployment-provisioned credential-entry bootstrap Access-Token (IAM login
+  // tenant isolation); stays empty in source-controlled dev documents where the
+  // gateway IAM dev authentication fallback accepts any value.
+  "__SDKWORK_MISSORY_AUTH_BOOTSTRAP_ACCESS_TOKEN__": JSON.stringify(
+    typeof doc.SDKWORK_MISSORY_AUTH_BOOTSTRAP_ACCESS_TOKEN === "string"
+      ? doc.SDKWORK_MISSORY_AUTH_BOOTSTRAP_ACCESS_TOKEN
+      : "",
+  ),
 };
 
 const outfile = path.join(appRoot, "src/runtime/runtime.js");
