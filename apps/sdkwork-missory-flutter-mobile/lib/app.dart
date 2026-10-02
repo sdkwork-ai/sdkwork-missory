@@ -17,10 +17,10 @@ class MissoryApp extends StatefulWidget {
   final MissoryRuntime runtime;
 
   @override
-  State<MissyApp> createState() => _MissoryAppState();
+  State<MissoryApp> createState() => _MissoryAppState();
 }
 
-class _MissoryAppState extends State<MissyApp> {
+class _MissoryAppState extends State<MissoryApp> {
   @override
   Widget build(BuildContext context) {
     final bypassed = widget.runtime.environment.environment == 'development';

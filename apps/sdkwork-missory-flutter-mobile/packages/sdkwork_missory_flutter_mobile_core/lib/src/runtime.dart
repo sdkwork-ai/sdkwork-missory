@@ -24,7 +24,7 @@ class MissoryRuntime {
   late final MissoryServices services = MissoryServices(client);
 
   /// Bootstraps the runtime for [environment].
-  static Future<MissyRuntime> bootstrap(MissyEnvironment environment) async {
+  static Future<MissoryRuntime> bootstrap(MissoryEnvironment environment) async {
     final client = sdk.SdkworkMissoryAppClient.withBaseUrl(
       baseUrl: environment.appApiBaseUrl,
     );

@@ -92,7 +92,7 @@ class MissorySession {
   static const _storageKey = 'sdkwork.missory.flutter.session';
 
   /// Restores the persisted session (if any) and applies it to [client].
-  static Future<MissySession> load({
+  static Future<MissorySession> load({
     required MissoryEnvironment environment,
     required sdk.SdkworkMissoryAppClient client,
   }) async {

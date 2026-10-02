@@ -4,7 +4,7 @@ import 'environment.dart';
 
 /// SDK client construction seam: the generated Dart app-sdk client is created
 /// only here (FLUTTER_APP_MOBILE_ARCHITECTURE_SPEC section 2 bootstrap order).
-MissoryRuntime createSdkClients() {
+Future<MissoryRuntime> createSdkClients() {
   final environment = resolveMissoryEnvironment();
   return MissoryRuntime.bootstrap(environment);
 }
