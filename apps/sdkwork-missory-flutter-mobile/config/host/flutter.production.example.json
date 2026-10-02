@@ -1,0 +1,6 @@
+{
+  "flutter": {
+    "runtimeTarget": "flutter-ios",
+    "note": "Copy per-device; production host overrides."
+  }
+}

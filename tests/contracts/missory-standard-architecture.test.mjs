@@ -84,9 +84,12 @@ test('assembly manifest and route manifest are materialized and consistent', () 
 });
 
 test('openapi authority keeps int64 ids as strings', () => {
-  const openapi = read('apis/app-api/communication/missory-app-api.openapi.yaml');
-  assert.match(openapi, /x-sdkwork-int64-string:\s*true/u);
-  assert.match(openapi, /Int64Id:/u);
+  const openapi = read('apis/app-api/communication/missory-app-api.openapi.json');
+  const doc = JSON.parse(openapi);
+  const int64 = doc.components.schemas.Int64Id;
+  assert.equal(int64.type, 'string');
+  assert.equal(int64.format, 'int64');
+  assert.equal(int64['x-sdkwork-int64-string'], true);
 });
 
 test('every authored crate owns a component spec', () => {

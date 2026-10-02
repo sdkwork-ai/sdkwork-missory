@@ -83,5 +83,7 @@ apps/sdkwork-missory-flutter-mobile/build/
 apps/sdkwork-missory-flutter-mobile/android/.gradle/
 apps/sdkwork-missory-flutter-mobile/android/local.properties
 apps/sdkwork-missory-flutter-mobile/ios/Pods/
+apps/sdkwork-missory-flutter-mobile/ios/Flutter/ephemeral/
+apps/sdkwork-missory-flutter-mobile/ios/Flutter/flutter_export_environment.sh
 apps/sdkwork-missory-flutter-mobile/*.iml
 apps/sdkwork-missory-mini-program/src/runtime/*.js
