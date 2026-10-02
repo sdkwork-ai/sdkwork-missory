@@ -2139,6 +2139,7 @@ dependencies = [
  "sdkwork-missory-spi",
  "sdkwork-routes-iam-app-api",
  "sdkwork-routes-missory-app-api",
+ "sdkwork-web-axum",
  "sdkwork-web-bootstrap",
  "sdkwork-web-core",
  "serde_json",

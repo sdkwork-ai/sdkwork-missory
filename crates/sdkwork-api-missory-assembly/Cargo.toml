@@ -22,6 +22,7 @@ sdkwork-database-sqlx.workspace = true
 sdkwork-iam-web-adapter.workspace = true
 sdkwork-missory-contract.workspace = true
 sdkwork-routes-iam-app-api.workspace = true
+sdkwork-web-axum.workspace = true
 sdkwork-web-bootstrap.workspace = true
 sdkwork-web-core.workspace = true
 sdkwork-communication-missory-repository-sqlx.workspace = true

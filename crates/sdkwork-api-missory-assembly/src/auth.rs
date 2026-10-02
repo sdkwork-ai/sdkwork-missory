@@ -20,8 +20,8 @@ use axum::Router;
 use sdkwork_database_config::DatabaseConfig;
 use sdkwork_database_sqlx::{create_pool_from_config, DatabasePool};
 use sdkwork_iam_web_adapter::{
-    iam_web_request_context_resolver_from_database_pool_for_audiences,
-    wrap_router_with_iam_app_web_framework_resolver, IamWebRequestContextResolver,
+    build_web_framework_layer, iam_web_request_context_resolver_from_database_pool_for_audiences,
+    IamWebRequestContextResolver,
 };
 use sdkwork_missory_contract::context::MissoryRequestContext;
 use sdkwork_routes_iam_app_api as iam_routes;
@@ -178,6 +178,58 @@ fn uuid_like_trace() -> String {
     format!("gw-{millis}")
 }
 
+/// Operator command: issues the deployment-provisioned credential-entry
+/// bootstrap credential (dual tokens bound to a database session) for the
+/// given tenant and application (`IAM_CREDENTIAL_ENTRY_SPEC.md`). The JSON
+/// result feeds installers and credential-entry clients.
+pub async fn issue_standalone_bootstrap_credential(
+    tenant_id: &str,
+    app_id: &str,
+) -> Result<serde_json::Value, String> {
+    let Some(pool) = sdkwork_database_sqlx::create_pool_from_env("MISSORY")
+        .await
+        .map_err(|error| format!("database pool: {error}"))?
+    else {
+        return Err(
+            "no database configured: set SDKWORK_DATABASE_* to issue bootstrap credentials"
+                .to_owned(),
+        );
+    };
+    // The resolver factory auto-provisions the tenant application from
+    // SDKWORK_APP_ROOT manifest discovery before issuance.
+    let _resolver = sdkwork_iam_web_adapter::iam_web_request_context_resolver_from_database_pool_for_audiences(
+        pool.clone(),
+        &IAM_AUDIENCES,
+    )
+    .await?;
+    let sdkwork_database_sqlx::DatabasePool::Postgres(pg, _) = &pool else {
+        return Err("bootstrap credential issuance requires the PostgreSQL engine".to_owned());
+    };
+    let issued = sdkwork_iam_web_adapter::issue_standalone_bootstrap_access_credential(
+        pg, tenant_id, app_id, None,
+    )
+    .await?;
+    Ok(serde_json::json!({
+        "tenantId": issued.tenant_id,
+        "appId": issued.app_id,
+        "accessCredential": issued.access_credential,
+        "authToken": issued.auth_token,
+        "sessionId": issued.session_id,
+        "expiresAt": issued.expires_at,
+    }))
+}
+
+/// Public path prefixes for the same-origin web console
+/// (`SDKWORK_MISSORY_STATIC_DIR`): manifest routes keep their declared auth,
+/// while non-manifest paths (SPA deep links, assets, `/`) resolve public so
+/// the gateway's static fallback serves them instead of an unclassified 401.
+fn same_origin_console_public_prefixes() -> Vec<String> {
+    match std::env::var("SDKWORK_MISSORY_STATIC_DIR") {
+        Ok(dir) if !dir.trim().is_empty() => vec!["/".to_owned()],
+        _ => Vec::new(),
+    }
+}
+
 /// Composes the authenticated gateway router from environment configuration.
 ///
 /// Order matters: the dev identity fallback runs INSIDE the IAM framework
@@ -212,13 +264,17 @@ pub async fn compose_authenticated_router_from_env(dev_bypass: bool) -> Result<R
         Some(plane) => plane.resolver.clone(),
         None => IamWebRequestContextResolver::from_database_pool(None),
     };
-    let missory_plane = wrap_router_with_iam_app_web_framework_resolver(
+    let missory_plane = sdkwork_web_axum::with_web_request_context(
         business_router.layer(axum::middleware::from_fn_with_state(
             dev_bypass,
             dev_identity_fallback,
         )),
-        resolver,
-        sdkwork_routes_missory_app_api::gateway_route_manifest(),
+        build_web_framework_layer(
+            resolver,
+            sdkwork_routes_missory_app_api::gateway_route_manifest(),
+            same_origin_console_public_prefixes(),
+        )
+        .with_domain_injector(std::sync::Arc::new(MissoryContextInjector)),
     );
 
     let mut router = Router::new().merge(missory_plane);

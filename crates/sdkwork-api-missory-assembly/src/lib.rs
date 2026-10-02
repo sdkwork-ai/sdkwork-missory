@@ -7,7 +7,8 @@ pub mod bootstrap;
 mod generated;
 
 pub use auth::{
-    compose_authenticated_router_from_env, dev_identity_fallback, IamPlane, MissoryContextInjector,
+    compose_authenticated_router_from_env, dev_identity_fallback,
+    issue_standalone_bootstrap_credential, IamPlane, MissoryContextInjector,
 };
 pub use bootstrap::{
     assemble_api_assembly_from_env, assemble_api_router, assemble_api_router_from_env,

@@ -93,7 +93,7 @@ async fn given_missing_user_header_when_calling_then_unauthorized_problem_is_ret
     let router = test_router();
     let request = Request::builder()
         .method("GET")
-        .uri("/app/v3/api/missory/my-profile")
+        .uri("/app/v3/api/missory/my_profile")
         .body(Body::empty())
         .expect("request");
     let response = router.oneshot(request).await.expect("response");
@@ -109,7 +109,7 @@ async fn given_missing_user_header_when_calling_then_unauthorized_problem_is_ret
 #[tokio::test]
 async fn given_new_owner_when_getting_profile_then_default_profile_is_created() {
     let router = test_router();
-    let (status, json) = send_json(&router, "GET", "/app/v3/api/missory/my-profile", None).await;
+    let (status, json) = send_json(&router, "GET", "/app/v3/api/missory/my_profile", None).await;
     assert_eq!(status, StatusCode::OK);
     assert_eq!(json["code"], 0);
     assert!(json["traceId"].as_str().is_some());
@@ -412,7 +412,7 @@ async fn given_assistant_queries_then_answers_cite_sources_without_fabrication()
     let (status, json) = send_json(
         &router,
         "POST",
-        "/app/v3/api/missory/assistant/message-drafts",
+        "/app/v3/api/missory/assistant/message_drafts",
         Some(
             serde_json::json!({"personId": person_id, "scenario": "birthday", "tone": "warm"})
                 .to_string(),
@@ -589,7 +589,7 @@ async fn given_chat_text_when_summarized_then_candidates_are_created_and_contact
     let (status, json) = send_json(
         &router,
         "POST",
-        "/app/v3/api/missory/assistant/chat-summaries",
+        "/app/v3/api/missory/assistant/chat_summaries",
         Some(
             serde_json::json!({
                 "personId": person_id,

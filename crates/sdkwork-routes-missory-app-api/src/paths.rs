@@ -1,7 +1,7 @@
 //! Route path constants (single source for router wiring and tests).
 
 /// Owner profile resource.
-pub const MY_PROFILE: &str = "/app/v3/api/missory/my-profile";
+pub const MY_PROFILE: &str = "/app/v3/api/missory/my_profile";
 /// Persons collection.
 pub const PERSONS: &str = "/app/v3/api/missory/persons";
 /// One person resource.
@@ -42,6 +42,6 @@ pub const ASSISTANT_QUERY: &str = "/app/v3/api/missory/assistant/query";
 /// Assistant briefing.
 pub const ASSISTANT_BRIEFINGS: &str = "/app/v3/api/missory/assistant/briefings";
 /// Assistant message draft.
-pub const ASSISTANT_MESSAGE_DRAFTS: &str = "/app/v3/api/missory/assistant/message-drafts";
+pub const ASSISTANT_MESSAGE_DRAFTS: &str = "/app/v3/api/missory/assistant/message_drafts";
 /// Assistant chat summary.
-pub const ASSISTANT_CHAT_SUMMARIES: &str = "/app/v3/api/missory/assistant/chat-summaries";
+pub const ASSISTANT_CHAT_SUMMARIES: &str = "/app/v3/api/missory/assistant/chat_summaries";

@@ -187,6 +187,33 @@ async fn main() -> std::process::ExitCode {
         let code = sdkwork_api_missory_assembly::run_database_migrate_only().await;
         return std::process::ExitCode::from(code);
     }
+    if matches!(std::env::args().nth(1).as_deref(), Some("issue-bootstrap-token")) {
+        let args = std::env::args().collect::<Vec<_>>();
+        let tenant = args
+            .iter()
+            .position(|a| a == "--tenant")
+            .and_then(|i| args.get(i + 1))
+            .cloned()
+            .unwrap_or_else(|| "100001".to_owned());
+        let app = args
+            .iter()
+            .position(|a| a == "--app")
+            .and_then(|i| args.get(i + 1))
+            .cloned()
+            .unwrap_or_else(|| "sdkwork-missory".to_owned());
+        let issued = sdkwork_api_missory_assembly::issue_standalone_bootstrap_credential(&tenant, &app)
+            .await;
+        return match issued {
+            Ok(value) => {
+                println!("{}", serde_json::to_string_pretty(&value).unwrap_or_default());
+                std::process::ExitCode::SUCCESS
+            }
+            Err(reason) => {
+                tracing::error!("issue bootstrap credential: {reason}");
+                std::process::ExitCode::from(2)
+            }
+        };
+    }
 
     let authenticated_router =
         match sdkwork_api_missory_assembly::compose_authenticated_router_from_env(dev_bypass).await

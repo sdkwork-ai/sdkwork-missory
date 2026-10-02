@@ -28,7 +28,10 @@
     "platform": "API",
     "appId": "sdkwork-missory",
     "tenantId": "100001",
-    "organizationId": "0"
+    "organizationId": "0",
+    "accessTokenPermissionScope": [
+      "missory.personal-data.owner"
+    ]
   },
   "runtime": {
     "family": "server",
