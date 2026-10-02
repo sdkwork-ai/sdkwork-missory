@@ -21,7 +21,7 @@ Standard SDKWork application repository dictionary:
 | Directory | Content |
 | --- | --- |
 | `apis/` | Author-owned OpenAPI authority inputs |
-| `apps/` | Application roots (client surfaces; none shipped in the current phase) |
+| `apps/` | Client surfaces: PC console (React + Electron desktop host), H5 mobile web, WeChat mini program, Flutter mobile |
 | `crates/` | Rust workspace crates (contract, SPI, service, routes, assembly, gateway, test support) |
 | `plugins/` | Rust plugin crates implementing SPI ports (in-memory store) |
 | `sdks/` | SDK families and materialized route manifests |
@@ -49,6 +49,22 @@ Standard SDKWork application repository dictionary:
 | `sdkwork-api-missory-standalone-gateway` | Standalone gateway binary (axum host) |
 | `sdkwork-missory-test-support` | Shared test fixtures |
 
+## Client Surfaces
+
+| Surface | Root | Stack | Build |
+| --- | --- | --- | --- |
+| PC console | `apps/sdkwork-missory-pc` | React 19 + Vite 8 + Tailwind 4 | `pnpm build:pc:<dev\|test\|staging\|demo\|prod>[:cloud]` |
+| Desktop host | `apps/sdkwork-missory-pc/packages/sdkwork-missory-pc-electron` | Electron wrapping the PC dist | `pnpm --dir apps/sdkwork-missory-pc/packages/sdkwork-missory-pc-electron package` |
+| H5 mobile web | `apps/sdkwork-missory-h5` | React 19 + HashRouter | `pnpm build:h5:<env>[:cloud]` |
+| WeChat mini program | `apps/sdkwork-missory-mini-program` | Native WXML + esbuild runtime bundle | `pnpm --dir apps/sdkwork-missory-mini-program build:mini-program[:staging\|:prod]` |
+| Flutter mobile | `apps/sdkwork-missory-flutter-mobile` | Flutter (Material 3) + generated Dart SDK | `flutter build apk --dart-define-from-file=env/sdkwork.<profile>.<env>.json` |
+
+All surfaces consume the generated `sdkwork-missory-app-sdk` family
+(Typescript `@sdkwork/missory-app-sdk`, Dart `sdkwork_missory_app_sdk`) against
+the locked `/app/v3/api` prefix. The standalone gateway hosts the built
+console same-origin (`SDKWORK_MISSORY_STATIC_DIR`) with health probes at
+`/healthz` and `/readyz`.
+
 ## Quick Start
 
 ```bash
@@ -56,6 +72,13 @@ pnpm install
 pnpm build          # cargo build --workspace
 pnpm test           # cargo test --workspace
 pnpm check          # composition + standards gates + cargo check
+
+# PC console against the local gateway:
+pnpm dev            # standalone topology (gateway + PC renderer)
+
+# Flutter app against the local gateway (Android emulator loopback):
+cd apps/sdkwork-missory-flutter-mobile
+flutter run --dart-define-from-file=env/sdkwork.standalone.development.json
 ```
 
 Run the standalone gateway directly:

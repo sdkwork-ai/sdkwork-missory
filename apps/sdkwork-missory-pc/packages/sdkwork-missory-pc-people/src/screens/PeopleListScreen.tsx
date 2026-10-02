@@ -7,7 +7,7 @@ import {
 } from "@sdkwork/missory-pc-commons";
 import { normalizeClientError } from "@sdkwork/missory-pc-core";
 
-import type { MissoryPerson } from "@sdkwork/missory-app-sdk";
+import type { MissoryPerson } from "@sdkwork/missory-pc-core";
 import type { MissoryPcRuntime } from "@sdkwork/missory-pc-core";
 
 export function PeopleListScreen({ runtime }: { runtime: MissoryPcRuntime }) {

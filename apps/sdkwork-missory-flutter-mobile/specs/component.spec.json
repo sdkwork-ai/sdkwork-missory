@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-missory-flutter-mobile",
+    "displayName": "SDKWork Missory Flutter Mobile",
+    "version": "0.1.0",
+    "type": "flutter-app-root",
+    "root": "apps/sdkwork-missory-flutter-mobile",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "app",
+    "languages": [
+      "dart"
+    ],
+    "generated": false,
+    "manifests": [
+      "pubspec.yaml",
+      "sdkwork.app.config.json"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "FLUTTER_APP_MOBILE_ARCHITECTURE_SPEC.md",
+      "path": "../../../../../sdkwork-specs/FLUTTER_APP_MOBILE_ARCHITECTURE_SPEC.md",
+      "purpose": "Flutter mobile root architecture standard."
+    },
+    {
+      "file": "APP_FLUTTER_UI_SPEC.md",
+      "path": "../../../../../sdkwork-specs/APP_FLUTTER_UI_SPEC.md",
+      "purpose": "Flutter UI package and theming rules."
+    },
+    {
+      "file": "DART_CODE_SPEC.md",
+      "path": "../../../../../sdkwork-specs/DART_CODE_SPEC.md",
+      "purpose": "Dart language code standard."
+    },
+    {
+      "file": "APP_SDK_INTEGRATION_SPEC.md",
+      "path": "../../../../../sdkwork-specs/APP_SDK_INTEGRATION_SPEC.md",
+      "purpose": "Generated Dart SDK consumption rules."
+    }
+  ],
+  "contracts": {
+    "layerRole": "frontend-shell",
+    "publicExports": [
+      "sdkwork_missory_flutter_mobile"
+    ],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": [
+      "lib/main.dart"
+    ],
+    "routeManifest": null,
+    "sdkClients": [
+      "SdkworkMissoryAppClient"
+    ],
+    "sdkDependencies": [
+      {
+        "workspace": "sdkwork-missory-app-sdk",
+        "role": "missory-app-api-consumer",
+        "required": true,
+        "dependencyMode": "consumer-sdk",
+        "apiPrefix": "/app/v3/api",
+        "apiAuthority": "sdkwork-missory-app-api",
+        "generatedTransportImportPolicy": "forbidden",
+        "packageByLanguage": {
+          "dart": "sdkwork_missory_app_sdk"
+        }
+      }
+    ],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": [
+      "SDKWORK_ENVIRONMENT",
+      "SDKWORK_DEPLOYMENT_PROFILE",
+      "SDKWORK_PROFILE_ID",
+      "SDKWORK_MISSORY_FLUTTER_APP_API_BASE_URL"
+    ]
+  },
+  "verification": {
+    "commands": [
+      "flutter analyze",
+      "flutter test"
+    ]
+  }
+}

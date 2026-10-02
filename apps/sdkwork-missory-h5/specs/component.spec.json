@@ -10,9 +10,15 @@
     "domain": "communication",
     "capability": "missory",
     "surface": "app",
-    "languages": ["typescript"],
+    "languages": [
+      "typescript"
+    ],
     "generated": false,
-    "manifests": ["package.json", "sdkwork.app.config.json", "vite.config.ts"]
+    "manifests": [
+      "package.json",
+      "sdkwork.app.config.json",
+      "vite.config.ts"
+    ]
   },
   "canonicalSpecs": [
     {
@@ -42,13 +48,19 @@
     }
   ],
   "contracts": {
-    "layerRole": "web-app-root",
-    "publicExports": ["@sdkwork/missory-h5"],
+    "layerRole": "frontend-shell",
+    "publicExports": [
+      "@sdkwork/missory-h5"
+    ],
     "providedPorts": [],
     "requiredPorts": [],
-    "runtimeEntrypoints": ["src/main.tsx"],
+    "runtimeEntrypoints": [
+      "src/main.tsx"
+    ],
     "routeManifest": null,
-    "sdkClients": ["SdkworkMissoryAppClient"],
+    "sdkClients": [
+      "SdkworkMissoryAppClient"
+    ],
     "sdkDependencies": [
       {
         "workspace": "sdkwork-missory-app-sdk",
@@ -70,6 +82,8 @@
     "configKeys": []
   },
   "verification": {
-    "commands": ["pnpm --dir apps/sdkwork-missory-h5 check"]
+    "commands": [
+      "pnpm --dir apps/sdkwork-missory-h5 check"
+    ]
   }
 }

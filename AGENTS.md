@@ -33,10 +33,14 @@ and keep it consistent with `etc/sdkwork.deployment.config.json`.
 - `sdkwork.app.config.json`: application identity manifest for `sdkwork-missory`.
 - `.sdkwork/`: source-controlled workspace metadata (`skills/`, `plugins/`).
 - `specs/`: root topology and workspace component contracts (`topology.spec.json`, `component.spec.json`).
-- `sdks/`: SDK family workspaces and route manifests (`sdks/_route-manifests/`).
+- `sdks/`: SDK family workspaces (`sdkwork-missory-app-sdk` TypeScript + Dart), route manifests (`sdks/_route-manifests/`). Generated output is generator-owned (`SDKWORK-SDK-GENERATION-STANDARD`).
 - `apis/`: author-owned OpenAPI authority inputs (`apis/app-api/communication/`).
 - `crates/`: Rust route crates, missory contract/SPI/service crates, API assembly, and the standalone gateway.
 - `plugins/`: Rust plugin crates implementing missory SPI ports (in-memory store adapter).
+- `apps/sdkwork-missory-pc/`: PC browser console (React 19 + Vite 8 + Tailwind 4) with the `-pc-electron` desktop host under `packages/`.
+- `apps/sdkwork-missory-h5/`: H5 mobile browser app (HashRouter, `clientArchitecture: h5`).
+- `apps/sdkwork-missory-mini-program/`: WeChat mini program (native WXML + esbuild runtime bundle).
+- `apps/sdkwork-missory-flutter-mobile/`: Flutter mobile app (generated Dart SDK, `--dart-define-from-file` env).
 - `jobs/`: scheduled background jobs (`jobs/schedules/`).
 - `tools/`: repository-owned Node.js helper scripts.
 - `etc/`: source-controlled deployment/runtime config templates and topology env files.

@@ -1,0 +1,7 @@
+{
+  "SDKWORK_ENVIRONMENT": "staging",
+  "SDKWORK_DEPLOYMENT_PROFILE": "standalone",
+  "SDKWORK_PROFILE_ID": "standalone.staging",
+  "SDKWORK_RUNTIME_TARGET": "flutter-android",
+  "SDKWORK_MISSORY_FLUTTER_APP_API_BASE_URL": "https://missory-staging.sdkwork.com"
+}

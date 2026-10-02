@@ -34,7 +34,7 @@
     "api:assembly:validate": "node ../sdkwork-specs/tools/validate-api-assembly.mjs --root .",
     "_sdkwork:build": "cargo build --workspace",
     "_sdkwork:test": "cargo test --workspace && pnpm topology:validate && pnpm check:architecture-alignment",
-    "_sdkwork:check": "pnpm run check:app-composition && cargo check --workspace && pnpm check:pnpm-script-standard && pnpm topology:validate && pnpm api:assembly:validate",
+    "_sdkwork:check": "pnpm run check:app-composition && cargo check --workspace && pnpm check:pnpm-script-standard && pnpm topology:validate && pnpm api:assembly:validate && pnpm check:sdk-standard && pnpm check:browser-build-scripts && pnpm check:browser-dist-layout && pnpm check:browser-runtime-env-standard && pnpm check:i18n-standard",
     "_sdkwork:verify": "cargo test --workspace && pnpm run check:app-composition && pnpm check:cors-standard && pnpm check:repository-docs",
     "_sdkwork:clean": "cargo clean",
     "sdk:generate": "node scripts/generate-missory-app-sdk.mjs",
@@ -66,7 +66,14 @@
     "build:h5:demo": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture h5 --environment demo",
     "build:h5:demo:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture h5 --environment demo --deployment-profile cloud",
     "build:h5:prod": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture h5 --environment prod",
-    "build:h5:prod:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture h5 --environment prod --deployment-profile cloud"
+    "build:h5:prod:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture h5 --environment prod --deployment-profile cloud",
+    "check:flutter": "cd apps/sdkwork-missory-flutter-mobile && flutter analyze && flutter test",
+    "test:flutter": "cd apps/sdkwork-missory-flutter-mobile && flutter test",
+    "dev:mini-program": "pnpm --dir apps/sdkwork-missory-mini-program dev:standalone",
+    "build:mini-program": "pnpm --dir apps/sdkwork-missory-mini-program build:mini-program",
+    "check:mini-program": "pnpm --dir apps/sdkwork-missory-mini-program check",
+    "check:i18n-standard": "node ../sdkwork-specs/tools/check-i18n-standard.mjs --root .",
+    "check:desktop-host": "pnpm --dir apps/sdkwork-missory-pc/packages/sdkwork-missory-pc-electron check"
   },
   "pnpm": {
     "overrides": {

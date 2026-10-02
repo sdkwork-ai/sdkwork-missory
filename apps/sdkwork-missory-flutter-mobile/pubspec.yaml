@@ -1,0 +1,24 @@
+name: sdkwork_missory_flutter_mobile
+description: 念忆 Missory Flutter mobile application (AI personal social memory).
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sdkwork_missory_app_sdk:
+    path: ../../sdks/sdkwork-missory-app-sdk/sdkwork-missory-app-sdk-dart/generated/server-openapi
+  sdkwork_missory_flutter_mobile_core:
+    path: packages/sdkwork_missory_flutter_mobile_core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

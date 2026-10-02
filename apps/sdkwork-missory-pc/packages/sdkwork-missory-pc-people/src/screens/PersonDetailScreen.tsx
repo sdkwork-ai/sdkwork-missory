@@ -10,7 +10,7 @@ import { normalizeClientError } from "@sdkwork/missory-pc-core";
 
 import type {
   MissoryPersonDetail, MissoryTimelineEntry,
-} from "@sdkwork/missory-app-sdk";
+} from "@sdkwork/missory-pc-core";
 import type { MissoryPcRuntime } from "@sdkwork/missory-pc-core";
 
 export function PersonDetailScreen({ runtime }: { runtime: MissoryPcRuntime }) {

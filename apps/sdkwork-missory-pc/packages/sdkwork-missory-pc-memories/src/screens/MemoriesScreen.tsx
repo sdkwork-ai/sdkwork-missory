@@ -6,7 +6,7 @@ import {
 } from "@sdkwork/missory-pc-commons";
 import { normalizeClientError } from "@sdkwork/missory-pc-core";
 
-import type { MissoryMemory } from "@sdkwork/missory-app-sdk";
+import type { MissoryMemory } from "@sdkwork/missory-pc-core";
 import type { MissoryPcRuntime } from "@sdkwork/missory-pc-core";
 
 export function MemoriesScreen({ runtime }: { runtime: MissoryPcRuntime }) {

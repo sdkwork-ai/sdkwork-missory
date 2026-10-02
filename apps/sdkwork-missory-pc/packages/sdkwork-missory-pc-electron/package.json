@@ -1,0 +1,20 @@
+{
+  "name": "@sdkwork/missory-pc-electron",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Missory desktop host (Electron): wraps the built PC web console (sdkwork-missory-pc dist) as a desktop application.",
+  "main": "src/main.mjs",
+  "scripts": {
+    "start": "electron .",
+    "build": "node scripts/verify-desktop-host.mjs",
+    "package": "node scripts/verify-desktop-host.mjs --package",
+    "typecheck": "node scripts/verify-desktop-host.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "pnpm typecheck && pnpm test",
+    "verify": "pnpm check"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}

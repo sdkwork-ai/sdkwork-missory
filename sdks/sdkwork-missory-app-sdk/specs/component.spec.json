@@ -10,9 +10,14 @@
     "domain": "communication",
     "capability": "missory",
     "surface": "app",
-    "languages": ["typescript", "dart"],
+    "languages": [
+      "typescript",
+      "dart"
+    ],
     "generated": false,
-    "manifests": ["sdk-manifest.json"]
+    "manifests": [
+      "sdk-manifest.json"
+    ]
   },
   "canonicalSpecs": [
     {
@@ -32,13 +37,18 @@
     }
   ],
   "contracts": {
-    "layerRole": "generated-sdk-family",
-    "publicExports": ["@sdkwork/missory-app-sdk", "sdkwork_missory_app_sdk"],
+    "layerRole": "contract",
+    "publicExports": [
+      "@sdkwork/missory-app-sdk",
+      "sdkwork_missory_app_sdk"
+    ],
     "providedPorts": [],
     "requiredPorts": [],
     "runtimeEntrypoints": [],
     "routeManifest": null,
-    "sdkClients": ["SdkworkMissoryAppClient"],
+    "sdkClients": [
+      "SdkworkMissoryAppClient"
+    ],
     "sdkDependencies": [],
     "permissionComposition": {},
     "dependencyApiExports": [],
@@ -47,6 +57,8 @@
     "configKeys": []
   },
   "verification": {
-    "commands": ["pnpm sdk:check"]
+    "commands": [
+      "pnpm sdk:check"
+    ]
   }
 }

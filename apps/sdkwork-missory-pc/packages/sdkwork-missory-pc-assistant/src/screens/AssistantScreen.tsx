@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { EmptyState, SectionCard, TextField } from "@sdkwork/missory-pc-commons";
 import { normalizeClientError } from "@sdkwork/missory-pc-core";
 
-import type { MissoryMessageDraft } from "@sdkwork/missory-app-sdk";
+import type { MissoryMessageDraft } from "@sdkwork/missory-pc-core";
 import type { MissoryPcRuntime } from "@sdkwork/missory-pc-core";
 
 interface ChatTurn {

@@ -1,0 +1,7 @@
+{
+  "SDKWORK_ENVIRONMENT": "development",
+  "SDKWORK_DEPLOYMENT_PROFILE": "cloud",
+  "SDKWORK_PROFILE_ID": "cloud.development",
+  "SDKWORK_RUNTIME_TARGET": "flutter-android",
+  "SDKWORK_MISSORY_FLUTTER_APP_API_BASE_URL": "https://missory-dev.sdkwork.com"
+}

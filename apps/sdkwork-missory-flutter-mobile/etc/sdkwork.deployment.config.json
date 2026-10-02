@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component-deployment",
+  "application": "sdkwork-missory-flutter-mobile",
+  "parentDeploymentConfig": "../../../etc/sdkwork.deployment.config.json",
+  "parentTopologySpec": "../../../specs/topology.spec.json",
+  "runtimeTarget": "flutter-android",
+  "profiles": {
+    "standalone.development": { "source": "../env/sdkwork.standalone.development.json" },
+    "standalone.test": { "source": "../env/sdkwork.standalone.test.json" },
+    "standalone.staging": { "source": "../env/sdkwork.standalone.staging.json" },
+    "standalone.demo": { "source": "../env/sdkwork.standalone.demo.json" },
+    "standalone.production": { "source": "../env/sdkwork.standalone.production.json" },
+    "cloud.development": { "source": "../env/sdkwork.cloud.development.json" },
+    "cloud.test": { "source": "../env/sdkwork.cloud.test.json" },
+    "cloud.staging": { "source": "../env/sdkwork.cloud.staging.json" },
+    "cloud.demo": { "source": "../env/sdkwork.cloud.demo.json" },
+    "cloud.production": { "source": "../env/sdkwork.cloud.production.json" }
+  }
+}
