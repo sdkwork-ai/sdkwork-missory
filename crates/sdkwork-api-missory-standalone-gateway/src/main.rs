@@ -67,6 +67,21 @@ fn resolve_dev_bypass(environment: &str) -> Result<bool, String> {
     Ok(enabled)
 }
 
+/// Bridges the missory environment onto the fleet-generic environment keys
+/// consumed by the IAM web adapter's posture gates (`production_runtime`).
+/// The missory-scoped key stays authoritative: an explicitly set fleet key
+/// always wins, so operator overrides and fleet topologies keep working.
+fn bridge_fleet_environment(environment: &str) {
+    for key in ["SDKWORK_ENVIRONMENT", "SDKWORK_ENV", "SDKWORK_IM_ENVIRONMENT"] {
+        let explicitly_set = std::env::var(key)
+            .map(|value| !value.trim().is_empty())
+            .unwrap_or(false);
+        if !explicitly_set {
+            std::env::set_var(key, environment);
+        }
+    }
+}
+
 /// SPA history fallback: GET requests to extension-less, non-API paths that
 /// routed nowhere (404 from the static file service) return the console
 /// `index.html` with 200 so client-side routing owns deep links.
@@ -182,6 +197,7 @@ async fn main() -> std::process::ExitCode {
     };
     tracing::info!(environment = %environment, dev_bypass,
         "starting sdkwork-missory standalone gateway");
+    bridge_fleet_environment(&environment);
 
     if matches!(std::env::args().nth(1).as_deref(), Some("db-migrate")) {
         let code = sdkwork_api_missory_assembly::run_database_migrate_only().await;

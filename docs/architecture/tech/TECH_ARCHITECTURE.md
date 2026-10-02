@@ -105,8 +105,13 @@ them changes the crate boundaries above:
    login flow, persisted dual-token sessions, session gates, and 401 expiry boundaries
    through the generated SDK token managers.
 3. Background reminder dispatch worker under `jobs/` (reminders are computed on read).
-4. Production-grade E2E login run against a provisioned IAM database (the automated
-   suite covers the pipeline in unit/composition tests; the operator runbook performs
-   the first live login against `SDKWORK_DATABASE_URL`).
+4. ~~Production-grade E2E login run against a provisioned IAM database~~ **Performed
+   live (2026-10-02)** against the workspace development PostgreSQL: gateway boot
+   (`SDKWORK_DATABASE_URL` + dev environment bridge), `issue-bootstrap-token`,
+   credential-entry registration + password login, dual-token business calls resolving
+   the real principal (`my_profile.userId` = the registered snowflake id), person
+   create/list scoped per user, and the negative matrix (no credentials 401, spoofed
+   legacy identity headers rejected 400 by the forbidden-header guard, garbage tokens
+   401, second user sees zero of user-one's rows).
 
 Each adoption lands with its own ADR under `docs/architecture/decisions/`.

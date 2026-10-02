@@ -83,11 +83,19 @@ projection list. Production also had no login surface at all.
   signing master secret, and a credential-entry bootstrap `Access-Token` for
   each deployed client surface before first traffic.
 - Remaining debt: the background reminder dispatch worker (TECH_ARCHITECTURE
-  §8 item 3) and a production-grade E2E login run against a provisioned
-  database are tracked in the tech-architecture debt list / runbook.
+  §8 item 3). The live database E2E has been performed (2026-10-02, workspace
+  development PostgreSQL): credential-entry registration + password login,
+  dual-token business calls resolving the real principal, per-user data
+  scoping, and the full negative matrix (401 / forbidden-header 400 /
+  cross-user isolation).
 
 ## Verification
 
+- Live E2E (2026-10-02, workspace development PostgreSQL, gateway
+  `development` + `SDKWORK_DATABASE_URL`, bypass off): registration → login →
+  `my_profile` resolves the registered snowflake user → person create/list
+  scoped to that user; negatives: no credentials 401, legacy identity-header
+  spoof rejected 400, garbage tokens 401, cross-user isolation holds.
 - `cargo test --workspace` (route manifest, injector, bypass matrix, assembly
   composition tests)
 - `pnpm verify` + repository spec gates (`node ../sdkwork-specs/tools/*.mjs`)
