@@ -94,13 +94,19 @@ production-like environments refuse the in-memory adapter).
 The following fleet integrations are intentionally deferred and tracked as debt; none of
 them changes the crate boundaries above:
 
-1. IAM dual-token adapter: requests resolve identity via gateway headers in local
-   topologies and the development bypass; production environments run fail-closed
-   (bypass refused, PostgreSQL required). Wiring `sdkwork-iam-web-adapter` +
-   `sdkwork-web-axum` (`WebRequestContext` resolver + domain injector) is the planned
-   replacement behind the same `MissoryRequestContext` contract.
-2. Generated TypeScript/Dart SDK consumption of IAM login flows (clients currently ship
-   token hooks in the generated SDK config; login UI/flow lands with item 1).
+1. ~~IAM dual-token adapter~~ **Adopted (2026-10-02,
+   `docs/architecture/decisions/ADR-20261002-iam-dual-token-adoption.md`)**: the assembly
+   wires the `sdkwork-iam-web-adapter` resolver + the shared web-framework pipeline
+   (`WebRequestContext` resolver + domain injector) behind the same
+   `MissoryRequestContext` contract; raw identity-header trust is removed in every
+   environment and the dev bypass survives only as a development-only inner fallback.
+2. ~~Generated TypeScript/Dart SDK consumption of IAM login flows~~ **Adopted
+   (2026-10-02, same ADR)**: PC/H5/mini-program/Flutter all ship the credential-entry
+   login flow, persisted dual-token sessions, session gates, and 401 expiry boundaries
+   through the generated SDK token managers.
 3. Background reminder dispatch worker under `jobs/` (reminders are computed on read).
+4. Production-grade E2E login run against a provisioned IAM database (the automated
+   suite covers the pipeline in unit/composition tests; the operator runbook performs
+   the first live login against `SDKWORK_DATABASE_URL`).
 
 Each adoption lands with its own ADR under `docs/architecture/decisions/`.

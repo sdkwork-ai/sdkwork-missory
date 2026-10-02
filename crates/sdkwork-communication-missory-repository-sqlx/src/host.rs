@@ -81,11 +81,18 @@ pub async fn bootstrap_missory_database(pool: DatabasePool) -> Result<MissoryDat
 }
 
 /// Enforces the PostgreSQL 15+ server baseline (`DATABASE_SPEC.md` section 5.2).
+///
+/// `SHOW server_version_num` returns TEXT on some PostgreSQL-compatible
+/// servers, so the value is read as a string and parsed.
 pub async fn assert_postgres_server_version(pool: &sqlx::PgPool) -> Result<(), String> {
-    let version: i32 = sqlx::query_scalar("SHOW server_version_num")
+    let raw: String = sqlx::query_scalar("SHOW server_version_num")
         .fetch_one(pool)
         .await
         .map_err(|error| format!("read postgres server version failed: {error}"))?;
+    let version: i64 = raw
+        .trim()
+        .parse()
+        .map_err(|error| format!("parse postgres server_version_num '{raw}' failed: {error}"))?;
     if version < 150_000 {
         return Err(format!(
             "missory requires PostgreSQL 15+ (server_version_num {version} < 150000)"
