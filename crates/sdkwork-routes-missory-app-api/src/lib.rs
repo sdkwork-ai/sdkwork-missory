@@ -9,6 +9,7 @@ use axum::Router;
 use sdkwork_missory_contract::ports::MissoryAppApi;
 
 pub mod error;
+pub mod manifest;
 pub mod paths;
 pub mod query;
 pub mod request_context;
@@ -16,6 +17,7 @@ pub mod response;
 pub mod routes;
 
 pub use error::ApiProblem;
+pub use manifest::gateway_route_manifest;
 pub use request_context::{
     require_app_context, MISSORY_CONTEXT_HEADER_TENANT, MISSORY_CONTEXT_HEADER_USER,
 };

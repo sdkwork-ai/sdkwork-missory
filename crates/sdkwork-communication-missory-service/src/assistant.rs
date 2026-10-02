@@ -36,6 +36,55 @@ fn parse_instant(value: &str) -> Option<OffsetDateTime> {
 }
 
 /// Answers a natural-language question deterministically.
+/// Answers "谁喜欢X？" from confirmed preference memories (memory-driven Q&A).
+fn memory_driven_preference_answer(
+    memory_term: &str,
+    persons: &[Person],
+    memories: &[Memory],
+) -> Option<AssistantAnswer> {
+    if memory_term.is_empty() {
+        return None;
+    }
+    let matched: Vec<&Person> = persons
+        .iter()
+        .filter(|person| {
+            memories.iter().any(|memory| {
+                memory.person_id == person.id
+                    && memory.memory_type == MemoryType::Preference
+                    && memory.status == MemoryStatus::Confirmed
+                    && memory.content.contains(memory_term)
+            })
+        })
+        .collect();
+    if matched.is_empty() {
+        return None;
+    }
+    let names = matched
+        .iter()
+        .map(|person| person.display_name.as_str())
+        .collect::<Vec<_>>()
+        .join("、");
+    let mut citations = matched
+        .iter()
+        .map(|person| citation(CitationKind::Person, person.id))
+        .collect::<Vec<_>>();
+    citations.extend(
+        memories
+            .iter()
+            .filter(|memory| {
+                memory.memory_type == MemoryType::Preference
+                    && memory.status == MemoryStatus::Confirmed
+                    && memory.content.contains(memory_term)
+                    && matched.iter().any(|person| person.id == memory.person_id)
+            })
+            .map(|memory| citation(CitationKind::Memory, memory.id)),
+    );
+    Some(AssistantAnswer {
+        answer: format!("喜欢{memory_term}的人有：{names}。"),
+        citations,
+    })
+}
+
 pub fn answer_question(question: &str, persons: &[Person], memories: &[Memory]) -> AssistantAnswer {
     let lowered = question.to_lowercase();
 
@@ -62,6 +111,10 @@ pub fn answer_question(question: &str, persons: &[Person], memories: &[Memory]) 
             return last_conversation_answer(person, &person_memories);
         }
         return person_overview_answer(person, &person_memories);
+    }
+
+    if let Some(answer) = memory_driven_preference_answer(&memory_term, persons, memories) {
+        return answer;
     }
 
     // Interest-style people search: 谁喜欢摄影 / 哪些朋友做 AI.
@@ -501,6 +554,36 @@ mod tests {
     fn given_interest_question_when_answering_then_matching_person_is_listed() {
         let answer = answer_question("谁喜欢摄影？", &[person(2, "王芳")], &[]);
         assert!(answer.answer.contains("王芳"));
+    }
+
+    #[test]
+    fn given_confirmed_preference_memory_when_answering_then_memory_driven_match_is_returned() {
+        let mut person = person(3, "王芳");
+        person.interests = vec![]; // profile has no interests; the memory does
+        let memory = Memory {
+            id: 30,
+            person_id: 3,
+            story_id: None,
+            memory_type: MemoryType::Preference,
+            title: None,
+            content: "王芳喜欢跑步".to_string(),
+            origin: sdkwork_missory_contract::dto::MemoryOrigin::Fact,
+            status: MemoryStatus::Confirmed,
+            confidence: None,
+            source_reason: None,
+            source_kind: sdkwork_missory_contract::dto::SourceKind::UserInput,
+            source_ref: None,
+            importance: None,
+            occurred_at: None,
+            created_at: "2026-10-01T00:00:00Z".to_string(),
+            updated_at: "2026-10-01T00:00:00Z".to_string(),
+        };
+        let answer = answer_question("谁喜欢跑步？", &[person], &[memory]);
+        assert!(answer.answer.contains("王芳"), "answer: {}", answer.answer);
+        assert!(answer
+            .citations
+            .iter()
+            .any(|c| c.kind == CitationKind::Memory));
     }
 
     #[test]

@@ -1702,6 +1702,8 @@ dependencies = [
  "sdkwork-missory-contract",
  "sdkwork-missory-plugin-store-memory",
  "sdkwork-utils-rust",
+ "sdkwork-web-contract",
+ "sdkwork-web-core",
  "serde",
  "serde_json",
  "serde_urlencoded",

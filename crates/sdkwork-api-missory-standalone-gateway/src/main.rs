@@ -364,7 +364,7 @@ async fn main() -> std::process::ExitCode {
 
     if matches!(std::env::args().nth(1).as_deref(), Some("db-migrate")) {
         let code = sdkwork_api_missory_assembly::run_database_migrate_only().await;
-        return std::process::ExitCode::from(u8::try_from(code).unwrap_or(2));
+        return std::process::ExitCode::from(code);
     }
 
     let business_router = sdkwork_api_missory_assembly::assemble_business_router_from_env()
