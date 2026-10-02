@@ -1,6 +1,7 @@
 import { createClient, type SdkworkAppClient } from "@sdkwork/missory-app-sdk";
 
 import type { MissoryPcRuntimeConfig } from "./config/runtime-config.ts";
+import { createTokenManagerFor } from "./session/tokenManager.ts";
 import { createPeopleService } from "./services/people-service.ts";
 import { createMemoriesService } from "./services/memories-service.ts";
 import { createAssistantService } from "./services/assistant-service.ts";
@@ -24,7 +25,13 @@ export function createMissoryPcRuntime(config: MissoryPcRuntimeConfig): MissoryP
   // standalone development gateway injects the owner context (see TECH
   // ARCHITECTURE section 8). The client accepts a tokenManager again when the
   // IAM runtime lands.
-  const client = createClient({ baseUrl: config.appApiBaseUrl, platform: "pc" });
+  const tokenManager = createTokenManagerFor(config);
+  const client = createClient({
+    baseUrl: config.appApiBaseUrl,
+    platform: "pc",
+    authMode: "dual-token",
+    tokenManager,
+  });
   return {
     config,
     client,

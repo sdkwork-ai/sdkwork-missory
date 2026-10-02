@@ -5,3 +5,4 @@ export type { MissoryPcRuntime } from "./runtime.ts";
 export { normalizeClientError, MissoryClientError } from "./errors.ts";
 export * from "./services/index.ts";
 export * from "./types/index.ts";
+export { createTokenManagerFor } from "./session/tokenManager.ts";

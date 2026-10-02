@@ -27,6 +27,14 @@ function requireText(value: unknown, field: string): string {
 
 function requireHttpUrl(value: unknown, field: string): string {
   const text = requireText(value, field);
+  // Same-origin standalone deployments ship "/" as the base (BROWSER_RUNTIME_ENV_SPEC):
+  // resolve it against the current page origin before validating.
+  if (text === "/") {
+    if (typeof window === "undefined" || !window.location?.origin) {
+      throw new Error(`runtime-env field ${field} is "/" but no browser origin is available`);
+    }
+    return window.location.origin;
+  }
   const parsed = new URL(text);
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
     throw new Error(`runtime-env field ${field} must be an http(s) URL`);

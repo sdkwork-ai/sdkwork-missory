@@ -1,6 +1,7 @@
 import { createClient, type SdkworkAppClient } from "@sdkwork/missory-app-sdk";
 
 import type { MissoryH5RuntimeConfig } from "./config/runtime-config.ts";
+import { createTokenManagerFor } from "./session/tokenManager.ts";
 import { createPeopleService } from "./services/people-service.ts";
 import { createMemoriesService } from "./services/memories-service.ts";
 import { createAssistantService } from "./services/assistant-service.ts";
@@ -24,7 +25,13 @@ export function createMissoryH5Runtime(config: MissoryH5RuntimeConfig): MissoryH
   // standalone development gateway injects the owner context (see TECH
   // ARCHITECTURE section 8). The client accepts a tokenManager again when the
   // IAM runtime lands.
-  const client = createClient({ baseUrl: config.appApiBaseUrl, platform: "h5" });
+    const tokenManager = createTokenManagerFor(config);
+    const client = createClient({
+      baseUrl: config.appApiBaseUrl,
+      platform: "h5",
+      authMode: "dual-token",
+      tokenManager,
+    });
   return {
     config,
     client,
