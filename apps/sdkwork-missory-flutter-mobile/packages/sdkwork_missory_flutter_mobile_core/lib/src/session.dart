@@ -174,6 +174,10 @@ class MissorySession {
     );
     await _persist(stored);
     _apply(stored);
+    // Track the in-memory pair: isAuthenticated reads this field, and the
+    // gate must be signed-in immediately after a successful login (a cold
+    // start re-loads it from persistence).
+    session = stored;
     return stored;
   }
 
