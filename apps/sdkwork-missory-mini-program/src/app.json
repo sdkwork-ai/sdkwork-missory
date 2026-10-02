@@ -5,7 +5,9 @@
     "pages/people/index",
     "pages/person/index",
     "pages/memories/index",
-    "pages/assistant/index"
+    "pages/assistant/index",
+    "pages/stories/index",
+    "pages/profile/index"
   ],
   "window": {
     "navigationBarTitleText": "念忆 · Missory",

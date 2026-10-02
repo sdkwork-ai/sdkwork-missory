@@ -9,6 +9,8 @@ export const clientRoutes: MissoryH5Route[] = [
   { path: "/", label: "首页", presentation: "tab" },
   { path: "/people", label: "人物", presentation: "tab" },
   { path: "/memories", label: "记忆", presentation: "tab" },
+  { path: "/stories", label: "故事", presentation: "tab" },
   { path: "/assistant", label: "AI", presentation: "tab" },
+  { path: "/profile", label: "我的", presentation: "tab" },
   { path: "/people/:personId", label: "人物详情", presentation: "stack" },
 ];

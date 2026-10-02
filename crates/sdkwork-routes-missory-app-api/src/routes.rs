@@ -11,9 +11,9 @@ use axum::Extension;
 use axum::{Json, Router};
 use sdkwork_missory_contract::context::MissoryRequestContext;
 use sdkwork_missory_contract::dto::{
-    AssistantQueryRequest, BriefingRequest, ChatSummaryRequest, MemoryExtractRequest,
-    MemoryUpsertRequest, MessageDraftRequest, MyProfileUpsertRequest, PersonUpsertRequest,
-    RelationshipUpsertRequest, ReminderSnoozeRequest, StoryUpsertRequest,
+    AssistantQueryRequest, BriefingRequest, ChatSummaryRequest, DataExportCreateRequest,
+    MemoryExtractRequest, MemoryUpsertRequest, MessageDraftRequest, MyProfileUpsertRequest,
+    PersonUpsertRequest, RelationshipUpsertRequest, ReminderSnoozeRequest, StoryUpsertRequest,
 };
 use sdkwork_missory_contract::ports::MissoryAppApi;
 
@@ -71,6 +71,7 @@ pub fn build_router(api: Arc<dyn MissoryAppApi>) -> Router {
             paths::ASSISTANT_CHAT_SUMMARIES,
             post(assistant_chat_summary),
         )
+        .route(paths::DATA_EXPORTS, post(post_data_export))
         .layer(Extension(state))
 }
 
@@ -560,6 +561,24 @@ async fn assistant_chat_summary(
     created_item(
         api_of(state)
             .assistant_chat_summary(&context, request)
+            .await
+            .map_err(map_error)?,
+    )
+}
+
+// ---- privacy export ----
+
+async fn post_data_export(
+    state: Extension<AppState>,
+    context: Option<Extension<MissoryRequestContext>>,
+    body: Result<Json<DataExportCreateRequest>, axum::extract::rejection::JsonRejection>,
+) -> HandlerResult {
+    let context = require_app_context(context)?;
+    let Json(request) =
+        body.map_err(|rejection| ApiProblem::invalid_body(rejection.body_text()))?;
+    created_item(
+        api_of(state)
+            .create_data_export(&context, request)
             .await
             .map_err(map_error)?,
     )

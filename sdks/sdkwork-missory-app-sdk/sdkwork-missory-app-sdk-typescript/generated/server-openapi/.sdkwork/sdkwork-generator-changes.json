@@ -9,11 +9,16 @@
     "protocol": "http",
     "packageName": "@sdkwork/missory-app-sdk"
   },
-  "changeFingerprint": "f8068db2aac96a0163fc76f34f57f1e9d53daae62e98cd6563ba58f6d07c26c6",
+  "changeFingerprint": "28a10ce70872092c4426c2d7063e77a227dc1c5cda03b0fb9c074807e3339b6c",
   "changes": {
-    "createdGeneratedFiles": [],
+    "createdGeneratedFiles": [
+      "src/types/missory-data-export-create-request.ts",
+      "src/types/missory-data-export-response.ts",
+      "src/types/missory-data-export.ts"
+    ],
     "updatedGeneratedFiles": [
-      "src/api/missory.ts"
+      "src/api/missory.ts",
+      "src/types/index.ts"
     ],
     "unchangedGeneratedFiles": [
       "bin/publish-core.mjs",
@@ -36,7 +41,6 @@
       "src/index.ts",
       "src/sdk.ts",
       "src/types/common.ts",
-      "src/types/index.ts",
       "src/types/int64-id.ts",
       "src/types/memories-confirm-response.ts",
       "src/types/memories-reject-response.ts",
@@ -115,7 +119,8 @@
   "impact": {
     "schemaVersion": 1,
     "areas": [
-      "api-surface"
+      "api-surface",
+      "models"
     ],
     "details": [
       {
@@ -123,21 +128,30 @@
         "paths": [
           "src/api/missory.ts"
         ]
+      },
+      {
+        "area": "models",
+        "paths": [
+          "src/types/index.ts",
+          "src/types/missory-data-export-create-request.ts",
+          "src/types/missory-data-export-response.ts",
+          "src/types/missory-data-export.ts"
+        ]
       }
     ],
     "requiresVerification": true,
-    "summary": "Detected impact areas: api-surface. Verification is required."
+    "summary": "Detected impact areas: api-surface, models. Verification is required."
   },
   "verificationPlan": {
     "shouldRun": true,
     "runPhase": "now",
-    "summary": "Detected impact areas: api-surface. Verification is required. Run the required verification commands now against the generated SDK output.",
+    "summary": "Detected impact areas: api-surface, models. Verification is required. Run the required verification commands now against the generated SDK output.",
     "steps": [
       {
         "id": "check",
         "title": "Unified package check",
         "required": true,
-        "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface.",
+        "rationale": "Validate the generated package with the unified publish helper. Triggered by: api-surface, models.",
         "workingDirectory": "D:\\sdkwork-space\\sdkwork-missory\\sdks\\sdkwork-missory-app-sdk\\sdkwork-missory-app-sdk-typescript\\generated\\server-openapi",
         "command": "node",
         "args": [
@@ -155,7 +169,7 @@
         "id": "build",
         "title": "Unified package build",
         "required": true,
-        "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface.",
+        "rationale": "Run the full package build because this language uses a lighter check path than the final build. Triggered by: api-surface, models.",
         "workingDirectory": "D:\\sdkwork-space\\sdkwork-missory\\sdks\\sdkwork-missory-app-sdk\\sdkwork-missory-app-sdk-typescript\\generated\\server-openapi",
         "command": "node",
         "args": [

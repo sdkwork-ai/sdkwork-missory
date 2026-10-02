@@ -4,8 +4,50 @@
     <view class="muted">{{person.title}} {{person.city}}</view>
     <view class="row">认识天数：{{person.knownDays}}</view>
     <view class="row">记忆 {{person.memoryCount}} 条</view>
-    <view class="button" bindtap="brief">生成见面简报</view>
+    <view style="display: flex; gap: 12rpx; margin-top: 16rpx;">
+      <view class="button" bindtap="brief">生成见面简报</view>
+      <view class="button button-plain" bindtap="startEdit">编辑</view>
+      <view class="button button-danger" bindtap="remove">删除</view>
+    </view>
     <view wx:if="{{briefing}}" style="margin-top: 16rpx; white-space: pre-wrap;">{{briefing}}</view>
+  </view>
+  <view class="card" wx:if="{{editing}}">
+    <view class="card-title">编辑人物</view>
+    <view class="field">
+      <view class="field-label">姓名（必填）</view>
+      <input class="field-input" value="{{editForm.displayName}}" bindinput="onEditField" data-field="displayName" />
+    </view>
+    <view class="field">
+      <view class="field-label">头衔（选填）</view>
+      <input class="field-input" value="{{editForm.title}}" bindinput="onEditField" data-field="title" />
+    </view>
+    <view class="field">
+      <view class="field-label">城市（选填）</view>
+      <input class="field-input" value="{{editForm.city}}" bindinput="onEditField" data-field="city" />
+    </view>
+    <view style="display: flex; gap: 12rpx;">
+      <view class="button" bindtap="saveEdit">保存</view>
+      <view class="button button-secondary" bindtap="cancelEdit">取消</view>
+    </view>
+    <view wx:if="{{note}}" class="muted" style="margin-top: 12rpx;">{{note}}</view>
+  </view>
+  <view class="card">
+    <view class="card-title">关系</view>
+    <view wx:for="{{relationships}}" wx:key="id" class="row">
+      <text class="badge">{{item.label}}</text>
+      <view class="button button-secondary" bindtap="removeRelationship" data-id="{{item.id}}">解除</view>
+    </view>
+    <view wx:if="{{relationships.length === 0}}" class="muted">还没有关系记录</view>
+    <view class="field" style="margin-top: 16rpx;">
+      <view class="field-label">设置与 TA 的关系（可多选）</view>
+      <checkbox-group bindchange="onRelationshipChange">
+        <label wx:for="{{relationshipOptions}}" wx:key="value" class="checkbox-item">
+          <checkbox value="{{item.value}}" checked="{{item.checked}}" />
+          <text>{{item.label}}</text>
+        </label>
+      </checkbox-group>
+    </view>
+    <view class="button" bindtap="saveRelationship">保存关系</view>
   </view>
   <view class="card">
     <view class="card-title">重要记忆</view>

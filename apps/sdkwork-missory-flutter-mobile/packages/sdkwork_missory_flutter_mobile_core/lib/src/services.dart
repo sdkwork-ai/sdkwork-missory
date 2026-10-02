@@ -31,9 +31,9 @@ class MissoryServices {
 
   Future<sdk.MissoryPersonDetail?> person(String personId) async {
     final response = await _client.missory.personsRetrieve(personId);
-    final data = response?.data;
-    if (data is Map<String, dynamic>) {
-      return sdk.MissoryPersonDetail.fromJson(data);
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryPersonDetail.fromJson(item);
     }
     return null;
   }
@@ -42,9 +42,46 @@ class MissoryServices {
     final response = await _client.missory.personsCreate(
       sdk.MissoryPersonUpsertRequest(displayName: displayName),
     );
-    final data = response?.data;
-    if (data is Map<String, dynamic>) {
-      return sdk.MissoryPerson.fromJson(data);
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryPerson.fromJson(item);
+    }
+    return null;
+  }
+
+  /// Updates the editable fields of one person (PUT /persons/{id}).
+  Future<sdk.MissoryPerson?> updatePerson(String personId, sdk.MissoryPersonUpsertRequest body) async {
+    final response = await _client.missory.personsUpdate(personId, body);
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryPerson.fromJson(item);
+    }
+    return null;
+  }
+
+  /// Deletes one person and its owned relationships and memory links.
+  Future<void> deletePerson(String personId) async {
+    await _client.missory.personsDelete(personId);
+  }
+
+  /// Relationship timeline for one person.
+  Future<List<sdk.MissoryTimelineEntry>> personTimeline(String personId) async {
+    final page = await _client.missory.personsTimelineList(personId);
+    final items = (page?.data as Map<String, dynamic>?)?['items'] as List<dynamic>? ?? [];
+    return [
+      for (final item in items)
+        if (item is Map<String, dynamic>) sdk.MissoryTimelineEntry.fromJson(item),
+    ];
+  }
+
+  /// Meeting briefing for one person (AI, informational only).
+  Future<sdk.MissoryBriefing?> briefing(String personId) async {
+    final response = await _client.missoryAssistant.assistantBriefingsCreate(
+      sdk.MissoryBriefingRequest(personId: personId),
+    );
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryBriefing.fromJson(item);
     }
     return null;
   }
@@ -67,6 +104,120 @@ class MissoryServices {
 
   Future<void> rejectMemory(String memoryId) async {
     await _client.missory.memoriesReject(memoryId);
+  }
+
+  /// Records one memory manually (required: personId, type, content).
+  Future<sdk.MissoryMemory?> createMemory({
+    required String personId,
+    required String type,
+    required String content,
+  }) async {
+    final response = await _client.missory.memoriesCreate(
+      sdk.MissoryMemoryUpsertRequest(personId: personId, type: type, content: content),
+    );
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryMemory.fromJson(item);
+    }
+    return null;
+  }
+
+  /// Deletes one memory.
+  Future<void> deleteMemory(String memoryId) async {
+    await _client.missory.memoriesDelete(memoryId);
+  }
+
+  // ---- Owner profile ----
+
+  Future<sdk.MissoryMyProfile?> myProfile() async {
+    final response = await _client.missory.myProfileRetrieve();
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryMyProfile.fromJson(item);
+    }
+    return null;
+  }
+
+  Future<sdk.MissoryMyProfile?> updateMyProfile(sdk.MissoryMyProfileUpsertRequest body) async {
+    final response = await _client.missory.myProfileUpdate(body);
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryMyProfile.fromJson(item);
+    }
+    return null;
+  }
+
+  /// Creates the whole-account data export document (PRD §9 privacy export).
+  Future<sdk.MissoryDataExport?> exportData() async {
+    final response = await _client.missory
+        .dataExportsCreate(sdk.MissoryDataExportCreateRequest());
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryDataExport.fromJson(item);
+    }
+    return null;
+  }
+
+  // ---- Stories ----
+
+  Future<List<sdk.MissoryStory>> stories() async {
+    final page = await _client.missory.storiesList(1, 50);
+    return _storiesOf(page?.data);
+  }
+
+  Future<sdk.MissoryStory?> createStory({
+    required String title,
+    String? location,
+    String? startedAt,
+    String? endedAt,
+  }) async {
+    final response = await _client.missory.storiesCreate(
+      sdk.MissoryStoryUpsertRequest(
+        title: title,
+        location: _blankToNull(location),
+        startedAt: _blankToNull(startedAt),
+        endedAt: _blankToNull(endedAt),
+      ),
+    );
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryStory.fromJson(item);
+    }
+    return null;
+  }
+
+  /// Creates (or regenerates) the AI summary of one story.
+  Future<sdk.MissoryStory?> summarizeStory(String storyId) async {
+    final response = await _client.missoryAssistant.storiesSummariesCreate(storyId);
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryStory.fromJson(item);
+    }
+    return null;
+  }
+
+  // ---- Reminders ----
+
+  /// Snoozes one reminder for [days] days.
+  Future<void> snoozeReminder(String reminderId, {int days = 3}) async {
+    await _client.missory.remindersSnooze(
+      reminderId,
+      sdk.MissoryReminderSnoozeRequest(days: days),
+    );
+  }
+
+  // ---- Assistant ----
+
+  /// Summarizes pasted chat text; extracted memories stay read-only candidates.
+  Future<sdk.MissoryChatSummary?> chatSummary(String text) async {
+    final response = await _client.missoryAssistant.assistantChatSummariesCreate(
+      sdk.MissoryChatSummaryRequest(text: text),
+    );
+    final item = _itemOf(response?.data);
+    if (item != null) {
+      return sdk.MissoryChatSummary.fromJson(item);
+    }
+    return null;
   }
 
   Future<sdk.MissoryAssistantAnswer?> ask(String question) async {
@@ -119,6 +270,31 @@ class MissoryServices {
       for (final item in items)
         if (item is Map<String, dynamic>) sdk.MissoryMemory.fromJson(item),
     ];
+  }
+
+  List<sdk.MissoryStory> _storiesOf(dynamic data) {
+    final items = (data as Map<String, dynamic>?)?['items'] as List<dynamic>? ?? [];
+    return [
+      for (final item in items)
+        if (item is Map<String, dynamic>) sdk.MissoryStory.fromJson(item),
+    ];
+  }
+
+  /// Unwraps the `data.item` envelope of single-resource responses.
+  Map<String, dynamic>? _itemOf(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      final item = data['item'];
+      if (item is Map<String, dynamic>) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  /// Optional text inputs: blank stays absent on the wire.
+  String? _blankToNull(String? value) {
+    final trimmed = value?.trim() ?? '';
+    return trimmed.isEmpty ? null : trimmed;
   }
 
   sdk.MissoryHomeDigest _digest(dynamic data) {

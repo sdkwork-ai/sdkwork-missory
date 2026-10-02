@@ -64,7 +64,7 @@
     },
     {
       "path": "src/api/missory.ts",
-      "sha256": "ec4f6d06e70aee967553c04201a04ecc58772226dfbc3f6016a85125401bfa0e"
+      "sha256": "2d1be38cbdbbbb08c57f0062d5fdb61ff622b1b5743776c6226470eee0f597c5"
     },
     {
       "path": "src/api/paths.ts",
@@ -96,7 +96,7 @@
     },
     {
       "path": "src/types/index.ts",
-      "sha256": "612c73ec885df33a91733d94f6d6e30e48f730b81f1bab5956ef7d628bd74d46"
+      "sha256": "625001e077d2de6c5cd64cdfab5e3330a5d47f38ce3d75ce4bb6df82faa2e2ab"
     },
     {
       "path": "src/types/int64-id.ts",
@@ -153,6 +153,18 @@
     {
       "path": "src/types/missory-citation.ts",
       "sha256": "1b5e075c79ea5039b2136d386810801eece6c85a05792ede200db46a40218b95"
+    },
+    {
+      "path": "src/types/missory-data-export-create-request.ts",
+      "sha256": "35c072f4267def1e380b2e4a0308afbe8e6d32c8fed4a5e5f35287359483b8b1"
+    },
+    {
+      "path": "src/types/missory-data-export-response.ts",
+      "sha256": "bc87c1ec60391c09fdba9be34e38d172c31e248572241f54ab7783714579c302"
+    },
+    {
+      "path": "src/types/missory-data-export.ts",
+      "sha256": "f39b4c83193aa74eefeba36c6426be57c978266087a23ea3a881fbbf98f3086d"
     },
     {
       "path": "src/types/missory-home-digest-response.ts",

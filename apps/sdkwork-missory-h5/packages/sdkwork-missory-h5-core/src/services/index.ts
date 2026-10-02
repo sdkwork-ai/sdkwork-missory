@@ -4,3 +4,4 @@ export { createAssistantService } from "./assistant-service.ts";
 export { createHomeService } from "./home-service.ts";
 export { createStoriesService } from "./stories-service.ts";
 export { createProfileService } from "./profile-service.ts";
+export { createDataExportsService } from "./data-exports-service.ts";

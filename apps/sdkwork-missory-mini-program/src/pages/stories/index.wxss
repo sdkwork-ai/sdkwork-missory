@@ -1,0 +1,20 @@
+.story-range {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.story-range picker {
+  flex: 1;
+}
+
+.story-item {
+  padding: 8rpx 0;
+}
+
+.story-summary {
+  color: #475569;
+  font-size: 26rpx;
+  white-space: pre-wrap;
+  margin: 8rpx 0 16rpx;
+}

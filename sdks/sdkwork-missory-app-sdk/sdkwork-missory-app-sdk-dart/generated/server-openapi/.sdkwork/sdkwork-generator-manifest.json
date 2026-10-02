@@ -48,7 +48,7 @@
     },
     {
       "path": "lib/src/api/missory.dart",
-      "sha256": "2a7f4c9b1461f227b75667aa7353cc8f7d0beca4750f159c89af8dfdff49677f"
+      "sha256": "c88155f1f3ca5b15b9f6179fda65a4bff2917746579f65f97ddb80399541594f"
     },
     {
       "path": "lib/src/api/paths.dart",
@@ -68,7 +68,7 @@
     },
     {
       "path": "lib/src/models.dart",
-      "sha256": "0135e89a198b05587320295a9633a43d99f1af119a929acf5f5419ec737c500b"
+      "sha256": "5641d5799072d0a28c0c5d89ffdf6c5dd8f946270ea4bfa97bdea9b387e0513a"
     },
     {
       "path": "LICENSE",

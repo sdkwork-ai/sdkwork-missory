@@ -112,6 +112,10 @@ them changes the crate boundaries above:
    the real principal (`my_profile.userId` = the registered snowflake id), person
    create/list scoped per user, and the negative matrix (no credentials 401, spoofed
    legacy identity headers rejected 400 by the forbidden-header guard, garbage tokens
-   401, second user sees zero of user-one's rows).
+   401, second user sees zero of user-one's rows). **Repeatable since 2026-10-03**:
+   `pnpm run test:e2e-login` (`scripts/e2e/login-flow.e2e.mjs`) automates the chain and
+   additionally asserts memory extraction/confirm domain rules and the whole-account
+   privacy export (`POST /app/v3/api/missory/data_exports`, PRD §9) with cross-user
+   isolation.
 
 Each adoption lands with its own ADR under `docs/architecture/decisions/`.

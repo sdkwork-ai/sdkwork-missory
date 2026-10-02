@@ -197,14 +197,15 @@ pub async fn issue_standalone_bootstrap_credential(
     };
     // The resolver factory auto-provisions the tenant application from
     // SDKWORK_APP_ROOT manifest discovery before issuance.
-    let _resolver = sdkwork_iam_web_adapter::iam_web_request_context_resolver_from_database_pool_for_audiences(
+    let _resolver = iam_web_request_context_resolver_from_database_pool_for_audiences(
         pool.clone(),
         &IAM_AUDIENCES,
     )
     .await?;
-    let sdkwork_database_sqlx::DatabasePool::Postgres(pg, _) = &pool else {
-        return Err("bootstrap credential issuance requires the PostgreSQL engine".to_owned());
-    };
+    // The missory workspace enables only the postgres engine feature, so the
+    // pool variant set is a singleton; enabling sqlite makes this pattern
+    // refutable and the compiler demands a new arm here.
+    let DatabasePool::Postgres(pg, _) = &pool;
     let issued = sdkwork_iam_web_adapter::issue_standalone_bootstrap_access_credential(
         pg, tenant_id, app_id, None,
     )

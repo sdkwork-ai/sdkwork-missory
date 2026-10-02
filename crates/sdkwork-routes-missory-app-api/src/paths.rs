@@ -45,3 +45,5 @@ pub const ASSISTANT_BRIEFINGS: &str = "/app/v3/api/missory/assistant/briefings";
 pub const ASSISTANT_MESSAGE_DRAFTS: &str = "/app/v3/api/missory/assistant/message_drafts";
 /// Assistant chat summary.
 pub const ASSISTANT_CHAT_SUMMARIES: &str = "/app/v3/api/missory/assistant/chat_summaries";
+/// Whole-account data export (privacy; PRD §9).
+pub const DATA_EXPORTS: &str = "/app/v3/api/missory/data_exports";

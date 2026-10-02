@@ -84,6 +84,155 @@ class SdkWorkCommandData {
   }
 }
 
+class MissoryDataExportCreateRequest {
+
+
+  MissoryDataExportCreateRequest();
+
+  factory MissoryDataExportCreateRequest.fromJson(Map<String, dynamic> json) {
+    return MissoryDataExportCreateRequest();
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{};
+  }
+}
+
+class MissoryDataExport {
+  final String? exportedAt;
+  final MissoryMyProfile? profile;
+  final List<MissoryPerson>? persons;
+  final List<MissoryRelationship>? relationships;
+  final List<MissoryMemory>? memories;
+  final List<MissoryStory>? stories;
+  final List<MissoryReminder>? reminders;
+
+  MissoryDataExport({
+    this.exportedAt,
+    this.profile,
+    this.persons,
+    this.relationships,
+    this.memories,
+    this.stories,
+    this.reminders
+  });
+
+  factory MissoryDataExport.fromJson(Map<String, dynamic> json) {
+    return MissoryDataExport(
+      exportedAt: json['exportedAt']?.toString(),
+      profile: (() {
+        final map = _sdkworkAsMap(json['profile']);
+        return map == null ? null : MissoryMyProfile.fromJson(map);
+      })(),
+      persons: (() {
+        final list = _sdkworkAsList(json['persons']);
+        if (list == null) {
+          return null;
+        }
+        return list
+            .map((item) => (() {
+        final map = _sdkworkAsMap(item);
+        return map == null ? null : MissoryPerson.fromJson(map);
+      })())
+            .whereType<MissoryPerson>()
+            .toList();
+      })(),
+      relationships: (() {
+        final list = _sdkworkAsList(json['relationships']);
+        if (list == null) {
+          return null;
+        }
+        return list
+            .map((item) => (() {
+        final map = _sdkworkAsMap(item);
+        return map == null ? null : MissoryRelationship.fromJson(map);
+      })())
+            .whereType<MissoryRelationship>()
+            .toList();
+      })(),
+      memories: (() {
+        final list = _sdkworkAsList(json['memories']);
+        if (list == null) {
+          return null;
+        }
+        return list
+            .map((item) => (() {
+        final map = _sdkworkAsMap(item);
+        return map == null ? null : MissoryMemory.fromJson(map);
+      })())
+            .whereType<MissoryMemory>()
+            .toList();
+      })(),
+      stories: (() {
+        final list = _sdkworkAsList(json['stories']);
+        if (list == null) {
+          return null;
+        }
+        return list
+            .map((item) => (() {
+        final map = _sdkworkAsMap(item);
+        return map == null ? null : MissoryStory.fromJson(map);
+      })())
+            .whereType<MissoryStory>()
+            .toList();
+      })(),
+      reminders: (() {
+        final list = _sdkworkAsList(json['reminders']);
+        if (list == null) {
+          return null;
+        }
+        return list
+            .map((item) => (() {
+        final map = _sdkworkAsMap(item);
+        return map == null ? null : MissoryReminder.fromJson(map);
+      })())
+            .whereType<MissoryReminder>()
+            .toList();
+      })()
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'exportedAt': exportedAt,
+      'profile': profile?.toJson(),
+      'persons': persons?.map((item) => item.toJson()).toList(),
+      'relationships': relationships?.map((item) => item.toJson()).toList(),
+      'memories': memories?.map((item) => item.toJson()).toList(),
+      'stories': stories?.map((item) => item.toJson()).toList(),
+      'reminders': reminders?.map((item) => item.toJson()).toList(),
+    };
+  }
+}
+
+class MissoryDataExportResponse {
+  final int? code;
+  final dynamic data;
+  final String? traceId;
+
+  MissoryDataExportResponse({
+    this.code,
+    this.data,
+    this.traceId
+  });
+
+  factory MissoryDataExportResponse.fromJson(Map<String, dynamic> json) {
+    return MissoryDataExportResponse(
+      code: json['code'] is int ? json['code'] : null,
+      data: _sdkworkAsMap(json['data']),
+      traceId: json['traceId']?.toString()
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'code': code,
+      'data': data,
+      'traceId': traceId,
+    };
+  }
+}
+
 class MissoryPersonRequestContext {
   final String? tenantId;
   final String? organizationId;

@@ -11,6 +11,8 @@ import {
   MissoryAppShell,
   PeopleListScreen,
   PersonDetailScreen,
+  ProfileScreen,
+  StoriesScreen,
 } from "@sdkwork/missory-h5-shell";
 
 import type { BootstrappedMissoryH5Runtime } from "./bootstrap/runtime";
@@ -70,7 +72,9 @@ export function App({ runtime }: { runtime: BootstrappedMissoryH5Runtime }) {
             <Route path="people" element={<PeopleListScreen runtime={runtime} />} />
             <Route path="people/:personId" element={<PersonDetailScreen runtime={runtime} />} />
             <Route path="memories" element={<MemoriesScreen runtime={runtime} />} />
+            <Route path="stories" element={<StoriesScreen runtime={runtime} />} />
             <Route path="assistant" element={<AssistantScreen runtime={runtime} />} />
+            <Route path="profile" element={<ProfileScreen runtime={runtime} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

@@ -1,6 +1,14 @@
 const { page } = getApp().runtime;
 Page({
-  data: { question: "", answer: "", draft: "", personId: "" },
+  data: {
+    question: "",
+    answer: "",
+    draft: "",
+    personId: "",
+    chatPersonId: "",
+    chatText: "",
+    chatSummary: null,
+  },
   onQuestion(event) { this.setData({ question: event.detail.value }); },
   async ask() {
     if (!this.data.question.trim()) return;
@@ -11,8 +19,20 @@ Page({
   async draft() {
     if (!this.data.personId) return;
     const result = await page.client.missoryAssistant.assistant.messageDrafts.create({ personId: this.data.personId, scenario: "birthday", tone: "warm" });
-    this.setData({ draft: result.draft + "
-
-" + result.disclaimer });
+    this.setData({ draft: result.draft + "\n\n" + result.disclaimer });
+  },
+  onChatPersonId(event) { this.setData({ chatPersonId: event.detail.value }); },
+  onChatText(event) { this.setData({ chatText: event.detail.value }); },
+  async summarizeChat() {
+    const personId = this.data.chatPersonId.trim();
+    const text = this.data.chatText.trim();
+    if (!personId || !text) return;
+    const result = await page.client.missoryAssistant.assistant.chatSummaries.create({ personId, text });
+    this.setData({
+      chatSummary: {
+        summary: result.summary,
+        candidates: (result.candidateMemories ?? []).map((m) => ({ id: String(m.id), type: m.type, content: m.content })),
+      },
+    });
   },
 });

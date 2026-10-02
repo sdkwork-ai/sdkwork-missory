@@ -1,5 +1,22 @@
 <view class="page">
   <view class="card">
+    <view class="card-title">新建人物</view>
+    <view class="field">
+      <view class="field-label">姓名（必填）</view>
+      <input class="field-input" value="{{form.displayName}}" bindinput="onFormField" data-field="displayName" placeholder="例如：李明" />
+    </view>
+    <view class="field">
+      <view class="field-label">城市（选填）</view>
+      <input class="field-input" value="{{form.city}}" bindinput="onFormField" data-field="city" placeholder="例如：杭州" />
+    </view>
+    <view class="field">
+      <view class="field-label">标签（选填，用逗号分隔）</view>
+      <input class="field-input" value="{{form.tags}}" bindinput="onFormField" data-field="tags" placeholder="例如：大学室友, 篮球" />
+    </view>
+    <view class="button" bindtap="create">保存人物</view>
+    <view wx:if="{{note}}" class="muted" style="margin-top: 12rpx;">{{note}}</view>
+  </view>
+  <view class="card">
     <view class="card-title">人物</view>
     <view class="row">
       <input value="{{keyword}}" bindinput="onKeyword" placeholder="搜索姓名/标签/公司" />

@@ -5,11 +5,11 @@ use std::sync::Arc;
 use sdkwork_missory_contract::context::MissoryRequestContext;
 use sdkwork_missory_contract::dto::{
     AssistantAnswer, AssistantQueryRequest, Briefing, BriefingRequest, ChatSummary,
-    ChatSummaryRequest, HomeDigest, Importance, Memory, MemoryExtractRequest, MemoryOrigin,
-    MemoryStatus, MemoryType, MemoryUpsertRequest, MessageDraft, MessageDraftRequest, MissoryPage,
-    MyProfile, MyProfileUpsertRequest, Person, PersonDetail, PersonDetailStats,
-    PersonUpsertRequest, Relationship, RelationshipUpsertRequest, Reminder, ReminderSnoozeRequest,
-    Story, StoryUpsertRequest, TimelineEntry, TimelineEntryKind,
+    ChatSummaryRequest, DataExport, DataExportCreateRequest, HomeDigest, Importance, Memory,
+    MemoryExtractRequest, MemoryOrigin, MemoryStatus, MemoryType, MemoryUpsertRequest,
+    MessageDraft, MessageDraftRequest, MissoryPage, MyProfile, MyProfileUpsertRequest, Person,
+    PersonDetail, PersonDetailStats, PersonUpsertRequest, Relationship, RelationshipUpsertRequest,
+    Reminder, ReminderSnoozeRequest, Story, StoryUpsertRequest, TimelineEntry, TimelineEntryKind,
 };
 use sdkwork_missory_contract::error::{
     MissoryServiceError, MissoryServiceErrorKind, MissoryServiceResult,
@@ -95,6 +95,95 @@ impl MissoryService {
         MissoryPage {
             items,
             page_info: offset_page_info(total, params),
+        }
+    }
+}
+
+impl MissoryService {
+    /// Walks every person page under the scope (whole-collection export walk).
+    async fn collect_person_pages(
+        &self,
+        scope: &MissoryScope,
+    ) -> MissoryServiceResult<Vec<Person>> {
+        let mut collected = Vec::new();
+        let mut page = 1i64;
+        loop {
+            let params = Self::page_params(Some(page), Some(EXPORT_PAGE_SIZE))?;
+            let (items, total) = self
+                .store
+                .list_persons(
+                    scope,
+                    ListPersonsQuery {
+                        page: Some(params.page),
+                        page_size: Some(params.page_size),
+                        ..ListPersonsQuery::default()
+                    },
+                )
+                .await
+                .map_err(Self::map_store)?;
+            collected.extend(items);
+            if params.page * params.page_size >= total {
+                return Ok(collected);
+            }
+            page += 1;
+        }
+    }
+
+    /// Walks every memory page under the scope (whole-collection export walk).
+    async fn collect_memory_pages(
+        &self,
+        scope: &MissoryScope,
+    ) -> MissoryServiceResult<Vec<Memory>> {
+        let mut collected = Vec::new();
+        let mut page = 1i64;
+        loop {
+            let params = Self::page_params(Some(page), Some(EXPORT_PAGE_SIZE))?;
+            let (items, total) = self
+                .store
+                .list_memories(
+                    scope,
+                    ListMemoriesQuery {
+                        page: Some(params.page),
+                        page_size: Some(params.page_size),
+                        ..ListMemoriesQuery::default()
+                    },
+                )
+                .await
+                .map_err(Self::map_store)?;
+            collected.extend(items);
+            if params.page * params.page_size >= total {
+                return Ok(collected);
+            }
+            page += 1;
+        }
+    }
+
+    /// Walks every story page under the scope (whole-collection export walk).
+    async fn collect_story_pages(
+        &self,
+        scope: &MissoryScope,
+    ) -> MissoryServiceResult<Vec<Story>> {
+        let mut collected = Vec::new();
+        let mut page = 1i64;
+        loop {
+            let params = Self::page_params(Some(page), Some(EXPORT_PAGE_SIZE))?;
+            let (items, total) = self
+                .store
+                .list_stories(
+                    scope,
+                    ListStoriesQuery {
+                        page: Some(params.page),
+                        page_size: Some(params.page_size),
+                        ..ListStoriesQuery::default()
+                    },
+                )
+                .await
+                .map_err(Self::map_store)?;
+            collected.extend(items);
+            if params.page * params.page_size >= total {
+                return Ok(collected);
+            }
+            page += 1;
         }
     }
 }
@@ -1372,4 +1461,49 @@ impl MissoryAppApi for MissoryService {
             candidate_memories: saved_candidates,
         })
     }
+
+    async fn create_data_export(
+        &self,
+        context: &MissoryRequestContext,
+        _request: DataExportCreateRequest,
+    ) -> MissoryServiceResult<DataExport> {
+        let scope = Self::scope(context);
+        let persons = self.collect_person_pages(&scope).await?;
+        let mut relationships = Vec::with_capacity(persons.len());
+        for person in &persons {
+            if let Some(edge) = self
+                .store
+                .get_relationship(&scope, person.id)
+                .await
+                .map_err(Self::map_store)?
+            {
+                relationships.push(edge);
+            }
+        }
+        let memories = self.collect_memory_pages(&scope).await?;
+        let stories = self.collect_story_pages(&scope).await?;
+        let derived = reminders::derive_reminders(
+            &self.store,
+            &scope,
+            self.now(),
+            DEFAULT_LONG_UNCONTACTED_DAYS,
+        )
+        .await
+        .map_err(Self::map_store)?;
+        let reminders = reminders::filter_by_state(&self.store, &scope, derived, self.now())
+            .await
+            .map_err(Self::map_store)?;
+        Ok(DataExport {
+            exported_at: self.now_rfc3339(),
+            profile: self.get_my_profile(context).await?,
+            persons,
+            relationships,
+            memories,
+            stories,
+            reminders,
+        })
+    }
 }
+
+/// Page size used when a service use case walks a whole collection.
+const EXPORT_PAGE_SIZE: i64 = 200;

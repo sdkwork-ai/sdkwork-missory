@@ -44,7 +44,16 @@ class _PeopleScreenState extends State<PeopleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('人物')),
+      appBar: AppBar(
+        title: const Text('人物'),
+        actions: [
+          IconButton(
+            tooltip: '我的资料',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () => Navigator.of(context).pushNamed('/profile'),
+          ),
+        ],
+      ),
       bottomNavigationBar: const MissoryNavBar(currentIndex: 1),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -66,7 +75,14 @@ class _PeopleScreenState extends State<PeopleScreen> {
           return ListView(
             children: [
               for (final row in rows)
-                ListTile(title: Text(row.name), subtitle: Text(row.title)),
+                ListTile(
+                  title: Text(row.name),
+                  subtitle: Text(row.title),
+                  onTap: () async {
+                    await Navigator.of(context).pushNamed('/person', arguments: row.id);
+                    if (mounted) setState(() => _future = _load());
+                  },
+                ),
             ],
           );
         },

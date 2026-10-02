@@ -1796,6 +1796,63 @@
           }
         ]
       }
+    },
+    "/app/v3/api/missory/data_exports": {
+      "post": {
+        "operationId": "dataExports.create",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Create a whole-account data export document (privacy: data export).",
+        "description": "Bounded whole-account export scoped to the request context (tenant + user); personal-scale by design, synchronous within the P0 latency budget.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryDataExportCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data export document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryDataExportResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "dataExports",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -2126,6 +2183,89 @@
             "type": "string"
           }
         }
+      },
+      "MissoryDataExportCreateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "MissoryDataExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "exportedAt",
+          "profile",
+          "persons",
+          "relationships",
+          "memories",
+          "stories",
+          "reminders"
+        ],
+        "properties": {
+          "exportedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/MissoryMyProfile"
+          },
+          "persons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryPerson"
+            }
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryRelationship"
+            }
+          },
+          "memories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryMemory"
+            }
+          },
+          "stories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryStory"
+            }
+          },
+          "reminders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryReminder"
+            }
+          }
+        }
+      },
+      "MissoryDataExportResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryDataExport"
+                  }
+                }
+              }
+            }
+          }
+        ]
       },
       "MissoryRelationshipType": {
         "type": "string",

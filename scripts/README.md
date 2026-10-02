@@ -10,7 +10,10 @@ sdkwork-missory platform team (application code `missory`).
 
 ## Allowed content
 
-Small `*.mjs`/`*.sh` wrappers invoked by root `package.json` scripts.
+Small `*.mjs`/`*.sh` wrappers invoked by root `package.json` scripts. `e2e/`
+holds the live-database login E2E (`pnpm run test:e2e-login`, runbook:
+`docs/architecture/tech/TECH_ARCHITECTURE.md` section 8 item 4); it needs the
+built gateway binary and a reachable `SDKWORK_DATABASE_URL`.
 
 ## Forbidden content
 

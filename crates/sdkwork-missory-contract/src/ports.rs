@@ -6,11 +6,11 @@
 use crate::context::MissoryRequestContext;
 use crate::dto::{
     AssistantAnswer, AssistantQueryRequest, Briefing, BriefingRequest, ChatSummary,
-    ChatSummaryRequest, HomeDigest, Memory, MemoryExtractRequest, MemoryOrigin, MemoryStatus,
-    MemoryType, MemoryUpsertRequest, MessageDraft, MessageDraftRequest, MissoryPage, MyProfile,
-    MyProfileUpsertRequest, Person, PersonDetail, PersonUpsertRequest, Relationship,
-    RelationshipType, RelationshipUpsertRequest, Reminder, ReminderSnoozeRequest, ReminderType,
-    Story, StoryUpsertRequest, TimelineEntry,
+    ChatSummaryRequest, DataExport, DataExportCreateRequest, HomeDigest, Memory,
+    MemoryExtractRequest, MemoryOrigin, MemoryStatus, MemoryType, MemoryUpsertRequest,
+    MessageDraft, MessageDraftRequest, MissoryPage, MyProfile, MyProfileUpsertRequest, Person,
+    PersonDetail, PersonUpsertRequest, Relationship, RelationshipType, RelationshipUpsertRequest,
+    Reminder, ReminderSnoozeRequest, ReminderType, Story, StoryUpsertRequest, TimelineEntry,
 };
 use crate::error::MissoryServiceResult;
 
@@ -284,6 +284,15 @@ pub trait MissoryAppApi: Send + Sync {
         &self,
         context: &MissoryRequestContext,
     ) -> MissoryServiceResult<HomeDigest>;
+
+    // ---- privacy export (PRD §9: data deletion and export are supported) ----
+
+    /// Creates a whole-account export document scoped to the request context.
+    async fn create_data_export(
+        &self,
+        context: &MissoryRequestContext,
+        request: DataExportCreateRequest,
+    ) -> MissoryServiceResult<DataExport>;
 
     // ---- assistant (PRD §23–§26; draft-only) ----
 

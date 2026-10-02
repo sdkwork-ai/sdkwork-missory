@@ -64,6 +64,11 @@ export function HomeScreen({ runtime }: { runtime: MissoryH5Runtime }) {
     await refresh();
   }, [runtime, refresh]);
 
+  const snooze = useCallback(async (reminderId: string) => {
+    await runtime.home.snoozeReminder(reminderId, 3);
+    await refresh();
+  }, [runtime, refresh]);
+
   if (model.loading) return <LoadingState />;
   if (model.error) return <ErrorState message={model.error} onRetry={() => void refresh()} />;
 
@@ -85,13 +90,22 @@ export function HomeScreen({ runtime }: { runtime: MissoryH5Runtime }) {
                   <span className="sdk-muted"> · {reminder.title}</span>{" "}
                   <Badge>{reminder.type}</Badge>
                 </span>
-                <button
-                  type="button"
-                  className="sdk-button"
-                  onClick={() => void dismiss(reminder.reminderId)}
-                >
-                  忽略
-                </button>
+                <span style={{ display: "flex", gap: 6 }}>
+                  <button
+                    type="button"
+                    className="sdk-button"
+                    onClick={() => void snooze(reminder.reminderId)}
+                  >
+                    延后 3 天
+                  </button>
+                  <button
+                    type="button"
+                    className="sdk-button"
+                    onClick={() => void dismiss(reminder.reminderId)}
+                  >
+                    忽略
+                  </button>
+                </span>
               </li>
             ))}
           </ul>

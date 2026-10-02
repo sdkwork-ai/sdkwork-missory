@@ -83,7 +83,8 @@
     "db:drift": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . drift",
     "db:drift:check": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . drift-check",
     "db:bootstrap": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . bootstrap",
-    "db:materialize:contract": "node ../sdkwork-specs/tools/materialize-database-contract-from-baseline.mjs --root . --baseline database/ddl/baseline/postgres/0001_missory_baseline.sql --module-id missory --owner sdkwork-missory --prefixes missory_ --engines postgres"
+    "db:materialize:contract": "node ../sdkwork-specs/tools/materialize-database-contract-from-baseline.mjs --root . --baseline database/ddl/baseline/postgres/0001_missory_baseline.sql --module-id missory --owner sdkwork-missory --prefixes missory_ --engines postgres",
+    "test:e2e-login": "node scripts/e2e/login-flow.e2e.mjs"
   },
   "pnpm": {
     "overrides": {

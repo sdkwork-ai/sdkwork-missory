@@ -9,6 +9,7 @@ import { createAssistantService } from "./services/assistant-service.ts";
 import { createHomeService } from "./services/home-service.ts";
 import { createStoriesService } from "./services/stories-service.ts";
 import { createProfileService } from "./services/profile-service.ts";
+import { createDataExportsService } from "./services/data-exports-service.ts";
 
 export interface MissoryPcRuntime {
   config: MissoryPcRuntimeConfig;
@@ -20,6 +21,7 @@ export interface MissoryPcRuntime {
   home: ReturnType<typeof createHomeService>;
   stories: ReturnType<typeof createStoriesService>;
   profile: ReturnType<typeof createProfileService>;
+  dataExports: ReturnType<typeof createDataExportsService>;
 }
 
 export function createMissoryPcRuntime(config: MissoryPcRuntimeConfig): MissoryPcRuntime {
@@ -43,5 +45,6 @@ export function createMissoryPcRuntime(config: MissoryPcRuntimeConfig): MissoryP
     home: createHomeService(client),
     stories: createStoriesService(client),
     profile: createProfileService(client),
+    dataExports: createDataExportsService(client),
   };
 }

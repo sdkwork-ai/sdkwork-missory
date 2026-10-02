@@ -5,6 +5,7 @@
 //! omitted when absent.
 
 pub mod assistant;
+pub mod export;
 pub mod memory;
 pub mod person;
 pub mod profile;
@@ -16,6 +17,7 @@ pub use assistant::{
     ChatSummary, ChatSummaryRequest, Citation, CitationKind, HomeDigest, MessageDraft,
     MessageDraftRequest, MessageTone,
 };
+pub use export::{DataExport, DataExportCreateRequest};
 pub use memory::{
     Memory, MemoryExtractRequest, MemoryOrigin, MemoryStatus, MemoryType, MemoryUpsertRequest,
     SourceKind,

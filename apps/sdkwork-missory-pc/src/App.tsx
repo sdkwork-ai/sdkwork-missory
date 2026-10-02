@@ -5,8 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import { SESSION_EXPIRED_EVENT } from "@sdkwork/missory-pc-core";
 import { AssistantScreen } from "@sdkwork/missory-pc-assistant";
 import { MemoriesScreen } from "@sdkwork/missory-pc-memories";
-import { PeopleListScreen, PersonDetailScreen } from "@sdkwork/missory-pc-people";
-import { HomeScreen, LoginScreen, MissoryAppShell } from "@sdkwork/missory-pc-shell";
+import { PeopleListScreen, PersonDetailScreen, StoriesScreen } from "@sdkwork/missory-pc-people";
+import { HomeScreen, LoginScreen, MissoryAppShell, ProfileScreen } from "@sdkwork/missory-pc-shell";
 
 import type { BootstrappedMissoryPcRuntime } from "./bootstrap/runtime";
 
@@ -67,7 +67,9 @@ export function App({ runtime }: { runtime: BootstrappedMissoryPcRuntime }) {
             <Route path="people" element={<PeopleListScreen runtime={runtime} />} />
             <Route path="people/:personId" element={<PersonDetailScreen runtime={runtime} />} />
             <Route path="memories" element={<MemoriesScreen runtime={runtime} />} />
+            <Route path="stories" element={<StoriesScreen runtime={runtime} />} />
             <Route path="assistant" element={<AssistantScreen runtime={runtime} />} />
+            <Route path="profile" element={<ProfileScreen runtime={runtime} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

@@ -272,6 +272,16 @@ class MissoryApi {
       return map == null ? null : MissoryHomeDigestResponse.fromJson(map);
     })();
   }
+
+  /// Create a whole-account data export document (privacy: data export).
+  Future<MissoryDataExportResponse?> dataExportsCreate(MissoryDataExportCreateRequest body) async {
+    final payload = body.toJson();
+    final response = await _client.post(ApiPaths.appPath('/app/v3/api/missory/data_exports'), body: payload, contentType: 'application/json');
+    return (() {
+      final map = sdkworkResponseAsMap(response);
+      return map == null ? null : MissoryDataExportResponse.fromJson(map);
+    })();
+  }
 }
 
 class PathParameterSpec {

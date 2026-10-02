@@ -6,8 +6,12 @@ import {
 } from "@sdkwork/missory-h5-commons";
 import { normalizeClientError } from "@sdkwork/missory-h5-core";
 
-import type { MissoryMemory } from "@sdkwork/missory-app-sdk";
+import type { MissoryMemory, MissoryMemoryType, MissoryPerson } from "@sdkwork/missory-app-sdk";
 import type { MissoryH5Runtime } from "@sdkwork/missory-h5-core";
+
+const MEMORY_TYPES: MissoryMemoryType[] = [
+  "semantic", "episodic", "temporal", "relationship", "preference", "commitment",
+];
 
 export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
   const [items, setItems] = useState<MissoryMemory[]>([]);
@@ -17,6 +21,14 @@ export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
   const [statusFilter, setStatusFilter] = useState("");
   const [extractText, setExtractText] = useState("");
   const [extractNote, setExtractNote] = useState<string | null>(null);
+
+  // 手动记录记忆
+  const [persons, setPersons] = useState<MissoryPerson[]>([]);
+  const [createPersonId, setCreatePersonId] = useState("");
+  const [createType, setCreateType] = useState<MissoryMemoryType>("semantic");
+  const [createContent, setCreateContent] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [createNote, setCreateNote] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -39,6 +51,22 @@ export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
     void refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    let cancelled = false;
+    runtime.people.list({ pageSize: 200 })
+      .then((page) => {
+        if (cancelled) return;
+        setPersons(page.items);
+        setCreatePersonId((previous) => previous || (page.items[0] ? String(page.items[0].id) : ""));
+      })
+      .catch(() => {
+        // 人物列表加载失败不阻断记忆页，仅隐藏人物选择。
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [runtime]);
+
   const confirm = useCallback(async (memoryId: string) => {
     await runtime.memories.confirm(memoryId);
     await refresh();
@@ -46,6 +74,12 @@ export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
 
   const reject = useCallback(async (memoryId: string) => {
     await runtime.memories.reject(memoryId);
+    await refresh();
+  }, [runtime, refresh]);
+
+  const remove = useCallback(async (memoryId: string) => {
+    if (!window.confirm("确定删除这条记忆吗？删除后不可恢复。")) return;
+    await runtime.memories.delete(memoryId);
     await refresh();
   }, [runtime, refresh]);
 
@@ -62,9 +96,82 @@ export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
     }
   }, [runtime, extractText, refresh]);
 
+  const createMemory = useCallback(async () => {
+    if (!createPersonId || !createContent.trim() || creating) return;
+    setCreating(true);
+    setCreateNote(null);
+    try {
+      await runtime.memories.create({
+        personId: createPersonId,
+        type: createType,
+        content: createContent.trim(),
+      });
+      setCreateContent("");
+      setCreateNote("已记录为事实记忆。");
+      await refresh();
+    } catch (cause) {
+      setCreateNote(normalizeClientError(cause).message);
+    } finally {
+      setCreating(false);
+    }
+  }, [runtime, createPersonId, createType, createContent, creating, refresh]);
+
   return (
     <div style={{ display: "grid", gap: 16 }}>
       <h2 style={{ margin: 0 }}>记忆</h2>
+      <SectionCard title="手动记录记忆">
+        <div style={{ display: "grid", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "end", flexWrap: "wrap" }}>
+            <label style={{ display: "grid", gap: 4, fontSize: 13 }}>
+              <span className="sdk-muted">所属人物</span>
+              <select
+                className="sdk-input"
+                style={{ width: 160 }}
+                value={createPersonId}
+                onChange={(event) => setCreatePersonId(event.target.value)}
+              >
+                {persons.length === 0 ? <option value="">（暂无人物）</option> : null}
+                {persons.map((person) => (
+                  <option key={String(person.id)} value={String(person.id)}>
+                    {person.displayName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label style={{ display: "grid", gap: 4, fontSize: 13 }}>
+              <span className="sdk-muted">记忆类型</span>
+              <select
+                className="sdk-input"
+                style={{ width: 130 }}
+                value={createType}
+                onChange={(event) => setCreateType(event.target.value as MissoryMemoryType)}
+              >
+                {MEMORY_TYPES.map((type) => (
+                  <option key={type} value={type}>{memoryTypeLabel(type)}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <textarea
+            className="sdk-input"
+            rows={2}
+            placeholder="例如：李明喜欢摄影。"
+            value={createContent}
+            onChange={(event) => setCreateContent(event.target.value)}
+          />
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <button
+              type="button"
+              className="sdk-button sdk-button-primary"
+              disabled={creating || !createPersonId || !createContent.trim()}
+              onClick={() => void createMemory()}
+            >
+              记录
+            </button>
+            {createNote ? <span className="sdk-muted" style={{ fontSize: 13 }}>{createNote}</span> : null}
+          </div>
+        </div>
+      </SectionCard>
       <SectionCard title="从文本提取候选记忆">
         <div style={{ display: "grid", gap: 8 }}>
           <textarea
@@ -134,20 +241,29 @@ export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
                     <span className="sdk-muted" style={{ fontSize: 12 }}> · 置信 {memory.confidence}</span>
                   ) : null}
                 </span>
-                {memory.status === "candidate" ? (
-                  <span style={{ display: "flex", gap: 6 }}>
-                    <button
-                      type="button"
-                      className="sdk-button sdk-button-primary"
-                      onClick={() => void confirm(String(memory.id))}
-                    >
-                      确认
-                    </button>
-                    <button type="button" className="sdk-button" onClick={() => void reject(String(memory.id))}>
-                      拒绝
-                    </button>
-                  </span>
-                ) : null}
+                <span style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                  {memory.status === "candidate" ? (
+                    <>
+                      <button
+                        type="button"
+                        className="sdk-button sdk-button-primary"
+                        onClick={() => void confirm(String(memory.id))}
+                      >
+                        确认
+                      </button>
+                      <button type="button" className="sdk-button" onClick={() => void reject(String(memory.id))}>
+                        拒绝
+                      </button>
+                    </>
+                  ) : null}
+                  <button
+                    type="button"
+                    className="sdk-button"
+                    onClick={() => void remove(String(memory.id))}
+                  >
+                    删除
+                  </button>
+                </span>
               </li>
             ))}
           </ul>

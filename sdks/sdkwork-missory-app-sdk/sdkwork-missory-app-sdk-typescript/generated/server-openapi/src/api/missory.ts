@@ -1,8 +1,22 @@
 import { appApiPath } from './paths';
 import type { ApiRequestOptions, HttpClient } from '../http/client';
 
-import type { Int64Id, MissoryHomeDigest, MissoryMemory, MissoryMemoryExtractRequest, MissoryMemoryOrigin, MissoryMemoryStatus, MissoryMemoryType, MissoryMemoryUpsertRequest, MissoryMyProfile, MissoryMyProfileUpsertRequest, MissoryPerson, MissoryPersonDetail, MissoryPersonUpsertRequest, MissoryRelationship, MissoryRelationshipType, MissoryRelationshipUpsertRequest, MissoryReminder, MissoryReminderSnoozeRequest, MissoryReminderType, MissoryStory, MissoryStoryUpsertRequest, MissoryTimelineEntry, PageInfo, SdkWorkCommandData } from '../types';
+import type { Int64Id, MissoryDataExport, MissoryDataExportCreateRequest, MissoryHomeDigest, MissoryMemory, MissoryMemoryExtractRequest, MissoryMemoryOrigin, MissoryMemoryStatus, MissoryMemoryType, MissoryMemoryUpsertRequest, MissoryMyProfile, MissoryMyProfileUpsertRequest, MissoryPerson, MissoryPersonDetail, MissoryPersonUpsertRequest, MissoryRelationship, MissoryRelationshipType, MissoryRelationshipUpsertRequest, MissoryReminder, MissoryReminderSnoozeRequest, MissoryReminderType, MissoryStory, MissoryStoryUpsertRequest, MissoryTimelineEntry, PageInfo, SdkWorkCommandData } from '../types';
 
+
+export class MissoryDataExportsApi {
+  private client: HttpClient;
+
+  constructor(client: HttpClient) {
+    this.client = client;
+  }
+
+
+/** Create a whole-account data export document (privacy: data export). */
+  async create(body: MissoryDataExportCreateRequest, requestOptions?: ApiRequestOptions): Promise<MissoryDataExport> {
+    return this.client.request<MissoryDataExport>(appApiPath(`/app/v3/api/missory/data_exports`), { ...(requestOptions?.signal !== undefined ? { signal: requestOptions.signal } : {}), ...(requestOptions?.timeout !== undefined ? { timeout: requestOptions.timeout } : {}), method: 'POST' as any, body, contentType: 'application/json', sdkworkUnwrapKind: 'item' });
+  }
+}
 
 export class MissoryHomeTodayApi {
   private client: HttpClient;
@@ -284,6 +298,7 @@ export class MissoryApi {
   public readonly stories: MissoryStoriesApi;
   public readonly reminders: MissoryRemindersApi;
   public readonly home: MissoryHomeApi;
+  public readonly dataExports: MissoryDataExportsApi;
 
   constructor(client: HttpClient) {
     this.myProfile = new MissoryMyProfileApi(client);
@@ -293,6 +308,7 @@ export class MissoryApi {
     this.stories = new MissoryStoriesApi(client);
     this.reminders = new MissoryRemindersApi(client);
     this.home = new MissoryHomeApi(client);
+    this.dataExports = new MissoryDataExportsApi(client);
   }
 
 }

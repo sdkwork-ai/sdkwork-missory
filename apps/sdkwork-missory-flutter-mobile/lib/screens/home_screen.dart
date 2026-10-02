@@ -82,12 +82,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text(row.title),
                   subtitle: Text(row.subtitle),
-                  trailing: TextButton(
-                    onPressed: () async {
-                      await widget.runtime.services.dismissReminder(row.reminderId ?? '');
-                      setState(() => _future = _load());
-                    },
-                    child: const Text('忽略'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          await widget.runtime.services.snoozeReminder(row.reminderId ?? '');
+                          setState(() => _future = _load());
+                        },
+                        child: const Text('稍后提醒'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await widget.runtime.services.dismissReminder(row.reminderId ?? '');
+                          setState(() => _future = _load());
+                        },
+                        child: const Text('忽略'),
+                      ),
+                    ],
                   ),
                 ),
             ],

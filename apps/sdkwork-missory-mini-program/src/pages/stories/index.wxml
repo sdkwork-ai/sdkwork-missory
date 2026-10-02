@@ -1,0 +1,42 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">新建故事</view>
+    <view class="field">
+      <view class="field-label">标题（必填）</view>
+      <input class="field-input" value="{{form.title}}" bindinput="onFormField" data-field="title" placeholder="例如：和大学室友的成都之行" />
+    </view>
+    <view class="field">
+      <view class="field-label">地点（选填）</view>
+      <input class="field-input" value="{{form.location}}" bindinput="onFormField" data-field="location" placeholder="例如：成都" />
+    </view>
+    <view class="field">
+      <view class="field-label">时间范围（选填）</view>
+      <view class="story-range">
+        <picker mode="date" value="{{form.startedAt}}" bindchange="onStartDate">
+          <view class="field-input">{{form.startedAt || "开始日期"}}</view>
+        </picker>
+        <text class="muted">至</text>
+        <picker mode="date" value="{{form.endedAt}}" bindchange="onEndDate">
+          <view class="field-input">{{form.endedAt || "结束日期"}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="button" bindtap="create">保存故事</view>
+    <view wx:if="{{note}}" class="muted" style="margin-top: 12rpx;">{{note}}</view>
+  </view>
+  <view class="card">
+    <view class="card-title">故事列表</view>
+    <view wx:if="{{loading}}" class="muted">加载中…</view>
+    <view wx:for="{{stories}}" wx:key="id" class="story-item">
+      <view class="row">
+        <view style="flex: 1;">
+          <view>{{item.title}}</view>
+          <view wx:if="{{item.meta}}" class="muted">{{item.meta}}</view>
+        </view>
+        <view class="button" bindtap="summarize" data-id="{{item.id}}">{{item.summary ? "重新生成摘要" : "生成 AI 摘要"}}</view>
+      </view>
+      <view wx:if="{{item.summary}}" class="story-summary">{{item.summary}}</view>
+    </view>
+    <view wx:if="{{stories.length === 0 && !loading}}" class="muted">还没有故事</view>
+  </view>
+</view>

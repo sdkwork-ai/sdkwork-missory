@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 
-import { EmptyState, SectionCard, TextField } from "@sdkwork/missory-h5-commons";
+import { Badge, EmptyState, SectionCard, TextField, memoryTypeLabel, truncate } from "@sdkwork/missory-h5-commons";
 import { normalizeClientError } from "@sdkwork/missory-h5-core";
 
-import type { MissoryMessageDraft } from "@sdkwork/missory-app-sdk";
+import type { MissoryChatSummary, MissoryMessageDraft } from "@sdkwork/missory-app-sdk";
 import type { MissoryH5Runtime } from "@sdkwork/missory-h5-core";
 
 interface ChatTurn {
@@ -17,6 +17,9 @@ export function AssistantScreen({ runtime }: { runtime: MissoryH5Runtime }) {
   const [busy, setBusy] = useState(false);
   const [personId, setPersonId] = useState("");
   const [draft, setDraft] = useState<MissoryMessageDraft | null>(null);
+  const [chatText, setChatText] = useState("");
+  const [chatSummary, setChatSummary] = useState<MissoryChatSummary | null>(null);
+  const [chatNote, setChatNote] = useState<string | null>(null);
 
   const ask = useCallback(async () => {
     const text = question.trim();
@@ -50,6 +53,23 @@ export function AssistantScreen({ runtime }: { runtime: MissoryH5Runtime }) {
       setBusy(false);
     }
   }, [runtime, personId]);
+
+  const summarizeChat = useCallback(async () => {
+    const text = chatText.trim();
+    if (!personId.trim() || !text || busy) return;
+    setBusy(true);
+    setChatNote(null);
+    try {
+      const result = await runtime.assistant.chatSummary(personId.trim(), text);
+      setChatSummary(result);
+      setChatText("");
+    } catch (cause) {
+      setChatSummary(null);
+      setChatNote(normalizeClientError(cause).message);
+    } finally {
+      setBusy(false);
+    }
+  }, [runtime, personId, chatText, busy]);
 
   return (
     <div style={{ display: "grid", gap: 16 }}>
@@ -121,6 +141,63 @@ export function AssistantScreen({ runtime }: { runtime: MissoryH5Runtime }) {
             <span className="sdk-muted" style={{ fontSize: 12 }}>{draft.disclaimer}</span>
           </div>
         ) : null}
+      </SectionCard>
+      <SectionCard title="聊天记忆提取（粘贴对话，仅生成候选）">
+        <div style={{ display: "grid", gap: 10 }}>
+          <TextField
+            label="人物 ID"
+            value={personId}
+            onChange={setPersonId}
+            placeholder="人物详情页可见"
+          />
+          <textarea
+            className="sdk-input"
+            rows={4}
+            placeholder="粘贴一段聊天记录，AI 会总结并提取候选记忆（只读，需到「记忆」页确认）。"
+            value={chatText}
+            onChange={(event) => setChatText(event.target.value)}
+          />
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <button
+              type="button"
+              className="sdk-button sdk-button-primary"
+              disabled={busy || !personId.trim() || !chatText.trim()}
+              onClick={() => void summarizeChat()}
+            >
+              提取候选记忆
+            </button>
+            {chatNote ? <span className="sdk-muted" style={{ fontSize: 13 }}>{chatNote}</span> : null}
+          </div>
+          {chatSummary ? (
+            <div style={{ display: "grid", gap: 8 }}>
+              <div
+                style={{
+                  border: "1px solid var(--sdk-color-border)", borderRadius: 10, padding: 12,
+                  whiteSpace: "pre-wrap", fontSize: 14,
+                }}
+              >
+                {chatSummary.summary}
+              </div>
+              <div style={{ display: "grid", gap: 6 }}>
+                <span className="sdk-muted" style={{ fontSize: 13 }}>
+                  候选记忆 {chatSummary.candidateMemories.length} 条（只读，请到「记忆」页确认）：
+                </span>
+                {chatSummary.candidateMemories.length === 0 ? (
+                  <span className="sdk-muted" style={{ fontSize: 13 }}>本段对话没有提取到候选记忆。</span>
+                ) : (
+                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 6 }}>
+                    {chatSummary.candidateMemories.map((memory) => (
+                      <li key={String(memory.id)} style={{ fontSize: 14 }}>
+                        <Badge>{memoryTypeLabel(memory.type)}</Badge>{" "}
+                        {truncate(memory.content, 80)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          ) : null}
+        </div>
       </SectionCard>
     </div>
   );

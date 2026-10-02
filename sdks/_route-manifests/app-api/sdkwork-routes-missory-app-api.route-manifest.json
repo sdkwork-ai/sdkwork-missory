@@ -718,6 +718,28 @@
       },
       "requestContext": "MissoryRequestContext",
       "apiSurface": "app-api"
+    },
+    {
+      "method": "POST",
+      "path": "/app/v3/api/missory/data_exports",
+      "operationId": "dataExports.create",
+      "tags": [
+        "missory"
+      ],
+      "auth": {
+        "mode": "header-context",
+        "required": true
+      },
+      "handler": {
+        "module": "crate::routes",
+        "name": null
+      },
+      "ownership": {
+        "owner": "sdkwork-missory",
+        "apiAuthority": "sdkwork-missory-app-api"
+      },
+      "requestContext": "MissoryRequestContext",
+      "apiSurface": "app-api"
     }
   ]
 }

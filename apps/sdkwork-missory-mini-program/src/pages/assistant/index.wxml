@@ -11,4 +11,19 @@
     <view class="button" bindtap="draft" style="margin-top: 12rpx;">生成生日祝福草稿</view>
     <view wx:if="{{draft}}" style="margin-top: 16rpx; white-space: pre-wrap;">{{draft}}</view>
   </view>
+  <view class="card">
+    <view class="card-title">聊天记录总结</view>
+    <input value="{{chatPersonId}}" bindinput="onChatPersonId" placeholder="人物 ID" />
+    <textarea value="{{chatText}}" bindinput="onChatText" placeholder="粘贴与 TA 的聊天记录…" style="width: 100%; min-height: 160rpx; margin-top: 12rpx;" />
+    <view class="button" bindtap="summarizeChat" style="margin-top: 12rpx;">生成聊天总结</view>
+    <view wx:if="{{chatSummary}}" style="margin-top: 16rpx;">
+      <view style="white-space: pre-wrap;">{{chatSummary.summary}}</view>
+      <view class="card-title" style="margin-top: 16rpx;">候选记忆（只读）</view>
+      <view wx:for="{{chatSummary.candidates}}" wx:key="id" class="row">
+        <view style="flex: 1;"><text class="badge">{{item.type}}</text>{{item.content}}</view>
+      </view>
+      <view wx:if="{{chatSummary.candidates.length === 0}}" class="muted">没有提取到候选记忆</view>
+      <view class="muted" style="margin-top: 12rpx;">候选记忆已保存为待确认状态，可在记忆页确认或拒绝。</view>
+    </view>
+  </view>
 </view>

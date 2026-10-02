@@ -1,0 +1,5 @@
+.profile-note {
+  color: #64748b;
+  font-size: 24rpx;
+  margin-top: 12rpx;
+}

@@ -6,6 +6,9 @@ import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/memories_screen.dart';
 import 'screens/people_screen.dart';
+import 'screens/person_detail_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/stories_screen.dart';
 
 /// Session gate: development with the gateway bypass runs signed-in by
 /// default (dev identity seeded in the client); every other environment
@@ -41,14 +44,21 @@ class _MissoryAppState extends State<MissoryApp> {
           ? {
               '/people': (context) => PeopleScreen(runtime: widget.runtime),
               '/memories': (context) => MemoriesScreen(runtime: widget.runtime),
+              '/stories': (context) => StoriesScreen(runtime: widget.runtime),
               '/assistant': (context) => AssistantScreen(runtime: widget.runtime),
+              '/profile': (context) => ProfileScreen(runtime: widget.runtime),
+              '/person': (context) => PersonDetailScreen(
+                    runtime: widget.runtime,
+                    personId: ModalRoute.of(context)?.settings.arguments as String?,
+                  ),
             }
           : const <String, WidgetBuilder>{},
     );
   }
 }
 
-/// Shared bottom navigation across the four P0 tabs.
+/// Shared bottom navigation across the P0 tabs (home, people, memories,
+/// stories, assistant).
 class MissoryNavBar extends StatelessWidget {
   const MissoryNavBar({super.key, required this.currentIndex});
 
@@ -62,10 +72,11 @@ class MissoryNavBar extends StatelessWidget {
         NavigationDestination(icon: Icon(Icons.home_outlined), label: '首页'),
         NavigationDestination(icon: Icon(Icons.people_outline), label: '人物'),
         NavigationDestination(icon: Icon(Icons.auto_stories_outlined), label: '记忆'),
+        NavigationDestination(icon: Icon(Icons.menu_book_outlined), label: '故事'),
         NavigationDestination(icon: Icon(Icons.smart_toy_outlined), label: 'AI'),
       ],
       onDestinationSelected: (index) {
-        const routes = ['/people', '/memories', '/assistant'];
+        const routes = ['/people', '/memories', '/stories', '/assistant'];
         if (index == 0) {
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {

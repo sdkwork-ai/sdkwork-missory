@@ -1,22 +1,45 @@
 <view class="page">
   <view class="card">
+    <view class="card-title">记录一条记忆</view>
+    <view class="field">
+      <view class="field-label">相关人物</view>
+      <picker mode="selector" range="{{persons}}" range-key="name" value="{{personIndex}}" bindchange="onPersonChange">
+        <view class="field-input">{{persons.length > 0 ? (persons[personIndex].name || persons[0].name) : "请先在人物页创建人物"}}</view>
+      </picker>
+    </view>
+    <view class="field">
+      <view class="field-label">类型</view>
+      <picker mode="selector" range="{{memoryTypeOptions}}" range-key="label" value="{{typeIndex}}" bindchange="onTypeChange">
+        <view class="field-input">{{memoryTypeOptions[typeIndex].label}}</view>
+      </picker>
+    </view>
+    <view class="field">
+      <view class="field-label">内容</view>
+      <textarea class="field-textarea" value="{{content}}" bindinput="onContent" placeholder="例如：一起吃了顿火锅，聊到孩子转学的事…" />
+    </view>
+    <view class="button" bindtap="createMemory">保存记忆</view>
+    <view wx:if="{{note}}" class="muted" style="margin-top: 12rpx;">{{note}}</view>
+  </view>
+  <view class="card">
     <view class="card-title">从文本提取候选记忆</view>
     <textarea value="{{text}}" bindinput="onText" placeholder="粘贴对话或随笔…" style="width: 100%; min-height: 120rpx;" />
     <view class="button" bindtap="extract" style="margin-top: 12rpx;">提取候选</view>
-    <view wx:if="{{note}}" class="muted">{{note}}</view>
   </view>
   <view class="card">
     <view class="card-title">记忆列表</view>
     <view wx:if="{{loading}}" class="muted">加载中…</view>
     <view wx:for="{{memories}}" wx:key="id" class="row">
-      <view>
+      <view style="flex: 1;">
         <text class="badge">{{item.type}}</text>
         <text class="badge">{{item.origin === 'inference' ? '推断' : '事实'}}</text>
         {{item.content}}
       </view>
-      <view wx:if="{{item.status === 'candidate'}}" style="display: flex; gap: 12rpx;">
-        <view class="button" bindtap="confirm" data-id="{{item.id}}">确认</view>
-        <view class="button" style="background: #64748b;" bindtap="reject" data-id="{{item.id}}">拒绝</view>
+      <view style="display: flex; gap: 12rpx;">
+        <block wx:if="{{item.status === 'candidate'}}">
+          <view class="button" bindtap="confirm" data-id="{{item.id}}">确认</view>
+          <view class="button button-secondary" bindtap="reject" data-id="{{item.id}}">拒绝</view>
+        </block>
+        <view class="button button-danger" bindtap="remove" data-id="{{item.id}}">删除</view>
       </view>
     </view>
     <view wx:if="{{memories.length === 0 && !loading}}" class="muted">没有匹配的记忆</view>

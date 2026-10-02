@@ -243,6 +243,13 @@ const ROUTES: &[HttpRoute] = &[
         "assistant.chatSummaries.create",
         RouteAuth::DualTokenOrAnonymous,
     ),
+    HttpRoute::new(
+        HttpMethod::Post,
+        "/app/v3/api/missory/data_exports",
+        "missory",
+        "dataExports.create",
+        RouteAuth::DualTokenOrAnonymous,
+    ),
 ];
 
 /// Build the owned runtime route manifest for the shared web-framework layer.
@@ -258,11 +265,16 @@ mod tests {
     #[test]
     fn given_manifest_when_matching_owned_routes_then_every_operation_is_declared() {
         let manifest = gateway_route_manifest();
-        assert_eq!(manifest.routes().len(), 32);
+        assert_eq!(manifest.routes().len(), 33);
         let sample = manifest.match_route("GET", "/app/v3/api/missory/persons/42/timeline");
         assert_eq!(
             sample.expect("timeline route").operation_id,
             "persons.timeline.list"
+        );
+        let export = manifest.match_route("POST", "/app/v3/api/missory/data_exports");
+        assert_eq!(
+            export.expect("data export route").operation_id,
+            "dataExports.create"
         );
     }
 

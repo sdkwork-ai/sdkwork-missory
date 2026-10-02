@@ -1,0 +1,55 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">我的资料</view>
+    <view wx:if="{{loading}}" class="muted">加载中…</view>
+    <block wx:else>
+      <view class="field">
+        <view class="field-label">姓名（必填）</view>
+        <input class="field-input" value="{{form.displayName}}" bindinput="onFormField" data-field="displayName" placeholder="你的姓名" />
+      </view>
+      <view class="field">
+        <view class="field-label">昵称</view>
+        <input class="field-input" value="{{form.nickname}}" bindinput="onFormField" data-field="nickname" placeholder="例如：小忆" />
+      </view>
+      <view class="field">
+        <view class="field-label">城市</view>
+        <input class="field-input" value="{{form.city}}" bindinput="onFormField" data-field="city" placeholder="例如：杭州" />
+      </view>
+      <view class="field">
+        <view class="field-label">职业</view>
+        <input class="field-input" value="{{form.occupation}}" bindinput="onFormField" data-field="occupation" placeholder="例如：产品经理" />
+      </view>
+      <view class="field">
+        <view class="field-label">公司</view>
+        <input class="field-input" value="{{form.company}}" bindinput="onFormField" data-field="company" placeholder="例如：某科技公司" />
+      </view>
+      <view class="field">
+        <view class="field-label">教育经历</view>
+        <input class="field-input" value="{{form.education}}" bindinput="onFormField" data-field="education" placeholder="例如：XX 大学计算机系" />
+      </view>
+      <view class="field">
+        <view class="field-label">兴趣爱好（用逗号分隔）</view>
+        <input class="field-input" value="{{form.interests}}" bindinput="onFormField" data-field="interests" placeholder="例如：跑步, 摄影" />
+      </view>
+      <view class="field">
+        <view class="field-label">喜欢（用逗号分隔）</view>
+        <input class="field-input" value="{{form.likes}}" bindinput="onFormField" data-field="likes" placeholder="例如：爬山, 咖啡" />
+      </view>
+      <view class="field">
+        <view class="field-label">不喜欢（用逗号分隔）</view>
+        <input class="field-input" value="{{form.dislikes}}" bindinput="onFormField" data-field="dislikes" placeholder="例如：迟到" />
+      </view>
+      <view class="field">
+        <view class="field-label">沟通风格</view>
+        <input class="field-input" value="{{form.communicationStyle}}" bindinput="onFormField" data-field="communicationStyle" placeholder="例如：直接、就事论事" />
+      </view>
+      <view class="field">
+        <view class="field-label">个人简介</view>
+        <textarea class="field-textarea" value="{{form.bio}}" bindinput="onFormField" data-field="bio" placeholder="简单介绍一下自己…" />
+      </view>
+      <view class="button" bindtap="save">{{saving ? "保存中…" : "保存资料"}}</view>
+      <view class="button-secondary" bindtap="exportData">导出我的数据（复制 JSON）</view>
+      <view wx:if="{{note}}" class="profile-note">{{note}}</view>
+    </block>
+  </view>
+</view>
