@@ -3,7 +3,7 @@
 // `generated/server-openapi` is generator-owned and never imported directly.
 import {
   createClient as createGeneratedAppClient,
-  type SdkworkAppClient,
+  type SdkworkMissoryAppClient as SdkworkAppClient,
 } from '../generated/server-openapi/src/index';
 import type { SdkworkAppConfig } from '../generated/server-openapi/src/types/common';
 

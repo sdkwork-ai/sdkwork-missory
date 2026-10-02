@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-missory-pc",
+    "displayName": "SDKWork Missory PC",
+    "version": "0.1.0",
+    "type": "pc-app-root",
+    "root": "apps/sdkwork-missory-pc",
+    "domain": "communication",
+    "capability": "missory",
+    "surface": "app",
+    "languages": ["typescript"],
+    "generated": false,
+    "manifests": ["package.json", "sdkwork.app.config.json", "vite.config.ts"]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "APP_PC_ARCHITECTURE_SPEC.md",
+      "path": "../../../../../sdkwork-specs/APP_PC_ARCHITECTURE_SPEC.md",
+      "purpose": "PC application root architecture standard."
+    },
+    {
+      "file": "APP_PC_REACT_UI_SPEC.md",
+      "path": "../../../../../sdkwork-specs/APP_PC_REACT_UI_SPEC.md",
+      "purpose": "PC React UI package rules."
+    },
+    {
+      "file": "APP_SDK_INTEGRATION_SPEC.md",
+      "path": "../../../../../sdkwork-specs/APP_SDK_INTEGRATION_SPEC.md",
+      "purpose": "Generated app SDK integration rules."
+    },
+    {
+      "file": "THEME_DARKMODE_SPEC.md",
+      "path": "../../../../../sdkwork-specs/THEME_DARKMODE_SPEC.md",
+      "purpose": "Dual-mode theme token contract."
+    },
+    {
+      "file": "CODE_STYLE_SPEC.md",
+      "path": "../../../../../sdkwork-specs/CODE_STYLE_SPEC.md",
+      "purpose": "Authored code style baseline."
+    }
+  ],
+  "contracts": {
+    "layerRole": "web-app-root",
+    "publicExports": ["@sdkwork/missory-pc"],
+    "providedPorts": [],
+    "requiredPorts": [],
+    "runtimeEntrypoints": ["src/main.tsx"],
+    "routeManifest": null,
+    "sdkClients": ["SdkworkMissoryAppClient"],
+    "sdkDependencies": [
+      {
+        "workspace": "sdkwork-missory-app-sdk",
+        "role": "missory-app-api-consumer",
+        "required": true,
+        "dependencyMode": "consumer-sdk",
+        "apiPrefix": "/app/v3/api",
+        "apiAuthority": "sdkwork-missory-app-api",
+        "generatedTransportImportPolicy": "forbidden",
+        "packageByLanguage": {
+          "typescript": "@sdkwork/missory-app-sdk"
+        }
+      }
+    ],
+    "permissionComposition": {},
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": []
+  },
+  "verification": {
+    "commands": ["pnpm --dir apps/sdkwork-missory-pc check"]
+  }
+}

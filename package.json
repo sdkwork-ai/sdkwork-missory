@@ -8,7 +8,9 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@sdkwork/app-topology": "workspace:*"
+    "@sdkwork/app-topology": "workspace:*",
+    "@sdkwork/sdk-common": "workspace:*",
+    "@sdkwork/utils": "workspace:*"
   },
   "scripts": {
     "stop": "pnpm exec sdkwork-app stop",
@@ -37,7 +39,24 @@
     "_sdkwork:clean": "cargo clean",
     "sdk:generate": "node scripts/generate-missory-app-sdk.mjs",
     "sdk:check": "node scripts/generate-missory-app-sdk.mjs --check",
-    "check:sdk-standard": "node ../sdkwork-specs/tools/check-sdk-standard.mjs --workspace ."
+    "check:sdk-standard": "node ../sdkwork-specs/tools/check-sdk-standard.mjs --workspace .",
+    "build:pc:dev": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment dev",
+    "build:pc:dev:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment dev --deployment-profile cloud",
+    "build:pc:test": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment test",
+    "build:pc:test:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment test --deployment-profile cloud",
+    "build:pc:staging": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment staging",
+    "build:pc:staging:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment staging --deployment-profile cloud",
+    "build:pc:demo": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment demo",
+    "build:pc:demo:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment demo --deployment-profile cloud",
+    "build:pc:prod": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment prod",
+    "build:pc:prod:cloud": "node ../sdkwork-specs/tools/build-browser-client.mjs --root . --architecture pc --environment prod --deployment-profile cloud",
+    "check:browser-build-scripts": "node ../sdkwork-specs/tools/check-browser-build-scripts.mjs --root .",
+    "check:browser-dist-layout": "node ../sdkwork-specs/tools/check-browser-dist-layout.mjs --root .",
+    "check:browser-runtime-env-standard": "node ../sdkwork-specs/tools/check-browser-runtime-env-standard.mjs --root .",
+    "check:vite-workspace-aliases": "node ../sdkwork-specs/tools/check-vite-workspace-aliases.mjs --root .",
+    "check:app-manifest-standard": "node ../sdkwork-specs/tools/check-app-manifest-standard.mjs --workspace .",
+    "check:app-manifest-deployment-standard": "node ../sdkwork-specs/tools/check-app-manifest-deployment-standard.mjs --root .",
+    "check:source-config-standard": "node ../sdkwork-specs/tools/check-source-config-standard.mjs --root ."
   },
   "pnpm": {
     "overrides": {

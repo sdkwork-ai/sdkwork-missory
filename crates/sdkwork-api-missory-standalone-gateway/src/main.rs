@@ -21,6 +21,9 @@ const BIND_KEY: &str = "SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND";
 const DEV_AUTH_BYPASS_KEY: &str = "SDKWORK_MISSORY_DEV_AUTH_BYPASS";
 /// Shared browser-origin allowlist (`CORS_SPEC.md` section 5; app-scoped keys are retired).
 const CORS_ORIGINS_KEY: &str = "SDKWORK_CORS_ALLOWED_ORIGINS";
+/// Optional static web console directory; when set, the gateway hosts the
+/// built browser app same-origin (standalone single-process deployment).
+const STATIC_DIR_KEY: &str = "SDKWORK_MISSORY_STATIC_DIR";
 /// Header carrying the resolved tenant id (pre-IAM local topology).
 const TENANT_HEADER: &str = "x-sdkwork-tenant-id";
 /// Header carrying the resolved user id (pre-IAM local topology).
@@ -145,6 +148,41 @@ fn preflight_response(origin: &str) -> Response {
     );
     headers.insert(header::VARY, HeaderValue::from_static("Origin"));
     response
+}
+
+/// SPA history fallback: GET requests to extension-less, non-API paths that
+/// routed nowhere (404 from the static file service) return the console
+/// `index.html` with 200 so client-side routing owns deep links.
+async fn spa_history_fallback(
+    axum::extract::State(index_path): axum::extract::State<std::path::PathBuf>,
+    request: Request,
+    next: Next,
+) -> Response {
+    let path = request.uri().path().to_string();
+    let method = request.method().clone();
+    let response = next.run(request).await;
+    if response.status() != StatusCode::NOT_FOUND {
+        return response;
+    }
+    let path = path.as_str();
+    let is_reserved = path.starts_with("/app/")
+        || path.starts_with("/healthz")
+        || path.starts_with("/readyz")
+        || path.starts_with("/livez")
+        || path.starts_with("/metrics")
+        || path == "/runtime-env.json";
+    let last_segment = path.rsplit('/').next().unwrap_or("");
+    if method != Method::GET || is_reserved || last_segment.contains('.') {
+        return response;
+    }
+    match tokio::fs::read(&index_path).await {
+        Ok(bytes) => (
+            [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
+            bytes,
+        )
+            .into_response(),
+        Err(_) => response,
+    }
 }
 
 fn parse_header_id(request: &Request, name: &str) -> Option<u64> {
@@ -299,10 +337,33 @@ async fn main() {
                 cors_allowlist(state, request, next).await
             },
         ));
-    let router = sdkwork_web_bootstrap::service_router(
+    let mut router = sdkwork_web_bootstrap::service_router(
         business_router,
         sdkwork_web_bootstrap::ServiceRouterConfig::default().with_always_ready(),
     );
+
+    if let Ok(static_dir) = std::env::var(STATIC_DIR_KEY) {
+        if !static_dir.trim().is_empty() {
+            let index_path = std::path::Path::new(&static_dir).join("index.html");
+            if !index_path.exists() {
+                tracing::error!(
+                    static_dir = %static_dir,
+                    "SDKWORK_MISSORY_STATIC_DIR has no index.html; refusing static hosting"
+                );
+                std::process::exit(2);
+            }
+            tracing::info!(static_dir = %static_dir, "hosting web console same-origin");
+            router = router
+                .fallback_service(
+                    tower_http::services::ServeDir::new(&static_dir)
+                        .append_index_html_on_directories(false),
+                )
+                .layer(middleware::from_fn_with_state(
+                    index_path,
+                    spa_history_fallback,
+                ));
+        }
+    }
 
     let bind = std::env::var(BIND_KEY).unwrap_or_else(|_| default_bind().to_string());
     let listener = match tokio::net::TcpListener::bind(&bind).await {

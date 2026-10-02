@@ -1,0 +1,52 @@
+.sdk-card {
+  border: 1px solid var(--sdk-color-border);
+  border-radius: 12px;
+  background: var(--sdk-color-surface);
+  padding: 16px;
+}
+
+.sdk-muted {
+  color: var(--sdk-color-text-muted);
+}
+
+.sdk-input {
+  width: 100%;
+  border: 1px solid var(--sdk-color-border);
+  border-radius: 8px;
+  background: var(--sdk-color-surface);
+  color: var(--sdk-color-text);
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.sdk-button {
+  border: 1px solid var(--sdk-color-border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--sdk-color-surface);
+  color: var(--sdk-color-text);
+}
+
+.sdk-button-primary {
+  background: var(--sdk-color-primary);
+  border-color: var(--sdk-color-primary);
+  color: var(--sdk-color-primary-contrast);
+}
+
+.sdk-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.sdk-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  border: 1px solid var(--sdk-color-border);
+  background: var(--sdk-color-surface-muted);
+  color: var(--sdk-color-text-muted);
+}

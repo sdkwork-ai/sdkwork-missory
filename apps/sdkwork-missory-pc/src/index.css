@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "../packages";
+@source "./";
+
+/* Dual-mode semantic tokens (THEME_DARKMODE_SPEC section 4). */
+:root,
+[data-sdk-color-mode="light"] {
+  --sdk-color-bg: #f8fafc;
+  --sdk-color-surface: #ffffff;
+  --sdk-color-surface-muted: #f1f5f9;
+  --sdk-color-border: #e2e8f0;
+  --sdk-color-text: #0f172a;
+  --sdk-color-text-muted: #64748b;
+  --sdk-color-primary: #0f766e;
+  --sdk-color-primary-contrast: #ffffff;
+  --sdk-color-accent: #b45309;
+  --sdk-color-danger: #b91c1c;
+  --sdk-color-ok: #15803d;
+}
+
+.dark,
+[data-sdk-color-mode="dark"] {
+  --sdk-color-bg: #0b1220;
+  --sdk-color-surface: #111a2c;
+  --sdk-color-surface-muted: #1a2438;
+  --sdk-color-border: #27334a;
+  --sdk-color-text: #e6edf7;
+  --sdk-color-text-muted: #94a3b8;
+  --sdk-color-primary: #2dd4bf;
+  --sdk-color-primary-contrast: #06251f;
+  --sdk-color-accent: #f59e0b;
+  --sdk-color-danger: #f87171;
+  --sdk-color-ok: #4ade80;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--sdk-color-bg);
+  color: var(--sdk-color-text);
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--sdk-color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

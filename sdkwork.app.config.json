@@ -136,7 +136,7 @@
           "sourceType": "CONTAINER_IMAGE",
           "packageFormat": "DOCKER_IMAGE",
           "platform": "API",
-          "url": "oci://registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
+          "url": "https://registry.sdkwork.com/v2/apps/sdkwork-missory/manifests@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           "enabled": false,
           "architecture": "x64",
           "profileBinding": "fixed",
@@ -145,7 +145,10 @@
           "metadata": {
             "image": "registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
             "digestRequiredBeforeRelease": true,
-            "releaseEvidenceState": "pending-ci"
+            "releaseEvidenceState": "pending-ci",
+            "publicationState": "reserved-release-url",
+            "signatureState": "pending-ci-attestation",
+            "releaseBuildDeferred": true
           }
         },
         {
@@ -154,7 +157,7 @@
           "sourceType": "CONTAINER_IMAGE",
           "packageFormat": "DOCKER_IMAGE",
           "platform": "API",
-          "url": "oci://registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
+          "url": "https://registry.sdkwork.com/v2/apps/sdkwork-missory/manifests@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           "enabled": false,
           "architecture": "x64",
           "profileBinding": "fixed",
@@ -163,7 +166,10 @@
           "metadata": {
             "image": "registry.sdkwork.com/apps/sdkwork-missory:0.1.0-rc.1",
             "digestRequiredBeforeRelease": true,
-            "releaseEvidenceState": "pending-ci"
+            "releaseEvidenceState": "pending-ci",
+            "publicationState": "reserved-release-url",
+            "signatureState": "pending-ci-attestation",
+            "releaseBuildDeferred": true
           }
         }
       ],

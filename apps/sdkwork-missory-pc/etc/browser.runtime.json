@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.browser-runtime-bindings",
+  "application": "sdkwork-missory-pc",
+  "runtimeTargets": [
+    "browser"
+  ],
+  "bindings": {
+    "deploymentProfile": "VITE_MISSORY_PC_DEPLOYMENT_PROFILE",
+    "environment": "VITE_MISSORY_PC_ENVIRONMENT",
+    "applicationAppUrl": "VITE_MISSORY_PC_APP_API_BASE_URL",
+    "applicationBackendUrl": "VITE_MISSORY_PC_BACKEND_API_BASE_URL"
+  }
+}
