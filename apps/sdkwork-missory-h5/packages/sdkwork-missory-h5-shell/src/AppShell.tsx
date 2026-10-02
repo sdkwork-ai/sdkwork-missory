@@ -3,7 +3,18 @@ import { NavLink, Outlet } from "react-router-dom";
 import { navigationModules } from "./navigation/modules.ts";
 import type { MissoryH5Runtime } from "@sdkwork/missory-h5-core";
 
-export function MissoryAppShell({ runtime }: { runtime: MissoryH5Runtime }) {
+
+export function MissoryAppShell({
+  runtime,
+  onSessionEnded,
+}: {
+  runtime: MissoryH5Runtime;
+  onSessionEnded?: () => void;
+}) {
+  const logout = () => {
+    runtime.session.logout();
+    onSessionEnded?.();
+  };
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <aside
@@ -34,6 +45,21 @@ export function MissoryAppShell({ runtime }: { runtime: MissoryH5Runtime }) {
             {module.label}
           </NavLink>
         ))}
+        <button
+          type="button"
+          onClick={logout}
+          style={{
+            marginTop: 12,
+            padding: "6px 10px",
+            borderRadius: 8,
+            border: "1px solid var(--sdk-color-border)",
+            background: "transparent",
+            color: "var(--sdk-color-text)",
+            cursor: "pointer",
+          }}
+        >
+          退出登录
+        </button>
         <div className="sdk-muted" style={{ fontSize: 11, marginTop: "auto" }}>
           {runtime.config.profileId} · {runtime.config.environment}
         </div>

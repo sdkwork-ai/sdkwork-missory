@@ -54,3 +54,16 @@ function walk(dir) {
   }
   return out;
 }
+
+test("session composition: gate uses shell LoginScreen and core session facade", () => {
+  const app = read("src/App.tsx");
+  assert.match(app, /SessionGate/u, "App must gate screens behind the session");
+  assert.match(app, /LoginScreen/u, "gate renders the shell LoginScreen");
+  assert.match(app, /SESSION_EXPIRED_EVENT/u, "gate listens for the session-expiry event");
+  const shellIndex = read("packages/sdkwork-missory-h5-shell/src/index.ts");
+  assert.match(shellIndex, /LoginScreen/u, "shell exports LoginScreen");
+  const coreIndex = read("packages/sdkwork-missory-h5-core/src/index.ts");
+  assert.match(coreIndex, /createMissorySessionFacade/u, "core exports the session facade");
+  const tokenManager = read("packages/sdkwork-missory-h5-core/src/session/tokenManager.ts");
+  assert.match(tokenManager, /loadStoredSession/u, "boot restores the persisted session");
+});

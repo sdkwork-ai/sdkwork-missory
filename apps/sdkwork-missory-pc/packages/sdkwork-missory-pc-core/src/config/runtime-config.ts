@@ -13,6 +13,14 @@ export interface MissoryPcRuntimeConfig {
   appApiBaseUrl: string;
   backendApiBaseUrl: string;
   openApiBaseUrl: string;
+  /**
+   * Deployment-provisioned credential-entry bootstrap `Access-Token`
+   * (IAM login/registration tenant isolation). Optional: development with the
+   * IAM dev authentication fallback accepts any value, so the field stays
+   * absent from source-controlled runtime-env documents and is injected at
+   * deployment time (BROWSER_RUNTIME_ENV_SPEC).
+   */
+  authBootstrapAccessToken?: string;
 }
 
 const ENVIRONMENTS: MissoryEnvironment[] = ["development", "test", "staging", "demo", "production"];
@@ -77,6 +85,10 @@ export function parseMissoryPcRuntimeConfig(input: unknown): MissoryPcRuntimeCon
     appApiBaseUrl: requireHttpUrl(doc.appApiBaseUrl, "appApiBaseUrl"),
     backendApiBaseUrl: requireHttpUrl(doc.backendApiBaseUrl, "backendApiBaseUrl"),
     openApiBaseUrl: requireHttpUrl(doc.openApiBaseUrl, "openApiBaseUrl"),
+    authBootstrapAccessToken:
+      typeof doc.authBootstrapAccessToken === "string" && doc.authBootstrapAccessToken.length > 0
+        ? doc.authBootstrapAccessToken
+        : undefined,
   };
 }
 

@@ -85,6 +85,23 @@ fn memory_driven_preference_answer(
     })
 }
 
+/// Extracts the preference keyword after 喜欢 (谁喜欢跑步？ -> 跑步); empty when
+/// the question carries no 喜欢 phrase.
+fn extract_preference_term(lowered: &str) -> String {
+    let Some(index) = lowered.find("喜欢") else {
+        return String::new();
+    };
+    let after = &lowered[index + "喜欢".len()..];
+    let end = after
+        .find([
+            '？', '?', '，', ',', '。', '、', '；', ';', '！', '!', '吗', '呢', '吧',
+        ])
+        .unwrap_or(after.len());
+    after[..end].trim().to_owned()
+}
+
+/// Answers a natural-language question deterministically over the owner's
+/// people and confirmed memories (no fabrication: every claim cites records).
 pub fn answer_question(question: &str, persons: &[Person], memories: &[Memory]) -> AssistantAnswer {
     let lowered = question.to_lowercase();
 
@@ -113,6 +130,7 @@ pub fn answer_question(question: &str, persons: &[Person], memories: &[Memory]) 
         return person_overview_answer(person, &person_memories);
     }
 
+    let memory_term = extract_preference_term(&lowered);
     if let Some(answer) = memory_driven_preference_answer(&memory_term, persons, memories) {
         return answer;
     }

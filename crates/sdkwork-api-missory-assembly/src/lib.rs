@@ -2,9 +2,13 @@
 //! Application bootstrap lives in `bootstrap.rs`; route inventory is in `assembly-manifest.json`.
 // SDKWORK-ASSEMBLY-LIB-CUSTOM
 
+pub mod auth;
 pub mod bootstrap;
 mod generated;
 
+pub use auth::{
+    compose_authenticated_router_from_env, dev_identity_fallback, IamPlane, MissoryContextInjector,
+};
 pub use bootstrap::{
     assemble_api_assembly_from_env, assemble_api_router, assemble_api_router_from_env,
     assemble_business_router, assemble_business_router_from_env, run_database_migrate_only,

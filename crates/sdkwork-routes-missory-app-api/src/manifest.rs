@@ -254,7 +254,6 @@ pub fn gateway_route_manifest() -> HttpRouteManifest {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sdkwork_web_contract::HttpMethod as Method;
 
     #[test]
     fn given_manifest_when_matching_owned_routes_then_every_operation_is_declared() {
@@ -287,7 +286,7 @@ mod tests {
             .match_route("GET", "/app/v3/api/missory/unknown")
             .is_none());
         assert!(manifest
-            .match_route(Method::DELETE.as_str(), "/app/v3/api/missory/my_profile")
+            .match_route("DELETE", "/app/v3/api/missory/my_profile")
             .is_none());
     }
 }
