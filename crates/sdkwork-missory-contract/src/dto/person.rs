@@ -258,17 +258,13 @@ pub struct RelationshipUpsertRequest {
 pub struct PersonDetail {
     /// The person resource.
     pub person: Person,
-    /// Relationship edge (owner → person).
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub relationships: Option<Relationship>,
+    /// Relationship edges (owner → person); empty when none was established.
+    pub relationships: Vec<Relationship>,
     /// Most recent memories, newest first.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub recent_memories: Vec<crate::dto::Memory>,
     /// Open commitments (promise memories), newest first.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub commitments: Vec<crate::dto::Memory>,
     /// Stories the person participates in.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub stories: Vec<crate::dto::Story>,
     /// Computed stats.
     pub stats: PersonDetailStats,

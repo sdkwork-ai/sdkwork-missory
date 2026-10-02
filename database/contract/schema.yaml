@@ -1,39 +1,30 @@
-schemaVersion: 1
+schema_version: 1
 kind: sdkwork.database.schema
-module: missory
-contract_version: 1.0.0
 database_role: authoritative-server
-table_prefix: missory_
+module_id: missory
+contract_version: 1.0.0
+owner_team: sdkwork-missory
+compliance_level: L2
 engines:
   - postgres
+table_prefix: missory_
+module: missory
 tables:
-  missory_my_profile:
-    domain: communication
-    capability: missory
-    description: Owner profile of the current user (PRD section 11).
-    subjectScope: [tenant_id, user_id]
-  missory_person:
-    domain: communication
-    capability: missory
-    description: Person profiles in the owner's social memory (PRD section 12).
-    subjectScope: [tenant_id, user_id]
-  missory_relationship:
-    domain: communication
-    capability: missory
-    description: Owner-to-person relationship edges (PRD section 14).
-    subjectScope: [tenant_id, user_id]
-  missory_memory:
-    domain: communication
-    capability: missory
-    description: Structured memories with Fact/Inference separation (PRD sections 17-19).
-    subjectScope: [tenant_id, user_id]
-  missory_story:
-    domain: communication
-    capability: missory
-    description: Stories bundling shared experiences (PRD section 22).
-    subjectScope: [tenant_id, user_id]
-  missory_reminder_state:
-    domain: communication
-    capability: missory
-    description: Dismiss/snooze state for derived reminders (PRD section 27).
-    subjectScope: [tenant_id, user_id]
+  - name: missory_my_profile
+    lifecycle_status: active
+    owner: sdkwork-missory
+  - name: missory_person
+    lifecycle_status: active
+    owner: sdkwork-missory
+  - name: missory_relationship
+    lifecycle_status: active
+    owner: sdkwork-missory
+  - name: missory_memory
+    lifecycle_status: active
+    owner: sdkwork-missory
+  - name: missory_story
+    lifecycle_status: active
+    owner: sdkwork-missory
+  - name: missory_reminder_state
+    lifecycle_status: active
+    owner: sdkwork-missory

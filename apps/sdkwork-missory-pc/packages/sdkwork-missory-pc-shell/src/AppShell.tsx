@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 import { navigationModules } from "./navigation/modules.ts";
@@ -10,8 +11,15 @@ export function MissoryAppShell({
   runtime: MissoryPcRuntime;
   onSessionEnded?: () => void;
 }) {
+  const [logoutError, setLogoutError] = useState<string | null>(null);
   const logout = () => {
-    runtime.session.logout();
+    try {
+      runtime.session.logout();
+    } catch (cause) {
+      setLogoutError(cause instanceof Error ? cause.message : String(cause));
+      return;
+    }
+    setLogoutError(null);
     onSessionEnded?.();
   };
   return (
@@ -59,6 +67,11 @@ export function MissoryAppShell({
         >
           退出登录
         </button>
+        {logoutError ? (
+          <div role="alert" style={{ fontSize: 12, color: "#b91c1c" }}>
+            退出失败：{logoutError}
+          </div>
+        ) : null}
         <div className="sdk-muted" style={{ fontSize: 11, marginTop: "auto" }}>
           {runtime.config.profileId} · {runtime.config.environment}
         </div>

@@ -1,4 +1,5 @@
 export { MissoryAppShell } from "./AppShell.tsx";
+export { AppErrorBoundary } from "./components/AppErrorBoundary.tsx";
 export { HomeScreen } from "./screens/HomeScreen.tsx";
 export { PeopleListScreen } from "./screens/PeopleListScreen.tsx";
 export { PersonDetailScreen } from "./screens/PersonDetailScreen.tsx";

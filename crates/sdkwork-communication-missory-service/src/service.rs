@@ -519,7 +519,7 @@ impl MissoryAppApi for MissoryService {
             .or(person.last_contacted_at.as_deref())
             .and_then(parse_rfc3339);
         Ok(PersonDetail {
-            relationships: relationship,
+            relationships: relationship.into_iter().collect::<Vec<_>>(),
             recent_memories,
             commitments,
             stories,

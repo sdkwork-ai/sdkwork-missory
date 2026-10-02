@@ -1,13 +1,48 @@
 {
   "schemaVersion": 1,
   "kind": "sdkwork.database.table-registry",
-  "module": "missory",
   "tables": [
-    { "table_name": "missory_my_profile", "description": "Owner profile of the current user." },
-    { "table_name": "missory_person", "description": "Person profiles in the owner's social memory." },
-    { "table_name": "missory_relationship", "description": "Owner-to-person relationship edges." },
-    { "table_name": "missory_memory", "description": "Structured memories with Fact/Inference separation." },
-    { "table_name": "missory_story", "description": "Stories bundling shared experiences." },
-    { "table_name": "missory_reminder_state", "description": "Dismiss/snooze state for derived reminders." }
+    {
+      "table_name": "missory_my_profile",
+      "description": "Owner profile of the current user.",
+      "owner": "sdkwork-missory",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "missory_person",
+      "description": "Person profiles in the owner's social memory.",
+      "owner": "sdkwork-missory",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "missory_relationship",
+      "description": "Owner-to-person relationship edges.",
+      "owner": "sdkwork-missory",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "missory_memory",
+      "description": "Structured memories with Fact/Inference separation.",
+      "owner": "sdkwork-missory",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "missory_story",
+      "description": "Stories bundling shared experiences.",
+      "owner": "sdkwork-missory",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "missory_reminder_state",
+      "description": "Dismiss/snooze state for derived reminders.",
+      "owner": "sdkwork-missory",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    }
   ]
 }

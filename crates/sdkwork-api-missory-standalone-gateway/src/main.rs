@@ -143,9 +143,33 @@ async fn shutdown_signal() {
     tokio::time::sleep(Duration::from_millis(50)).await;
 }
 
+/// Development-only console runtime-env: injects the deployment-provisioned
+/// credential-entry bootstrap `Access-Token` into the served document so
+/// same-origin browser consoles can complete IAM login without build-time
+/// token provisioning. Falls back to the static file when nothing resolves.
+async fn development_runtime_env(
+    axum::extract::State(static_dir): axum::extract::State<String>,
+) -> Response {
+    if let Some(body) =
+        sdkwork_api_missory_assembly::development_console_runtime_env_json(&static_dir).await
+    {
+        return ([(header::CONTENT_TYPE, "application/json")], body).into_response();
+    }
+    match tokio::fs::read(format!("{static_dir}/runtime-env.json")).await {
+        Ok(bytes) => (
+            [(header::CONTENT_TYPE, "application/json")],
+            bytes,
+        )
+            .into_response(),
+        Err(_) => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+
 /// Mounts the built web console when `SDKWORK_MISSORY_STATIC_DIR` is set:
 /// static files + SPA history fallback (reserved health/API paths excluded).
-fn mount_static_console_if_configured(mut router: Router) -> Option<Router> {
+/// In development the console runtime-env document is served dynamically with
+/// the deployment bootstrap credential injected.
+fn mount_static_console_if_configured(mut router: Router, environment: &str) -> Option<Router> {
     let Ok(static_dir) = std::env::var(STATIC_DIR_KEY) else {
         return Some(router);
     };
@@ -161,6 +185,13 @@ fn mount_static_console_if_configured(mut router: Router) -> Option<Router> {
         return None;
     }
     tracing::info!(static_dir = %static_dir, "hosting web console same-origin");
+    if environment == "development" {
+        tracing::info!("development runtime-env injects the console bootstrap credential");
+        router = router.route(
+            "/runtime-env.json",
+            axum::routing::get(development_runtime_env).with_state(static_dir.clone()),
+        );
+    }
     router = router
         .fallback_service(
             tower_http::services::ServeDir::new(&static_dir)
@@ -245,7 +276,7 @@ async fn main() -> std::process::ExitCode {
         sdkwork_web_bootstrap::ServiceRouterConfig::default().with_always_ready(),
     );
 
-    let Some(router) = mount_static_console_if_configured(router) else {
+    let Some(router) = mount_static_console_if_configured(router, &environment) else {
         return std::process::ExitCode::from(2);
     };
 

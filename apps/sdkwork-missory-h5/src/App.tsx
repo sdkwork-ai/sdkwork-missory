@@ -8,6 +8,7 @@ import {
   HomeScreen,
   LoginScreen,
   MemoriesScreen,
+  AppErrorBoundary,
   MissoryAppShell,
   PeopleListScreen,
   PersonDetailScreen,
@@ -43,10 +44,7 @@ function SessionGate({
   runtime: BootstrappedMissoryH5Runtime;
   children: ReactNode;
 }) {
-  const bypassed = runtime.config.environment === "development";
-  const [authenticated, setAuthenticated] = useState(
-    bypassed || runtime.session.isAuthenticated(),
-  );
+  const [authenticated, setAuthenticated] = useState(runtime.session.isAuthenticated());
   const expire = useCallback(() => {
     runtime.session.logout();
     setAuthenticated(false);
@@ -66,6 +64,7 @@ export function App({ runtime }: { runtime: BootstrappedMissoryH5Runtime }) {
   return (
     <HashRouter>
       <SessionGate runtime={runtime}>
+        <AppErrorBoundary>
         <Routes>
           <Route element={<MissoryAppShell runtime={runtime} onSessionEnded={handleLogout} />}>
             <Route index element={<HomeScreen runtime={runtime} />} />
@@ -78,6 +77,7 @@ export function App({ runtime }: { runtime: BootstrappedMissoryH5Runtime }) {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
+        </AppErrorBoundary>
       </SessionGate>
     </HashRouter>
   );

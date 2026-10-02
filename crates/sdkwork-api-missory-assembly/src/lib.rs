@@ -4,6 +4,7 @@
 
 pub mod auth;
 pub mod bootstrap;
+pub mod console_env;
 mod generated;
 
 pub use auth::{
@@ -15,6 +16,7 @@ pub use bootstrap::{
     assemble_business_router, assemble_business_router_from_env, run_database_migrate_only,
     ApiAssembly, MissoryReadinessCheck, OPENAPI_JSON, PERMISSION_CATALOG, ROUTE_MANIFEST_JSON,
 };
+pub use console_env::development_console_runtime_env_json;
 
 /// Number of route crates composed into this assembly.
 pub fn assembly_route_count() -> usize {

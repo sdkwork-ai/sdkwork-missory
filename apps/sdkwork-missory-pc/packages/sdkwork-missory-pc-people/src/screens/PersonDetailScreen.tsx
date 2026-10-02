@@ -337,11 +337,11 @@ export function PersonDetailScreen({ runtime }: { runtime: MissoryPcRuntime }) {
       </SectionCard>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         <SectionCard title="重要记忆">
-          {detail.recentMemories.length === 0 ? (
+          {(detail.recentMemories ?? []).length === 0 ? (
             <EmptyState title="暂无记忆" />
           ) : (
             <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 8 }}>
-              {detail.recentMemories.map((memory) => (
+              {(detail.recentMemories ?? []).map((memory) => (
                 <li key={String(memory.id)}>
                   <Badge>{memoryTypeLabel(memory.type)}</Badge>{" "}
                   {truncate(memory.content, 46)}
@@ -351,11 +351,11 @@ export function PersonDetailScreen({ runtime }: { runtime: MissoryPcRuntime }) {
           )}
         </SectionCard>
         <SectionCard title="你答应过 TA">
-          {detail.commitments.length === 0 ? (
+          {(detail.commitments ?? []).length === 0 ? (
             <EmptyState title="没有待履行的承诺" />
           ) : (
             <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 8 }}>
-              {detail.commitments.map((memory) => (
+              {(detail.commitments ?? []).map((memory) => (
                 <li key={String(memory.id)}>{truncate(memory.content, 46)}</li>
               ))}
             </ul>

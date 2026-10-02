@@ -235,7 +235,7 @@ export function MemoriesScreen({ runtime }: { runtime: MissoryH5Runtime }) {
                 <span>
                   <Badge>{memoryTypeLabel(memory.type)}</Badge>{" "}
                   <Badge>{memory.origin === "inference" ? "推断" : "事实"}</Badge>{" "}
-                  <Badge>{memory.status}</Badge>{" "}
+                  <Badge>{memory.status === "candidate" ? "候选" : memory.status === "rejected" ? "已拒绝" : "已确认"}</Badge>{" "}
                   {truncate(memory.content, 60)}
                   {memory.confidence !== undefined && memory.confidence !== null ? (
                     <span className="sdk-muted" style={{ fontSize: 12 }}> · 置信 {memory.confidence}</span>

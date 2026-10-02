@@ -153,9 +153,11 @@ async fn given_person_lifecycle_when_exercised_then_crud_semantics_hold() {
     assert_eq!(status, StatusCode::OK);
     assert_eq!(json["data"]["item"]["person"]["displayName"], "李明");
     assert_eq!(
-        json["data"]["item"]["relationships"]["relationshipTypes"][0],
+        json["data"]["item"]["relationships"][0]["relationshipTypes"][0],
         "classmate"
     );
+    assert!(json["data"]["item"]["recentMemories"].is_array());
+    assert!(json["data"]["item"]["commitments"].is_array());
 
     // list with keyword filter → page envelope
     let (status, json) = send_json(
