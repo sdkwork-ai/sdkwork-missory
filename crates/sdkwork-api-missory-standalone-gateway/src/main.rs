@@ -89,11 +89,7 @@ fn parse_cors_origins(raw: &str) -> Vec<String> {
 /// CORS allowlist middleware (`CORS_SPEC.md`): preflight answers 204 with the
 /// exact allowlisted origin reflected; simple responses carry the allowlist
 /// headers. Non-allowlisted origins get no CORS headers and browsers block.
-async fn cors_allowlist(
-    origins: Arc<Vec<String>>,
-    request: Request,
-    next: Next,
-) -> Response {
+async fn cors_allowlist(origins: Arc<Vec<String>>, request: Request, next: Next) -> Response {
     let request_origin = request
         .headers()
         .get(header::ORIGIN)
@@ -176,11 +172,7 @@ async fn spa_history_fallback(
         return response;
     }
     match tokio::fs::read(&index_path).await {
-        Ok(bytes) => (
-            [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-            bytes,
-        )
-            .into_response(),
+        Ok(bytes) => ([(header::CONTENT_TYPE, "text/html; charset=utf-8")], bytes).into_response(),
         Err(_) => response,
     }
 }
@@ -201,7 +193,11 @@ async fn context_injection(
     mut request: Request,
     next: Next,
 ) -> Response {
-    if request.extensions().get::<MissoryRequestContext>().is_none() {
+    if request
+        .extensions()
+        .get::<MissoryRequestContext>()
+        .is_none()
+    {
         let header_user = parse_header_id(&request, USER_HEADER);
         let context = match header_user {
             Some(user_id) => {
@@ -316,7 +312,10 @@ async fn main() {
 
     let business_router = sdkwork_api_missory_assembly::assemble_business_router_from_env()
         .expect("assemble api router")
-        .layer(middleware::from_fn_with_state(dev_bypass, context_injection))
+        .layer(middleware::from_fn_with_state(
+            dev_bypass,
+            context_injection,
+        ))
         .layer(middleware::from_fn_with_state(
             cors_origins.clone(),
             |axum::extract::State(state): axum::extract::State<Arc<Vec<String>>>,
@@ -392,7 +391,10 @@ mod tests {
         std::env::set_var(DEV_AUTH_BYPASS_KEY, "true");
         let result = resolve_dev_bypass("production");
         std::env::remove_var(DEV_AUTH_BYPASS_KEY);
-        assert!(result.is_err(), "bypass must fail closed outside development");
+        assert!(
+            result.is_err(),
+            "bypass must fail closed outside development"
+        );
     }
 
     #[test]
