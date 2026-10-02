@@ -1,0 +1,30 @@
+{
+  "name": "@sdkwork/sdkwork-missory-mini-program",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm dev:standalone",
+    "dev:standalone": "pnpm exec sdkwork-app dev --root ../.. --deployment-profile standalone",
+    "dev:cloud": "pnpm exec sdkwork-app dev --root ../.. --deployment-profile cloud",
+    "build": "node scripts/build-runtime.mjs",
+    "build:mini-program": "node scripts/build-runtime.mjs",
+    "build:mini-program:staging": "node scripts/build-runtime.mjs --deployment-profile cloud --environment staging",
+    "build:mini-program:prod": "node scripts/build-runtime.mjs --deployment-profile cloud --environment production",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test tests/*.test.mjs",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "verify": "pnpm check"
+  },
+  "dependencies": {
+    "@sdkwork/missory-mp-commons": "workspace:*",
+    "@sdkwork/missory-mp-core": "workspace:*",
+    "@sdkwork/missory-mp-host": "workspace:*"
+  },
+  "devDependencies": {
+    "esbuild": "catalog:",
+    "miniprogram-api-typings": "catalog:",
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
+  }
+}

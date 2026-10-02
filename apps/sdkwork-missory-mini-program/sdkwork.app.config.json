@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 3,
+  "kind": "sdkwork.app",
+  "app": {
+    "key": "sdkwork-missory-mini-program",
+    "name": "SDKWork Missory Mini Program",
+    "displayName": "念忆 · Missory",
+    "description": "WeChat mini program for AI personal social memory: people, memories, reminders, and the draft-only social AI assistant.",
+    "vendor": "SDKWork",
+    "officialWebsiteUrl": "https://sdkwork.com/apps/sdkwork-missory-pc",
+    "supportUrl": "https://sdkwork.com/support",
+    "privacyPolicyUrl": "https://sdkwork.com/privacy",
+    "termsOfServiceUrl": "https://sdkwork.com/terms",
+    "iconUrl": "https://cdn.sdkwork.com/apps/sdkwork-missory/assets/icon-1024.png",
+    "appType": "APP_UNIAPP",
+    "versionSource": "package.json",
+    "identifiers": {
+      "packageName": null,
+      "bundleId": null,
+      "desktopAppId": null,
+      "containerImage": null
+    }
+  },
+  "backend": {
+    "profileKey": "backend-root-admin",
+    "ownerMode": "tenant",
+    "grantMode": "current",
+    "platform": "MP_WEIXIN",
+    "appId": "sdkwork-missory-mini-program",
+    "tenantId": "100001",
+    "organizationId": "0",
+    "accessTokenPermissionScope": [
+      "missory.personal-data.owner"
+    ]
+  },
+  "runtime": {
+    "family": "mini-program",
+    "framework": "weixin-mini-program",
+    "runtimes": [
+      "MP_WEIXIN"
+    ],
+    "deliveryModes": [
+      "MINI_PROGRAM"
+    ],
+    "defaultPlatform": "MP_WEIXIN",
+    "defaultArchitecture": "mini-program",
+    "clientArchitectures": [
+      "mini-program"
+    ],
+    "supportedDeploymentProfiles": [
+      "standalone",
+      "cloud"
+    ],
+    "defaultDeploymentProfile": "standalone"
+  },
+  "media": {
+    "icons": {
+      "primary": {
+        "id": "sdkwork-missory-pc-primary-icon",
+        "type": "ICON",
+        "purpose": "PRIMARY",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-missory/assets/icon-1024.png",
+        "platform": "WEB",
+        "locale": "en-US",
+        "width": 1024,
+        "height": 1024,
+        "format": "PNG",
+        "fileSizeBytes": 524288,
+        "alphaChannel": false,
+        "sortOrder": 0,
+        "enabled": true,
+        "metadata": {
+          "generatedPlaceholder": true
+        }
+      },
+      "platform": [],
+      "metadata": {
+        "generatedPlaceholder": true
+      }
+    },
+    "screenshots": [],
+    "previews": [
+      {
+        "id": "sdkwork-missory-pc-catalog-preview",
+        "type": "PREVIEW_IMAGE",
+        "purpose": "CATALOG_PREVIEW",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-missory/media/preview-cover.png",
+        "platform": "WEB",
+        "locale": "en-US",
+        "width": 1600,
+        "height": 900,
+        "format": "PNG",
+        "fileSizeBytes": 786432,
+        "alphaChannel": false,
+        "caption": "念忆 · Missory PC preview.",
+        "sortOrder": 0,
+        "enabled": true,
+        "metadata": {
+          "generatedPlaceholder": true,
+          "altText": "sdkwork-missory-pc app screenshot."
+        }
+      }
+    ],
+    "metadata": {
+      "assetVersion": "0.1.0",
+      "defaultLocale": "en-US"
+    }
+  },
+  "publish": {
+    "status": "DRAFT",
+    "platforms": [
+      "MP_WEIXIN"
+    ],
+    "installPlatforms": [
+      "MP_WEIXIN"
+    ],
+    "defaultPackageId": "web-universal-standalone-browser-zip",
+    "installSkill": {
+      "name": "sdkwork-skills-app"
+    },
+    "stores": [],
+    "storeUrl": "https://sdkwork.com/apps/sdkwork-missory-pc",
+    "config": {
+      "workspaceRoot": "apps/sdkwork-missory-mini-program",
+      "framework": "weixin-mini-program",
+      "managedBy": "sdkwork-missory"
+    }
+  },
+  "artifacts": {
+    "installConfig": {
+      "defaultPackageId": "mp-weixin-standalone-mini-program",
+      "installCommand": "sdkwork install sdkwork-missory-pc",
+      "launchCommand": "sdkwork open sdkwork-missory-pc",
+      "uninstallCommand": "sdkwork uninstall sdkwork-missory-pc",
+      "packages": [
+        {
+          "id": "mp-weixin-standalone-mini-program",
+          "name": "念忆 Missory WeChat mini program (standalone)",
+          "sourceType": "MINI_PROGRAM",
+          "packageFormat": "MINI_PROGRAM_PACKAGE",
+          "platform": "MP_WEIXIN",
+          "architecture": "mini-program",
+          "profileBinding": "fixed",
+          "deploymentProfile": "standalone",
+          "runtimeTarget": "mini-program",
+          "targetPlatform": "mp-weixin",
+          "clientArchitecture": "mini-program",
+          "url": "https://github.com/sdkwork-ai/sdkwork-missory/releases/download/v0.1.0/sdkwork-missory-mp-0.1.0-mp-weixin.zip",
+          "enabled": true,
+          "metadata": {
+            "releaseBuildDeferred": true,
+            "publicationState": "reserved-release-url"
+          },
+          "checksumAlgorithm": "SHA-256",
+          "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+          "sizeBytes": 0
+        },
+        {
+          "id": "mp-weixin-cloud-mini-program",
+          "name": "念忆 Missory WeChat mini program (cloud)",
+          "sourceType": "MINI_PROGRAM",
+          "packageFormat": "MINI_PROGRAM_PACKAGE",
+          "platform": "MP_WEIXIN",
+          "architecture": "mini-program",
+          "profileBinding": "fixed",
+          "deploymentProfile": "cloud",
+          "runtimeTarget": "mini-program",
+          "targetPlatform": "mp-weixin",
+          "clientArchitecture": "mini-program",
+          "url": "https://github.com/sdkwork-ai/sdkwork-missory/releases/download/v0.1.0/sdkwork-missory-mp-0.1.0-mp-weixin-cloud.zip",
+          "enabled": true,
+          "metadata": {
+            "releaseBuildDeferred": true,
+            "publicationState": "reserved-release-url"
+          },
+          "checksumAlgorithm": "SHA-256",
+          "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+          "sizeBytes": 0
+        }
+      ],
+      "metadata": {
+        "workspaceRoot": "apps/sdkwork-missory-pc",
+        "framework": "react",
+        "packageManager": "pnpm@10.33.0"
+      }
+    }
+  },
+  "release": {
+    "currentVersion": "0.1.0",
+    "defaultChannel": "DEV",
+    "latest": {
+      "DEV": "0.1.0"
+    },
+    "notes": [
+      {
+        "version": "0.1.0",
+        "releaseChannel": "DEV",
+        "title": "念忆 Missory 小程序 0.1.0",
+        "summary": "Initial WeChat mini program for the Missory app-api.",
+        "content": "Home digest, people, memories confirm workflow, and the draft-only assistant.",
+        "highlights": [
+          "wx.request→fetch host adapter bridging the generated SDK transport",
+          "runtime bundle per deployment profile"
+        ],
+        "packageIds": [
+          "mp-weixin-standalone-mini-program",
+          "mp-weixin-cloud-mini-program"
+        ],
+        "publishedAt": "2026-10-01T00:00:00Z",
+        "current": true,
+        "forceUpdate": false,
+        "minSupportedVersion": "0.1.0",
+        "metadata": {
+          "releaseState": "development"
+        }
+      }
+    ]
+  },
+  "security": {
+    "checksumRequired": false,
+    "signatureRequired": false,
+    "sbomRequired": false
+  },
+  "devApp": {
+    "enabled": true,
+    "sourceRoot": ".",
+    "build": {
+      "targets": [
+        {
+          "id": "mp-production",
+          "command": "pnpm build:mini-program:prod",
+          "cwd": ".",
+          "packageId": "mp-weixin-cloud-mini-program",
+          "outputs": [
+            {
+              "path": "src/runtime",
+              "type": "directory"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "standardOwner": "sdkwork-platform",
+    "component": "sdkwork-missory-mini-program",
+    "surface": "mini-program",
+    "initializedAt": "2026-10-01T00:00:00Z",
+    "deploymentConfig": "etc/sdkwork.deployment.config.json"
+  }
+}

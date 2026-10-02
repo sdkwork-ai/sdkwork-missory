@@ -1,0 +1,7 @@
+{
+  "SDKWORK_ENVIRONMENT": "production",
+  "SDKWORK_DEPLOYMENT_PROFILE": "standalone",
+  "SDKWORK_PROFILE_ID": "standalone.production",
+  "SDKWORK_RUNTIME_TARGET": "mini-program",
+  "SDKWORK_MISSORY_MP_APP_API_BASE_URL": "https://missory.sdkwork.com"
+}

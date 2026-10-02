@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">今天，有谁值得你想起？</view>
+    <view wx:if="{{loading}}" class="muted">加载中…</view>
+    <view wx:elif="{{error}}" class="muted">{{error}}</view>
+    <block wx:else>
+      <view wx:for="{{reminders}}" wx:key="reminderId" class="row">
+        <view><strong>{{item.name}}</strong> <text class="muted">{{item.title}}</text> <text class="badge">{{item.type}}</text></view>
+        <view class="button" bindtap="dismiss" data-id="{{item.reminderId}}">忽略</view>
+      </view>
+      <view wx:if="{{reminders.length === 0}}" class="muted">暂无提醒</view>
+    </block>
+  </view>
+  <view class="card">
+    <view class="card-title">最近记忆</view>
+    <view wx:for="{{memories}}" wx:key="id" class="row">{{item.content}}</view>
+    <view wx:if="{{memories.length === 0}}" class="muted">还没有记忆</view>
+  </view>
+  <view class="card">
+    <view class="card-title">最近人物</view>
+    <view wx:for="{{persons}}" wx:key="id" class="row">
+      <navigator url="/pages/person/index?id={{item.id}}">{{item.name}}</navigator>
+    </view>
+    <view wx:if="{{persons.length === 0}}" class="muted">还没有人物</view>
+  </view>
+</view>

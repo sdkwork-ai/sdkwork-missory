@@ -1,0 +1,11 @@
+{
+  "miniprogramRoot": "src/",
+  "projectname": "sdkwork-missory-mini-program",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true
+  }
+}

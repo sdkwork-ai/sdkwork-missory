@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">问我任何关于你人际关系的问题</view>
+    <input value="{{question}}" bindinput="onQuestion" placeholder="李明是谁？" />
+    <view class="button" bindtap="ask" style="margin-top: 12rpx;">发送</view>
+    <view wx:if="{{answer}}" style="margin-top: 16rpx; white-space: pre-wrap;">{{answer}}</view>
+  </view>
+  <view class="card">
+    <view class="card-title">消息草稿（仅草稿，不会自动发送）</view>
+    <input value="{{personId}}" bindinput="onPersonId" placeholder="人物 ID" />
+    <view class="button" bindtap="draft" style="margin-top: 12rpx;">生成生日祝福草稿</view>
+    <view wx:if="{{draft}}" style="margin-top: 16rpx; white-space: pre-wrap;">{{draft}}</view>
+  </view>
+</view>

@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/people/index",
+    "pages/person/index",
+    "pages/memories/index",
+    "pages/assistant/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "念忆 · Missory",
+    "navigationBarBackgroundColor": "#0f766e",
+    "navigationBarTextStyle": "white"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

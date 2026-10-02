@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component-deployment",
+  "application": "sdkwork-missory-mini-program",
+  "parentDeploymentConfig": "../../../etc/sdkwork.deployment.config.json",
+  "parentTopologySpec": "../../../specs/topology.spec.json",
+  "runtimeConfig": null,
+  "runtimeTarget": "mini-program",
+  "profiles": {
+    "standalone.development": {
+      "source": "config/mini-program/runtime-env.standalone.development.json"
+    },
+    "standalone.test": {
+      "source": "config/mini-program/runtime-env.standalone.test.json"
+    },
+    "standalone.staging": {
+      "source": "config/mini-program/runtime-env.standalone.staging.json"
+    },
+    "standalone.demo": {
+      "source": "config/mini-program/runtime-env.standalone.demo.json"
+    },
+    "standalone.production": {
+      "source": "config/mini-program/runtime-env.standalone.production.json"
+    },
+    "cloud.development": {
+      "source": "config/mini-program/runtime-env.cloud.development.json"
+    },
+    "cloud.test": {
+      "source": "config/mini-program/runtime-env.cloud.test.json"
+    },
+    "cloud.staging": {
+      "source": "config/mini-program/runtime-env.cloud.staging.json"
+    },
+    "cloud.demo": {
+      "source": "config/mini-program/runtime-env.cloud.demo.json"
+    },
+    "cloud.production": {
+      "source": "config/mini-program/runtime-env.cloud.production.json"
+    }
+  },
+  "materialization": {
+    "authority": "../../../etc/sdkwork.deployment.config.json",
+    "command": "node scripts/build-runtime.mjs",
+    "format": "mini-program-runtime-bundle",
+    "output": "../src/runtime/runtime.js",
+    "checkMode": "--check"
+  }
+}

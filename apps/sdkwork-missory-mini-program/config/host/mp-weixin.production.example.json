@@ -1,0 +1,5 @@
+{
+  "appid": "touristappid",
+  "projectname": "sdkwork-missory-mini-program-production",
+  "description": "WeChat devtools project profile for production. Copy to project.config.json with the real appid."
+}

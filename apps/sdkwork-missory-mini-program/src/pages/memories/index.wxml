@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">从文本提取候选记忆</view>
+    <textarea value="{{text}}" bindinput="onText" placeholder="粘贴对话或随笔…" style="width: 100%; min-height: 120rpx;" />
+    <view class="button" bindtap="extract" style="margin-top: 12rpx;">提取候选</view>
+    <view wx:if="{{note}}" class="muted">{{note}}</view>
+  </view>
+  <view class="card">
+    <view class="card-title">记忆列表</view>
+    <view wx:if="{{loading}}" class="muted">加载中…</view>
+    <view wx:for="{{memories}}" wx:key="id" class="row">
+      <view>
+        <text class="badge">{{item.type}}</text>
+        <text class="badge">{{item.origin === 'inference' ? '推断' : '事实'}}</text>
+        {{item.content}}
+      </view>
+      <view wx:if="{{item.status === 'candidate'}}" style="display: flex; gap: 12rpx;">
+        <view class="button" bindtap="confirm" data-id="{{item.id}}">确认</view>
+        <view class="button" style="background: #64748b;" bindtap="reject" data-id="{{item.id}}">拒绝</view>
+      </view>
+    </view>
+    <view wx:if="{{memories.length === 0 && !loading}}" class="muted">没有匹配的记忆</view>
+  </view>
+</view>
