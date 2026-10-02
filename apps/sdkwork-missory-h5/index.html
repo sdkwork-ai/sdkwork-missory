@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0f766e" />
+    <title>念忆 · Missory — 记住每一个重要的人</title>
+    <script>
+      // Anti-flash boot script (THEME_DARKMODE_SPEC section 3.3): resolve the
+      // color mode before first paint; localStorage wins, default light.
+      (function () {
+        try {
+          var stored = localStorage.getItem("sdkwork-color-mode");
+          var mode = stored === "dark" || stored === "light" ? stored : "light";
+          document.documentElement.setAttribute("data-sdk-color-mode", mode);
+          if (mode === "dark") document.documentElement.classList.add("dark");
+        } catch (error) {
+          document.documentElement.setAttribute("data-sdk-color-mode", "light");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

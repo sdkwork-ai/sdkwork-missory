@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 3,
+  "kind": "sdkwork.app",
+  "app": {
+    "key": "sdkwork-missory-h5",
+    "name": "SDKWork Missory H5",
+    "displayName": "念忆 · Missory",
+    "description": "H5 mobile browser app for AI personal social memory: people, memories, reminders, and the draft-only social AI assistant.",
+    "vendor": "SDKWork",
+    "officialWebsiteUrl": "https://sdkwork.com/apps/sdkwork-missory-h5",
+    "supportUrl": "https://sdkwork.com/support",
+    "privacyPolicyUrl": "https://sdkwork.com/privacy",
+    "termsOfServiceUrl": "https://sdkwork.com/terms",
+    "iconUrl": "https://cdn.sdkwork.com/apps/sdkwork-missory/assets/icon-1024.png",
+    "appType": "APP_REACT",
+    "versionSource": "package.json",
+    "identifiers": {
+      "packageName": null,
+      "bundleId": null,
+      "desktopAppId": null,
+      "containerImage": null
+    }
+  },
+  "backend": {
+    "profileKey": "backend-root-admin",
+    "ownerMode": "tenant",
+    "grantMode": "current",
+    "platform": "H5",
+    "appId": "sdkwork-missory-h5",
+    "tenantId": "100001",
+    "organizationId": "0",
+    "accessTokenPermissionScope": [
+      "missory.personal-data.owner"
+    ]
+  },
+  "runtime": {
+    "family": "mobile",
+    "framework": "react-h5",
+    "runtimes": [
+      "H5"
+    ],
+    "deliveryModes": [
+      "WEB_URL"
+    ],
+    "defaultPlatform": "H5",
+    "defaultArchitecture": "universal",
+    "clientArchitectures": [
+      "h5"
+    ],
+    "supportedDeploymentProfiles": [
+      "standalone",
+      "cloud"
+    ],
+    "defaultDeploymentProfile": "standalone"
+  },
+  "media": {
+    "icons": {
+      "primary": {
+        "id": "sdkwork-missory-h5-primary-icon",
+        "type": "ICON",
+        "purpose": "PRIMARY",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-missory/assets/icon-1024.png",
+        "platform": "WEB",
+        "locale": "en-US",
+        "width": 1024,
+        "height": 1024,
+        "format": "PNG",
+        "fileSizeBytes": 524288,
+        "alphaChannel": false,
+        "sortOrder": 0,
+        "enabled": true,
+        "metadata": {
+          "generatedPlaceholder": true
+        }
+      },
+      "platform": [],
+      "metadata": {
+        "generatedPlaceholder": true
+      }
+    },
+    "screenshots": [],
+    "previews": [
+      {
+        "id": "sdkwork-missory-h5-catalog-preview",
+        "type": "PREVIEW_IMAGE",
+        "purpose": "CATALOG_PREVIEW",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-missory/media/preview-cover.png",
+        "platform": "WEB",
+        "locale": "en-US",
+        "width": 1600,
+        "height": 900,
+        "format": "PNG",
+        "fileSizeBytes": 786432,
+        "alphaChannel": false,
+        "caption": "念忆 · Missory PC preview.",
+        "sortOrder": 0,
+        "enabled": true,
+        "metadata": {
+          "generatedPlaceholder": true,
+          "altText": "sdkwork-missory-h5 app screenshot."
+        }
+      }
+    ],
+    "metadata": {
+      "assetVersion": "0.1.0",
+      "defaultLocale": "en-US"
+    }
+  },
+  "publish": {
+    "status": "DRAFT",
+    "platforms": [
+      "WEB"
+    ],
+    "installPlatforms": [
+      "WEB"
+    ],
+    "defaultPackageId": "web-universal-standalone-browser-zip",
+    "installSkill": {
+      "name": "sdkwork-skills-app"
+    },
+    "stores": [],
+    "storeUrl": "https://sdkwork.com/apps/sdkwork-missory-h5",
+    "config": {
+      "workspaceRoot": "apps/sdkwork-missory-h5",
+      "framework": "react",
+      "managedBy": "sdkwork-missory"
+    }
+  },
+  "artifacts": {
+    "installConfig": {
+      "defaultPackageId": "h5-universal-standalone-browser-zip",
+      "installCommand": "sdkwork install sdkwork-missory-h5",
+      "launchCommand": "sdkwork open sdkwork-missory-h5",
+      "uninstallCommand": "sdkwork uninstall sdkwork-missory-h5",
+      "packages": [
+        {
+          "id": "h5-universal-standalone-browser-zip",
+          "name": "念忆 Missory H5 standalone web release",
+          "sourceType": "BINARY_URL",
+          "packageFormat": "ZIP",
+          "platform": "WEB",
+          "architecture": "universal",
+          "profileBinding": "fixed",
+          "deploymentProfile": "standalone",
+          "runtimeTarget": "browser",
+          "targetPlatform": "web",
+          "clientArchitecture": "h5",
+          "url": "https://github.com/sdkwork-ai/sdkwork-missory/releases/download/v0.1.0/sdkwork-missory-h5-0.1.0-web-universal-standalone-browser.zip",
+          "enabled": true,
+          "metadata": {
+            "generatedPlaceholder": true,
+            "releaseBuildDeferred": true
+          },
+          "checksumAlgorithm": "SHA-256",
+          "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+          "sizeBytes": 0
+        },
+        {
+          "id": "h5-universal-cloud-browser-zip",
+          "name": "念忆 Missory H5 cloud web release",
+          "sourceType": "BINARY_URL",
+          "packageFormat": "ZIP",
+          "platform": "WEB",
+          "architecture": "universal",
+          "profileBinding": "fixed",
+          "deploymentProfile": "cloud",
+          "runtimeTarget": "browser",
+          "targetPlatform": "web",
+          "clientArchitecture": "h5",
+          "url": "https://github.com/sdkwork-ai/sdkwork-missory/releases/download/v0.1.0/sdkwork-missory-h5-0.1.0-web-universal-cloud-browser.zip",
+          "enabled": true,
+          "metadata": {
+            "generatedPlaceholder": true,
+            "releaseBuildDeferred": true
+          },
+          "checksumAlgorithm": "SHA-256",
+          "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+          "sizeBytes": 0
+        }
+      ],
+      "metadata": {
+        "workspaceRoot": "apps/sdkwork-missory-h5",
+        "framework": "react",
+        "packageManager": "pnpm@10.33.0"
+      }
+    }
+  },
+  "release": {
+    "currentVersion": "0.1.0",
+    "defaultChannel": "DEV",
+    "latest": {
+      "DEV": "0.1.0"
+    },
+    "notes": [
+      {
+        "version": "0.1.0",
+        "releaseChannel": "DEV",
+        "title": "念忆 Missory H5 0.1.0",
+        "summary": "Initial PC console for the Missory app-api.",
+        "content": "People, memories, reminders, home digest, and the draft-only assistant.",
+        "highlights": [
+          "People list/search/create and person profile with timeline",
+          "Memory extraction with Fact/Inference confirm workflow",
+          "Social assistant Q&A and message drafts"
+        ],
+        "packageIds": [
+          "h5-universal-standalone-browser-zip",
+          "h5-universal-cloud-browser-zip"
+        ],
+        "publishedAt": "2026-10-01T00:00:00Z",
+        "current": true,
+        "forceUpdate": false,
+        "minSupportedVersion": "0.1.0",
+        "metadata": {
+          "releaseState": "development"
+        }
+      }
+    ]
+  },
+  "security": {
+    "checksumRequired": false,
+    "signatureRequired": false,
+    "sbomRequired": false
+  },
+  "devApp": {
+    "enabled": true,
+    "sourceRoot": ".",
+    "build": {
+      "targets": [
+        {
+          "id": "web-production",
+          "command": "pnpm build",
+          "cwd": ".",
+          "packageId": "h5-universal-cloud-browser-zip",
+          "outputs": [
+            {
+              "path": "dist",
+              "type": "directory",
+              "archive": "zip",
+              "fileName": "sdkwork-missory-h5-0.1.0-web-universal-cloud-browser.zip"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "standardOwner": "sdkwork-platform",
+    "component": "sdkwork-missory-h5",
+    "surface": "h5",
+    "initializedAt": "2026-10-01T00:00:00Z",
+    "deploymentConfig": "etc/sdkwork.deployment.config.json"
+  }
+}
