@@ -11,6 +11,7 @@ use axum::http::{header, HeaderValue, Method, StatusCode};
 use axum::middleware::{self, Next};
 use axum::response::{IntoResponse, Response};
 use axum::Json;
+use axum::Router;
 use sdkwork_missory_contract::context::MissoryRequestContext;
 
 /// Environment variables governing startup.
@@ -31,6 +32,7 @@ const USER_HEADER: &str = "x-sdkwork-user-id";
 
 /// Default development identity used when the dev bypass is active.
 pub const DEV_BYPASS_TENANT_ID: u64 = 1;
+/// Default development owner user id.
 pub const DEV_BYPASS_USER_ID: u64 = 1000;
 
 /// Allowed environments (`CONFIG_SPEC.md` §2).
@@ -278,8 +280,58 @@ async fn shutdown_signal() {
     tokio::time::sleep(Duration::from_millis(50)).await;
 }
 
+/// Builds the shared CORS middleware layer (preflight + response headers).
+/// CORS middleware body: preflight short-circuit + response header injection.
+async fn cors_middleware(
+    axum::extract::State(state): axum::extract::State<Arc<Vec<String>>>,
+    request: Request,
+    next: Next,
+) -> Response {
+    if request.method() == Method::OPTIONS {
+        let origin = request
+            .headers()
+            .get(header::ORIGIN)
+            .and_then(|value| value.to_str().ok())
+            .map(str::to_string);
+        if let Some(origin) = origin.filter(|value| state.iter().any(|allowed| allowed == value)) {
+            return preflight_response(&origin);
+        }
+    }
+    cors_allowlist(state, request, next).await
+}
+
+/// Mounts the built web console when `SDKWORK_MISSORY_STATIC_DIR` is set:
+/// static files + SPA history fallback (reserved health/API paths excluded).
+fn mount_static_console_if_configured(mut router: Router) -> Option<Router> {
+    let Ok(static_dir) = std::env::var(STATIC_DIR_KEY) else {
+        return Some(router);
+    };
+    if static_dir.trim().is_empty() {
+        return Some(router);
+    }
+    let index_path = std::path::Path::new(&static_dir).join("index.html");
+    if !index_path.exists() {
+        tracing::error!(
+            static_dir = %static_dir,
+            "SDKWORK_MISSORY_STATIC_DIR has no index.html; refusing static hosting"
+        );
+        return None;
+    }
+    tracing::info!(static_dir = %static_dir, "hosting web console same-origin");
+    router = router
+        .fallback_service(
+            tower_http::services::ServeDir::new(&static_dir)
+                .append_index_html_on_directories(false),
+        )
+        .layer(middleware::from_fn_with_state(
+            index_path,
+            spa_history_fallback,
+        ));
+    Some(router)
+}
+
 #[tokio::main]
-async fn main() {
+async fn main() -> std::process::ExitCode {
     tracing_subscriber::fmt()
         .with_env_filter(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -290,14 +342,14 @@ async fn main() {
         Ok(value) => value,
         Err(reason) => {
             tracing::error!("{reason}");
-            std::process::exit(2);
+            return std::process::ExitCode::from(2);
         }
     };
     let dev_bypass = match resolve_dev_bypass(&environment) {
         Ok(value) => value,
         Err(reason) => {
             tracing::error!("{reason}");
-            std::process::exit(2);
+            return std::process::ExitCode::from(2);
         }
     };
     let cors_origins: Arc<Vec<String>> = Arc::new(parse_cors_origins(
@@ -310,7 +362,13 @@ async fn main() {
         "starting sdkwork-missory standalone gateway"
     );
 
+    if matches!(std::env::args().nth(1).as_deref(), Some("db-migrate")) {
+        let code = sdkwork_api_missory_assembly::run_database_migrate_only().await;
+        return std::process::ExitCode::from(u8::try_from(code).unwrap_or(2));
+    }
+
     let business_router = sdkwork_api_missory_assembly::assemble_business_router_from_env()
+        .await
         .expect("assemble api router")
         .layer(middleware::from_fn_with_state(
             dev_bypass,
@@ -318,58 +376,23 @@ async fn main() {
         ))
         .layer(middleware::from_fn_with_state(
             cors_origins.clone(),
-            |axum::extract::State(state): axum::extract::State<Arc<Vec<String>>>,
-             request: Request,
-             next: Next| async move {
-                if request.method() == Method::OPTIONS {
-                    let origin = request
-                        .headers()
-                        .get(header::ORIGIN)
-                        .and_then(|value| value.to_str().ok())
-                        .map(str::to_string);
-                    if let Some(origin) =
-                        origin.filter(|value| state.iter().any(|allowed| allowed == value))
-                    {
-                        return preflight_response(&origin);
-                    }
-                }
-                cors_allowlist(state, request, next).await
-            },
+            cors_middleware,
         ));
-    let mut router = sdkwork_web_bootstrap::service_router(
+    let router = sdkwork_web_bootstrap::service_router(
         business_router,
         sdkwork_web_bootstrap::ServiceRouterConfig::default().with_always_ready(),
     );
 
-    if let Ok(static_dir) = std::env::var(STATIC_DIR_KEY) {
-        if !static_dir.trim().is_empty() {
-            let index_path = std::path::Path::new(&static_dir).join("index.html");
-            if !index_path.exists() {
-                tracing::error!(
-                    static_dir = %static_dir,
-                    "SDKWORK_MISSORY_STATIC_DIR has no index.html; refusing static hosting"
-                );
-                std::process::exit(2);
-            }
-            tracing::info!(static_dir = %static_dir, "hosting web console same-origin");
-            router = router
-                .fallback_service(
-                    tower_http::services::ServeDir::new(&static_dir)
-                        .append_index_html_on_directories(false),
-                )
-                .layer(middleware::from_fn_with_state(
-                    index_path,
-                    spa_history_fallback,
-                ));
-        }
-    }
+    let Some(router) = mount_static_console_if_configured(router) else {
+        return std::process::ExitCode::from(2);
+    };
 
     let bind = std::env::var(BIND_KEY).unwrap_or_else(|_| default_bind().to_string());
     let listener = match tokio::net::TcpListener::bind(&bind).await {
         Ok(listener) => listener,
         Err(error) => {
             tracing::error!("failed to bind {bind}: {error}");
-            std::process::exit(2);
+            return std::process::ExitCode::from(2);
         }
     };
     tracing::info!(bind = %bind, "missory app-api listening");
@@ -378,35 +401,25 @@ async fn main() {
         .await
     {
         tracing::error!("server error: {error}");
-        std::process::exit(1);
+        return std::process::ExitCode::from(1);
     }
+    std::process::ExitCode::SUCCESS
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    // Env-var mutations race across parallel test threads; keep the bypass
+    // matrix in one serialized test.
     #[test]
-    fn given_bypass_outside_development_then_startup_refuses() {
+    fn given_bypass_matrix_when_resolved_then_fail_closed_outside_development() {
         std::env::set_var(DEV_AUTH_BYPASS_KEY, "true");
-        let result = resolve_dev_bypass("production");
-        std::env::remove_var(DEV_AUTH_BYPASS_KEY);
         assert!(
-            result.is_err(),
+            resolve_dev_bypass("production").is_err(),
             "bypass must fail closed outside development"
         );
-    }
-
-    #[test]
-    fn given_bypass_in_development_then_startup_allows() {
-        std::env::set_var(DEV_AUTH_BYPASS_KEY, "true");
-        let result = resolve_dev_bypass("development");
-        std::env::remove_var(DEV_AUTH_BYPASS_KEY);
-        assert!(result.expect("allowed"));
-    }
-
-    #[test]
-    fn given_unset_bypass_then_disabled() {
+        assert!(resolve_dev_bypass("development").expect("allowed"));
         std::env::remove_var(DEV_AUTH_BYPASS_KEY);
         assert!(!resolve_dev_bypass("development").expect("ok"));
     }

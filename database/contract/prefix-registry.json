@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.database.prefix-registry",
+  "module": "missory",
+  "prefixes": [
+    { "prefix": "missory_", "owner": "sdkwork-missory", "note": "All missory tables; IAM (iam_) and memory (ai_) own their own prefixes." }
+  ]
+}

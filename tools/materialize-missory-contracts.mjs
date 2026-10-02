@@ -20,49 +20,25 @@ const getArg = (name, fallback = null) => {
 };
 
 const root = path.resolve(getArg('root', process.cwd()));
-const authorityPath = path.join(root, 'apis/app-api/communication/missory-app-api.openapi.yaml');
+const authorityPath = path.join(root, 'apis/app-api/communication/missory-app-api.openapi.json');
 const outDir = path.join(root, 'sdks/_route-manifests/app-api');
 const outFile = path.join(outDir, 'sdkwork-routes-missory-app-api.route-manifest.json');
 
-function extractRoutes(openapi) {
-  const routes = [];
-  for (const [pathKey, pathItem] of Object.entries(openapi.paths ?? {})) {
-    for (const [method, operation] of Object.entries(pathItem ?? {})) {
-      if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) continue;
-      routes.push({
-        method: method.toUpperCase(),
-        path: `/app/v3/api${pathKey}`,
-        operationId: operation.operationId,
-        tags: operation.tags ?? ['missory'],
-      });
-    }
+const openapi = JSON.parse(fs.readFileSync(authorityPath, 'utf8'));
+const routes = [];
+for (const [pathKey, pathItem] of Object.entries(openapi.paths ?? {})) {
+  for (const [method, operation] of Object.entries(pathItem ?? {})) {
+    if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) continue;
+    routes.push({
+      method: method.toUpperCase(),
+      path: pathKey,
+      operationId: operation.operationId,
+      tags: operation.tags ?? ['missory'],
+    });
   }
-  return routes;
 }
 
-const yaml = fs.readFileSync(authorityPath, 'utf8');
-// Minimal YAML subset parser: enough for this authority's paths/operationIds.
-// The authority stays valid OpenAPI YAML; the parser only reads `paths:` entries.
-const routes = [];
-const lines = yaml.split('\n');
-let currentPath = null;
-for (const line of lines) {
-  const pathMatch = /^  (\/missory[^:]*):\s*$/u.exec(line);
-  if (pathMatch) {
-    currentPath = pathMatch[1];
-    continue;
-  }
-  if (!currentPath) continue;
-  const opMatch = /^    (get|post|put|patch|delete):\s*$/u.exec(line);
-  if (opMatch) {
-    routes.push({ path: currentPath, method: opMatch[1].toUpperCase() });
-    continue;
-  }
-  const opIdMatch = /^      operationId:\s*(\S+)\s*$/u.exec(line);
-  if (opIdMatch && routes.length > 0 && !routes[routes.length - 1].operationId) {
-    routes[routes.length - 1].operationId = opIdMatch[1];
-  }
-}
+const missoryRoutes = routes.filter((route) => route.path.startsWith('/app/v3/api/missory/'));
 
 const manifest = {
   schemaVersion: 1,
@@ -78,11 +54,11 @@ const manifest = {
   source: {
     crateRoot: 'crates/sdkwork-routes-missory-app-api',
     crateImport: 'sdkwork_routes_missory_app_api',
-    openApiAuthority: 'apis/app-api/communication/missory-app-api.openapi.yaml',
+    openApiAuthority: 'apis/app-api/communication/missory-app-api.openapi.json',
   },
-  routes: routes.map((route) => ({
+  routes: missoryRoutes.map((route) => ({
     method: route.method,
-    path: `/app/v3/api${route.path}`,
+    path: route.path,
     operationId: route.operationId,
     tags: ['missory'],
     auth: { mode: 'header-context', required: true },

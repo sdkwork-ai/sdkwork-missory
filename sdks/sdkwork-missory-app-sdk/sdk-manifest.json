@@ -6,7 +6,7 @@
   "sdkType": "app",
   "apiAuthority": "sdkwork-missory-app-api",
   "apiPrefix": "/app/v3/api",
-  "authoritySpec": "openapi/sdkwork-missory-app-api.openapi.yaml",
+  "authoritySpec": "openapi/sdkwork-missory-app-api.openapi.json",
   "generationInputSpec": "openapi/sdkwork-missory-app-api.sdkgen.yaml",
   "packageName": "@sdkwork/missory-app-sdk",
   "transportPackageName": "sdkwork-missory-app-sdk-generated-typescript",
@@ -23,7 +23,9 @@
   "discoverySurface": {
     "sdkTarget": "app",
     "apiPrefix": "/app/v3/api",
-    "generatedProtocols": ["http-openapi"]
+    "generatedProtocols": [
+      "http-openapi"
+    ]
   },
   "languages": [
     {

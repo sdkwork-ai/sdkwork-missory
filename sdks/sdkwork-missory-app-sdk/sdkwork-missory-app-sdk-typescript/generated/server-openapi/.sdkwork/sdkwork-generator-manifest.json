@@ -64,7 +64,7 @@
     },
     {
       "path": "src/api/missory.ts",
-      "sha256": "e47dfd2b9f30438c2404cf3bcf83634487795629b0e71e79baea7674646a34a6"
+      "sha256": "ec4f6d06e70aee967553c04201a04ecc58772226dfbc3f6016a85125401bfa0e"
     },
     {
       "path": "src/api/paths.ts",

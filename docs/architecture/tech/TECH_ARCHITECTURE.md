@@ -69,11 +69,15 @@ later without touching routes or domain logic. All AI output remains draft/candi
 
 ## 6. Persistence
 
-Phase 1 uses the in-memory store plugin (`sdkwork-missory-plugin-store-memory`) implementing
-the SPI ports with tenant-scoped maps — this keeps the service contract stable while the SQL
-adapter is built. Phase 2 introduces `sdkwork-communication-missory-repository-sqlx` with
-PostgreSQL as the authoritative engine per `DATABASE_SPEC.md` (missory_ table prefix,
-standard audit/subject columns, `database/` lifecycle assets, `db:*` CLI wiring).
+The authoritative store is `sdkwork-communication-missory-repository-sqlx`: a PostgreSQL
+(sqlx) implementation of the SPI ports over the `missory_` tables declared in
+`database/database.manifest.json` (authoritative-server, baseline-plus-migrations). The
+database host performs manifest engine admission, a PostgreSQL 15+ gate, lifecycle
+init/migrate (`SDKWORK_DATABASE_AUTO_MIGRATE`, `db-migrate` argv mode), and snowflake node
+allocation. The in-memory store plugin (`sdkwork-missory-plugin-store-memory`) remains the
+development/test adapter; the gateway selects fail-closed
+(`SDKWORK_MISSORY_STORE=memory|postgres`, or via `SDKWORK_DATABASE_*` presence —
+production-like environments refuse the in-memory adapter).
 
 ## 7. Configuration And Runtime
 
@@ -90,11 +94,13 @@ standard audit/subject columns, `database/` lifecycle assets, `db:*` CLI wiring)
 The following fleet integrations are intentionally deferred and tracked as debt; none of
 them changes the crate boundaries above:
 
-1. `sdkwork-web-framework` router wrapping and IAM dual-token context adapter (routes
-   currently resolve the request context from a dedicated extension; the contract shape
-   matches `WebRequestContext` fields so the adapter is additive).
-2. SQLx/PostgreSQL repository crate and `database/` lifecycle assets.
-3. Generated TypeScript SDK family under `sdks/`.
-4. Background reminder dispatch worker under `jobs/`.
+1. IAM dual-token adapter: requests resolve identity via gateway headers in local
+   topologies and the development bypass; production environments run fail-closed
+   (bypass refused, PostgreSQL required). Wiring `sdkwork-iam-web-adapter` +
+   `sdkwork-web-axum` (`WebRequestContext` resolver + domain injector) is the planned
+   replacement behind the same `MissoryRequestContext` contract.
+2. Generated TypeScript/Dart SDK consumption of IAM login flows (clients currently ship
+   token hooks in the generated SDK config; login UI/flow lands with item 1).
+3. Background reminder dispatch worker under `jobs/` (reminders are computed on read).
 
 Each adoption lands with its own ADR under `docs/architecture/decisions/`.

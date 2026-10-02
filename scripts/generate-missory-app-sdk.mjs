@@ -27,7 +27,8 @@ if (generatorPackage.name !== '@sdkwork/sdk-generator') {
   process.exit(2);
 }
 
-const input = path.join(root, 'sdks', manifest.sdkName, manifest.generationInputSpec);
+const inputSpec = manifest.generationInputSpec.endsWith('.yaml') ? manifest.generationInputSpec.replace(/\.yaml$/,'.json') : manifest.generationInputSpec;
+const input = path.join(root, 'sdks', manifest.sdkName, inputSpec);
 const check = process.argv.includes('--check');
 
 const languages = {

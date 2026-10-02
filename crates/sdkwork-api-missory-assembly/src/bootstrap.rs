@@ -8,8 +8,10 @@
 use std::sync::Arc;
 
 use axum::Router;
+use sdkwork_communication_missory_repository_sqlx::{
+    missory_store_from_env, MissoryStoreSelection,
+};
 use sdkwork_communication_missory_service::MissoryService;
-use sdkwork_missory_plugin_store_memory::InMemoryMissoryStore;
 use sdkwork_routes_missory_app_api as missory_routes;
 
 /// Materialized route manifest shipped with the assembly.
@@ -18,8 +20,8 @@ pub const ROUTE_MANIFEST_JSON: &str = include_str!(
 );
 
 /// Authored OpenAPI authority shipped with the assembly.
-pub const OPENAPI_YAML: &str =
-    include_str!("../../../apis/app-api/communication/missory-app-api.openapi.yaml");
+pub const OPENAPI_JSON: &str =
+    include_str!("../../../apis/app-api/communication/missory-app-api.openapi.json");
 
 /// Permission codes owned by the Missory app-api surface (phase 1: owner-scoped
 /// personal data only; IAM permission tiers land with the web-framework adapter).
@@ -64,7 +66,7 @@ impl ApiAssembly {
         Self {
             router: assemble_api_router(service),
             route_manifest: ROUTE_MANIFEST_JSON,
-            openapi: OPENAPI_YAML,
+            openapi: OPENAPI_JSON,
             permission_catalog: PERMISSION_CATALOG,
             domain_context_injectors: DOMAIN_CONTEXT_INJECTORS,
             readiness_check: MissoryReadinessCheck {
@@ -100,28 +102,62 @@ pub fn assemble_business_router(service: Arc<MissoryService>) -> Router {
 
 /// Composes the application router from environment configuration.
 ///
-/// Phase 1 wires the in-memory store; the phase-2 SQLx adapter swaps in behind
-/// the same SPI ports without changing this signature.
-pub fn assemble_api_router_from_env() -> Result<Router, String> {
-    let service = missory_service_from_env();
+/// The store is selected fail-closed (`missory_store_from_env`): production-like
+/// environments require PostgreSQL and refuse the in-memory adapter.
+pub async fn assemble_api_router_from_env() -> Result<Router, String> {
+    let (store, selection) = missory_store_from_env().await?;
+    tracing::info!(?selection, "missory store selected");
+    let service = missory_service_from_store(store);
     Ok(assemble_api_router(service))
 }
 
 /// Composes the business-only router from environment configuration.
-pub fn assemble_business_router_from_env() -> Result<Router, String> {
-    let service = missory_service_from_env();
+pub async fn assemble_business_router_from_env() -> Result<Router, String> {
+    let (store, selection) = missory_store_from_env().await?;
+    tracing::info!(?selection, "missory store selected");
+    let service = missory_service_from_store(store);
     Ok(assemble_business_router(service))
 }
 
-fn missory_service_from_env() -> Arc<MissoryService> {
-    let store = InMemoryMissoryStore::from_env();
+fn missory_service_from_store(
+    store: Arc<dyn sdkwork_missory_spi::MissoryStore>,
+) -> Arc<MissoryService> {
     // Phase 2: resolve a configured SocialTextModel provider here.
-    Arc::new(MissoryService::new(Arc::new(store), None))
+    Arc::new(MissoryService::new(store, None))
+}
+
+/// `db-migrate` argv mode: server-role engine admission, then a forced
+/// lifecycle migration against the configured PostgreSQL profile.
+/// Returns the process exit code (0 on success).
+pub async fn run_database_migrate_only() -> u8 {
+    if let Err(error) =
+        sdkwork_communication_missory_repository_sqlx::ensure_server_role_database_engine_from_env()
+    {
+        tracing::error!("{error}");
+        return 2;
+    }
+    let result =
+        sdkwork_communication_missory_repository_sqlx::missory_store_from_env_with_migrate(true)
+            .await;
+    match result {
+        Ok((_, MissoryStoreSelection::Postgres)) => {
+            tracing::info!("missory database migration completed");
+            0
+        }
+        Ok((_, selection)) => {
+            tracing::error!("db-migrate requires the PostgreSQL store (selected {selection:?})");
+            2
+        }
+        Err(error) => {
+            tracing::error!("db-migrate failed: {error}");
+            2
+        }
+    }
 }
 
 /// Assembles the complete contribution from environment configuration.
-pub fn assemble_api_assembly_from_env() -> Result<ApiAssembly, String> {
-    let store = InMemoryMissoryStore::from_env();
-    let service = MissoryService::new(Arc::new(store), None);
-    Ok(ApiAssembly::new(Arc::new(service)))
+pub async fn assemble_api_assembly_from_env() -> Result<ApiAssembly, String> {
+    let (store, selection) = missory_store_from_env().await?;
+    tracing::info!(?selection, "missory store selected");
+    Ok(ApiAssembly::new(missory_service_from_store(store)))
 }

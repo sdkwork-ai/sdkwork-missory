@@ -12,12 +12,12 @@
   "source": {
     "crateRoot": "crates/sdkwork-routes-missory-app-api",
     "crateImport": "sdkwork_routes_missory_app_api",
-    "openApiAuthority": "apis/app-api/communication/missory-app-api.openapi.yaml"
+    "openApiAuthority": "apis/app-api/communication/missory-app-api.openapi.json"
   },
   "routes": [
     {
       "method": "GET",
-      "path": "/app/v3/api/missory/my-profile",
+      "path": "/app/v3/api/missory/my_profile",
       "operationId": "myProfile.retrieve",
       "tags": [
         "missory"
@@ -39,7 +39,7 @@
     },
     {
       "method": "PUT",
-      "path": "/app/v3/api/missory/my-profile",
+      "path": "/app/v3/api/missory/my_profile",
       "operationId": "myProfile.update",
       "tags": [
         "missory"
@@ -677,7 +677,7 @@
     },
     {
       "method": "POST",
-      "path": "/app/v3/api/missory/assistant/message-drafts",
+      "path": "/app/v3/api/missory/assistant/message_drafts",
       "operationId": "assistant.messageDrafts.create",
       "tags": [
         "missory"
@@ -699,7 +699,7 @@
     },
     {
       "method": "POST",
-      "path": "/app/v3/api/missory/assistant/chat-summaries",
+      "path": "/app/v3/api/missory/assistant/chat_summaries",
       "operationId": "assistant.chatSummaries.create",
       "tags": [
         "missory"

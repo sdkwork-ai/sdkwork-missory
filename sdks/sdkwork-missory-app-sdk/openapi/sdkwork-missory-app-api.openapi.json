@@ -1,0 +1,3787 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SDKWork Missory App API",
+    "version": "0.1.0",
+    "description": "Missory (念忆) app-api surface: people, relationships, memories, stories, reminders, and the draft-only social AI assistant. Authority contract for the `sdkwork-missory-app-api` API authority mounted under the locked app-api prefix."
+  },
+  "servers": [
+    {
+      "url": "https://api.sdkwork.com",
+      "description": "SDKWork cloud API"
+    },
+    {
+      "url": "http://127.0.0.1:8460",
+      "description": "Local standalone gateway"
+    }
+  ],
+  "tags": [
+    {
+      "name": "missory"
+    },
+    {
+      "name": "missoryAssistant"
+    }
+  ],
+  "paths": {
+    "/app/v3/api/missory/my_profile": {
+      "get": {
+        "operationId": "myProfile.retrieve",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Retrieve the owner profile of the current user.",
+        "responses": {
+          "200": {
+            "description": "Owner profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMyProfileResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "myProfile",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "myProfile.update",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Update the owner profile of the current user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryMyProfileUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Owner profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMyProfileResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "myProfile",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/persons": {
+      "post": {
+        "operationId": "persons.create",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Create a person.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryPersonUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Person resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryPersonResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "persons",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "persons.list",
+        "tags": [
+          "missory"
+        ],
+        "summary": "List persons with optional keyword and relationship-type filters.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/Q"
+          },
+          {
+            "name": "relationship_type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MissoryRelationshipType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Person page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryPersonPageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "persons",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/persons/{personId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/PersonId"
+        }
+      ],
+      "get": {
+        "operationId": "persons.retrieve",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Retrieve a person with relationships, recent memories, and stats.",
+        "responses": {
+          "200": {
+            "description": "Person detail resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryPersonDetailResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "persons",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "persons.update",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Update a person.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryPersonUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Person resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryPersonResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "persons",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "persons.delete",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Delete a person and its owned relationships and memory links.",
+        "responses": {
+          "204": {
+            "description": "Deleted; no JSON body."
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "persons",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/persons/{personId}/timeline": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/PersonId"
+        }
+      ],
+      "get": {
+        "operationId": "persons.timeline.list",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Relationship timeline for one person.",
+        "responses": {
+          "200": {
+            "description": "Timeline page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryTimelineEntryPageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "persons",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/persons/{personId}/relationships": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/PersonId"
+        }
+      ],
+      "post": {
+        "operationId": "relationships.create",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Add or update the owner-to-person relationship.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryRelationshipUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Relationship resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "relationships",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/persons/{personId}/relationships/{relationshipId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/PersonId"
+        },
+        {
+          "$ref": "#/components/parameters/RelationshipId"
+        }
+      ],
+      "delete": {
+        "operationId": "relationships.delete",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Remove one relationship edge.",
+        "responses": {
+          "204": {
+            "description": "Deleted; no JSON body."
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "relationships",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/memories": {
+      "post": {
+        "operationId": "memories.create",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Record a memory manually.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryMemoryUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Memory resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMemoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "memories.list",
+        "tags": [
+          "missory"
+        ],
+        "summary": "List memories with person/type/status/origin/keyword filters.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/Q"
+          },
+          {
+            "name": "person_id",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Int64Id"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMemoryType"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMemoryStatus"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMemoryOrigin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Memory page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMemoryPageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/memories/extract": {
+      "post": {
+        "operationId": "memories.extract",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Extract candidate memories from free text (AI assist, candidates only).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryMemoryExtractRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Memory page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMemoryPageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/memories/{memoryId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/MemoryId"
+        }
+      ],
+      "get": {
+        "operationId": "memories.retrieve",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Retrieve one memory including source and inference metadata.",
+        "responses": {
+          "200": {
+            "description": "Memory resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMemoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "memories.update",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Update one memory.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryMemoryUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Memory resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMemoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "memories.delete",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Delete one memory.",
+        "responses": {
+          "204": {
+            "description": "Deleted; no JSON body."
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/memories/{memoryId}/confirm": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/MemoryId"
+        }
+      ],
+      "post": {
+        "operationId": "memories.confirm",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Confirm a candidate or inference memory into a user-confirmed fact.",
+        "responses": {
+          "200": {
+            "description": "Command accepted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "data",
+                    "traceId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "const": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SdkWorkCommandData"
+                    },
+                    "traceId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/memories/{memoryId}/reject": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/MemoryId"
+        }
+      ],
+      "post": {
+        "operationId": "memories.reject",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Reject a candidate or inference memory.",
+        "responses": {
+          "200": {
+            "description": "Command accepted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "data",
+                    "traceId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "const": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SdkWorkCommandData"
+                    },
+                    "traceId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "memories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/stories": {
+      "post": {
+        "operationId": "stories.create",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Create a story bundling participants, events, and memories.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryStoryUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Story resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryStoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "stories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "stories.list",
+        "tags": [
+          "missory"
+        ],
+        "summary": "List stories.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/Q"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Story page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryStoryPageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "stories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/stories/{storyId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/StoryId"
+        }
+      ],
+      "get": {
+        "operationId": "stories.retrieve",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Retrieve one story with its timeline.",
+        "responses": {
+          "200": {
+            "description": "Story resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryStoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "stories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "stories.update",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Update one story.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryStoryUpsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Story resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryStoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "stories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "stories.delete",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Delete one story.",
+        "responses": {
+          "204": {
+            "description": "Deleted; no JSON body."
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "stories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/stories/{storyId}/summaries": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/StoryId"
+        }
+      ],
+      "post": {
+        "operationId": "stories.summaries.create",
+        "tags": [
+          "missoryAssistant"
+        ],
+        "summary": "Create (or regenerate) the AI summary of a story.",
+        "responses": {
+          "201": {
+            "description": "Story resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryStoryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "stories",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/reminders": {
+      "get": {
+        "operationId": "reminders.list",
+        "tags": [
+          "missory"
+        ],
+        "summary": "List derived reminders (long-uncontacted, birthday, commitment, events).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MissoryReminderType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reminder page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryReminderPageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "reminders",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/reminders/{reminderId}/dismiss": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ReminderId"
+        }
+      ],
+      "post": {
+        "operationId": "reminders.dismiss",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Dismiss a derived reminder.",
+        "responses": {
+          "200": {
+            "description": "Command accepted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "data",
+                    "traceId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "const": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SdkWorkCommandData"
+                    },
+                    "traceId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "reminders",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/reminders/{reminderId}/snooze": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ReminderId"
+        }
+      ],
+      "post": {
+        "operationId": "reminders.snooze",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Snooze a derived reminder for a number of days.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryReminderSnoozeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command accepted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "data",
+                    "traceId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "const": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SdkWorkCommandData"
+                    },
+                    "traceId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "reminders",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/home/today": {
+      "get": {
+        "operationId": "home.today.list",
+        "tags": [
+          "missory"
+        ],
+        "summary": "Home digest — today relations, recent memories, recent persons.",
+        "responses": {
+          "200": {
+            "description": "Home digest resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryHomeDigestResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "home",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/assistant/query": {
+      "post": {
+        "operationId": "assistant.query",
+        "tags": [
+          "missoryAssistant"
+        ],
+        "summary": "Ask the social agent a person/relationship/memory question.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryAssistantQueryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assistant answer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryAssistantAnswerResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "assistant",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/assistant/briefings": {
+      "post": {
+        "operationId": "assistant.briefings.create",
+        "tags": [
+          "missoryAssistant"
+        ],
+        "summary": "Build a meeting briefing for one person.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryBriefingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Meeting briefing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryBriefingResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "assistant",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/assistant/message_drafts": {
+      "post": {
+        "operationId": "assistant.messageDrafts.create",
+        "tags": [
+          "missoryAssistant"
+        ],
+        "summary": "Draft a message (birthday, check-in) — draft only, never auto-sent.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryMessageDraftRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message draft (never auto-sent).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryMessageDraftResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "assistant",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/app/v3/api/missory/assistant/chat_summaries": {
+      "post": {
+        "operationId": "assistant.chatSummaries.create",
+        "tags": [
+          "missoryAssistant"
+        ],
+        "summary": "Summarize pasted chat text and produce candidate memories.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissoryChatSummaryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Chat summary with candidate memories.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissoryChatSummaryResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "RFC 9457 problem detail.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        },
+        "x-sdkwork-owner": "sdkwork-missory",
+        "x-sdkwork-api-authority": "sdkwork-missory-app-api",
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "MissoryRequestContext",
+        "x-sdkwork-domain": "communication",
+        "x-sdkwork-resource": "assistant",
+        "x-sdkwork-auth-mode": "dual-token",
+        "x-sdkwork-tenant-scope": "tenant",
+        "x-sdkwork-data-scope": "owner",
+        "security": [
+          {
+            "AuthToken": [],
+            "AccessToken": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Page": {
+        "name": "page",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "default": 1,
+          "minimum": 1
+        }
+      },
+      "PageSize": {
+        "name": "page_size",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 200
+        }
+      },
+      "Q": {
+        "name": "q",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "PersonId": {
+        "name": "personId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Int64Id"
+        }
+      },
+      "RelationshipId": {
+        "name": "relationshipId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Int64Id"
+        }
+      },
+      "MemoryId": {
+        "name": "memoryId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Int64Id"
+        }
+      },
+      "StoryId": {
+        "name": "storyId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Int64Id"
+        }
+      },
+      "ReminderId": {
+        "name": "reminderId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "Problem": {
+        "description": "RFC 9457 problem detail.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetail"
+            }
+          }
+        }
+      },
+      "CommandAccepted": {
+        "description": "Command accepted.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "data",
+                "traceId"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "const": 0
+                },
+                "data": {
+                  "$ref": "#/components/schemas/SdkWorkCommandData"
+                },
+                "traceId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ItemMissoryMyProfile": {
+        "description": "Owner profile.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMyProfileEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryPerson": {
+        "description": "Person resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryPersonEnvelope"
+            }
+          }
+        }
+      },
+      "PageMissoryPerson": {
+        "description": "Person page.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryPersonPageEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryPersonDetail": {
+        "description": "Person detail resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryPersonDetailEnvelope"
+            }
+          }
+        }
+      },
+      "PageMissoryTimelineEntry": {
+        "description": "Timeline page.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryTimelineEntryPageEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryRelationship": {
+        "description": "Relationship resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryRelationshipEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryMemory": {
+        "description": "Memory resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMemoryEnvelope"
+            }
+          }
+        }
+      },
+      "PageMissoryMemory": {
+        "description": "Memory page.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMemoryPageEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryStory": {
+        "description": "Story resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryStoryEnvelope"
+            }
+          }
+        }
+      },
+      "PageMissoryStory": {
+        "description": "Story page.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryStoryPageEnvelope"
+            }
+          }
+        }
+      },
+      "PageMissoryReminder": {
+        "description": "Reminder page.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryReminderPageEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryHomeDigest": {
+        "description": "Home digest resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryHomeDigestEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryAssistantAnswer": {
+        "description": "Assistant answer.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryAssistantAnswerEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryBriefing": {
+        "description": "Meeting briefing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryBriefingEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryMessageDraft": {
+        "description": "Message draft (never auto-sent).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryMessageDraftEnvelope"
+            }
+          }
+        }
+      },
+      "ItemMissoryChatSummary": {
+        "description": "Chat summary with candidate memories.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MissoryChatSummaryEnvelope"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Int64Id": {
+        "type": "string",
+        "format": "int64",
+        "pattern": "^-?[0-9]+$",
+        "x-sdkwork-int64-string": true
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "code",
+          "traceId"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "code": {
+            "type": "integer"
+          },
+          "traceId": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          }
+        }
+      },
+      "SdkWorkCommandData": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "accepted"
+        ],
+        "properties": {
+          "accepted": {
+            "type": "boolean"
+          },
+          "resourceId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryRelationshipType": {
+        "type": "string",
+        "enum": [
+          "family",
+          "friend",
+          "classmate",
+          "colleague",
+          "client",
+          "partner",
+          "teacher",
+          "student",
+          "neighbor",
+          "spouse",
+          "other"
+        ]
+      },
+      "MissoryImportance": {
+        "type": "string",
+        "enum": [
+          "low",
+          "normal",
+          "high",
+          "core"
+        ]
+      },
+      "MissoryMemoryType": {
+        "type": "string",
+        "enum": [
+          "semantic",
+          "episodic",
+          "temporal",
+          "relationship",
+          "preference",
+          "commitment"
+        ]
+      },
+      "MissoryMemoryStatus": {
+        "type": "string",
+        "enum": [
+          "candidate",
+          "confirmed",
+          "rejected",
+          "archived",
+          "expired"
+        ]
+      },
+      "MissoryMemoryOrigin": {
+        "type": "string",
+        "enum": [
+          "fact",
+          "inference"
+        ]
+      },
+      "MissorySourceKind": {
+        "type": "string",
+        "enum": [
+          "user-input",
+          "file",
+          "conversation",
+          "ai-extraction",
+          "ai-inference",
+          "system"
+        ]
+      },
+      "MissoryReminderType": {
+        "type": "string",
+        "enum": [
+          "long-uncontacted",
+          "birthday",
+          "commitment",
+          "important-event",
+          "anniversary"
+        ]
+      },
+      "MissoryMessageTone": {
+        "type": "string",
+        "enum": [
+          "brief",
+          "natural",
+          "warm",
+          "humorous",
+          "formal",
+          "friendly"
+        ]
+      },
+      "MissoryAssistantScenario": {
+        "type": "string",
+        "enum": [
+          "birthday",
+          "check-in",
+          "congratulations",
+          "thank-you",
+          "custom"
+        ]
+      },
+      "MissoryPersonRequestContext": {
+        "type": "object",
+        "description": "Resolved request identity (never client-writable at create/update bodies).",
+        "required": [
+          "tenantId",
+          "userId"
+        ],
+        "properties": {
+          "tenantId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "organizationId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/Int64Id"
+          }
+        }
+      },
+      "MissoryMyProfile": {
+        "type": "object",
+        "required": [
+          "userId",
+          "displayName",
+          "updatedAt"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "education": {
+            "type": "string"
+          },
+          "interests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "likes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dislikes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "communicationStyle": {
+            "type": "string"
+          },
+          "bio": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MissoryMyProfileUpsertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "education": {
+            "type": "string"
+          },
+          "interests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "likes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dislikes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "communicationStyle": {
+            "type": "string"
+          },
+          "bio": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryPerson": {
+        "type": "object",
+        "required": [
+          "id",
+          "displayName",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gender": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "MM-DD or full date; drives birthday reminders."
+          },
+          "city": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "avatarUrl": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "interests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "preferences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bio": {
+            "type": "string"
+          },
+          "contactChannels": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          },
+          "lastContactedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MissoryRelationship": {
+        "type": "object",
+        "required": [
+          "id",
+          "personId",
+          "relationshipTypes",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "relationshipTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryRelationshipType"
+            }
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastContactedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "importance": {
+            "$ref": "#/components/schemas/MissoryImportance"
+          },
+          "contactCycleDays": {
+            "type": "integer",
+            "description": "Custom long-uncontacted cycle in days."
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MissoryRelationshipUpsertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relationshipTypes"
+        ],
+        "properties": {
+          "relationshipTypes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/MissoryRelationshipType"
+            }
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastContactedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "importance": {
+            "$ref": "#/components/schemas/MissoryImportance"
+          },
+          "contactCycleDays": {
+            "type": "integer"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryPersonDetail": {
+        "type": "object",
+        "required": [
+          "person",
+          "relationships",
+          "recentMemories",
+          "commitments",
+          "stats"
+        ],
+        "properties": {
+          "person": {
+            "$ref": "#/components/schemas/MissoryPerson"
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryRelationship"
+            }
+          },
+          "recentMemories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryMemory"
+            }
+          },
+          "commitments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryMemory"
+            }
+          },
+          "stories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryStory"
+            }
+          },
+          "stats": {
+            "type": "object",
+            "required": [
+              "memoryCount",
+              "storyCount",
+              "knownDays"
+            ],
+            "properties": {
+              "memoryCount": {
+                "type": "integer"
+              },
+              "storyCount": {
+                "type": "integer"
+              },
+              "knownDays": {
+                "type": "integer"
+              },
+              "daysSinceLastContact": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "MissoryTimelineEntry": {
+        "type": "object",
+        "required": [
+          "occurredAt",
+          "kind",
+          "title"
+        ],
+        "properties": {
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "relationship-start",
+              "memory",
+              "story",
+              "contact"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "memoryId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "storyId": {
+            "$ref": "#/components/schemas/Int64Id"
+          }
+        }
+      },
+      "MissoryPersonUpsertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "displayName"
+        ],
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gender": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "avatarUrl": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "interests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "preferences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bio": {
+            "type": "string"
+          },
+          "contactChannels": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          },
+          "relationshipTypes": {
+            "type": "array",
+            "description": "Optional initial relationship types on create.",
+            "items": {
+              "$ref": "#/components/schemas/MissoryRelationshipType"
+            }
+          }
+        }
+      },
+      "MissoryMemory": {
+        "type": "object",
+        "required": [
+          "id",
+          "personId",
+          "type",
+          "content",
+          "origin",
+          "status",
+          "sourceKind",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "storyId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "type": {
+            "$ref": "#/components/schemas/MissoryMemoryType"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/MissoryMemoryOrigin"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MissoryMemoryStatus"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Inference-only confidence in [0,1]."
+          },
+          "sourceReason": {
+            "type": "string",
+            "description": "Inference-only reasoning note."
+          },
+          "sourceKind": {
+            "$ref": "#/components/schemas/MissorySourceKind"
+          },
+          "sourceRef": {
+            "type": "string"
+          },
+          "importance": {
+            "$ref": "#/components/schemas/MissoryImportance"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MissoryMemoryUpsertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "personId",
+          "type",
+          "content"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "storyId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "type": {
+            "$ref": "#/components/schemas/MissoryMemoryType"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "importance": {
+            "$ref": "#/components/schemas/MissoryImportance"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sourceKind": {
+            "$ref": "#/components/schemas/MissorySourceKind"
+          },
+          "sourceRef": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryMemoryExtractRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id",
+            "description": "Optional target person; omitted resolves by name mentions in text."
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          }
+        }
+      },
+      "MissoryStory": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "participantIds",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "summaryOrigin": {
+            "$ref": "#/components/schemas/MissoryMemoryOrigin"
+          },
+          "participantIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64Id"
+            }
+          },
+          "memoryIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64Id"
+            }
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MissoryStoryUpsertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "participantIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64Id"
+            }
+          },
+          "memoryIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64Id"
+            }
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryReminder": {
+        "type": "object",
+        "required": [
+          "reminderId",
+          "type",
+          "personId",
+          "title",
+          "dueAt"
+        ],
+        "properties": {
+          "reminderId": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/MissoryReminderType"
+          },
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "personName": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "dueAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "daysOverdue": {
+            "type": "integer"
+          },
+          "daysUntil": {
+            "type": "integer"
+          }
+        }
+      },
+      "MissoryReminderSnoozeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "days"
+        ],
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365
+          }
+        }
+      },
+      "MissoryHomeDigest": {
+        "type": "object",
+        "required": [
+          "todayReminders",
+          "recentMemories",
+          "recentPersons"
+        ],
+        "properties": {
+          "todayReminders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryReminder"
+            }
+          },
+          "recentMemories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryMemory"
+            }
+          },
+          "recentPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryPerson"
+            }
+          }
+        }
+      },
+      "MissoryAssistantQueryRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "question"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        }
+      },
+      "MissoryCitation": {
+        "type": "object",
+        "required": [
+          "kind",
+          "id"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "person",
+              "memory",
+              "relationship",
+              "story"
+            ]
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryAssistantAnswer": {
+        "type": "object",
+        "required": [
+          "answer",
+          "citations"
+        ],
+        "properties": {
+          "answer": {
+            "type": "string"
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryCitation"
+            }
+          }
+        }
+      },
+      "MissoryBriefingRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "personId"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          }
+        }
+      },
+      "MissoryBriefing": {
+        "type": "object",
+        "required": [
+          "personId",
+          "briefing"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "briefing": {
+            "type": "string"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MissoryMessageDraftRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "personId",
+          "scenario"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/MissoryAssistantScenario"
+          },
+          "tone": {
+            "$ref": "#/components/schemas/MissoryMessageTone"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryMessageDraft": {
+        "type": "object",
+        "required": [
+          "personId",
+          "draft",
+          "tone"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "draft": {
+            "type": "string"
+          },
+          "tone": {
+            "$ref": "#/components/schemas/MissoryMessageTone"
+          },
+          "disclaimer": {
+            "type": "string"
+          }
+        }
+      },
+      "MissoryChatSummaryRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "personId",
+          "text"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          }
+        }
+      },
+      "MissoryChatSummary": {
+        "type": "object",
+        "required": [
+          "personId",
+          "summary",
+          "candidateMemories"
+        ],
+        "properties": {
+          "personId": {
+            "$ref": "#/components/schemas/Int64Id"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "candidateMemories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MissoryMemory"
+            }
+          }
+        }
+      },
+      "PageInfo": {
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "offset",
+              "cursor"
+            ]
+          },
+          "page": {
+            "type": "integer"
+          },
+          "pageSize": {
+            "type": "integer"
+          },
+          "totalItems": {
+            "type": "string"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "nextCursor": {
+            "type": "string"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SdkWorkApiResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data",
+          "traceId"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              0
+            ],
+            "default": 0,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "data": {
+            "description": "Operation-specific payload typed per response schema."
+          },
+          "traceId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Server-owned request correlation id."
+          }
+        }
+      },
+      "SdkWorkResourceData": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item"
+        ],
+        "properties": {
+          "item": {
+            "description": "Single-resource payload typed per response schema."
+          }
+        }
+      },
+      "SdkWorkPageData": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "pageInfo"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {}
+          },
+          "pageInfo": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "SdkWorkResourceResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/SdkWorkResourceData"
+              }
+            }
+          }
+        ]
+      },
+      "SdkWorkListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/SdkWorkPageData"
+              }
+            }
+          }
+        ]
+      },
+      "SdkWorkCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/SdkWorkCommandData"
+              }
+            }
+          }
+        ]
+      },
+      "MissoryMyProfileResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryMyProfile"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryPersonResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryPerson"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryPersonPageResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "items",
+                  "pageInfo"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MissoryPerson"
+                    }
+                  },
+                  "pageInfo": {
+                    "$ref": "#/components/schemas/PageInfo"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryRelationshipResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryRelationship"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryPersonDetailResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryPersonDetail"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryTimelineEntryPageResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "items",
+                  "pageInfo"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MissoryTimelineEntry"
+                    }
+                  },
+                  "pageInfo": {
+                    "$ref": "#/components/schemas/PageInfo"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryMemoryResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryMemory"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryMemoryPageResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "items",
+                  "pageInfo"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MissoryMemory"
+                    }
+                  },
+                  "pageInfo": {
+                    "$ref": "#/components/schemas/PageInfo"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryStoryResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryStory"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryStoryPageResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "items",
+                  "pageInfo"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MissoryStory"
+                    }
+                  },
+                  "pageInfo": {
+                    "$ref": "#/components/schemas/PageInfo"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryReminderPageResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "items",
+                  "pageInfo"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MissoryReminder"
+                    }
+                  },
+                  "pageInfo": {
+                    "$ref": "#/components/schemas/PageInfo"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryHomeDigestResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryHomeDigest"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryAssistantAnswerResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryAssistantAnswer"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryBriefingResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryBriefing"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryMessageDraftResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryMessageDraft"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MissoryChatSummaryResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SdkWorkApiResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "item"
+                ],
+                "properties": {
+                  "item": {
+                    "$ref": "#/components/schemas/MissoryChatSummary"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "AuthToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "AccessToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Access-Token"
+      }
+    }
+  },
+  "security": [
+    {
+      "AuthToken": [],
+      "AccessToken": []
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.database.seed",
+  "module": "missory",
+  "defaultLocale": "zh-CN",
+  "profiles": {
+    "standard": {
+      "order": [
+        "common"
+      ]
+    }
+  },
+  "locales": [
+    "zh-CN",
+    "en-US",
+    "ja-JP",
+    "de-DE",
+    "fr-FR",
+    "ru-RU",
+    "ko-KR"
+  ],
+  "entries": [
+    {
+      "id": "001_bootstrap",
+      "scope": "common",
+      "description": "Bootstrap seed (empty in initialization state)."
+    }
+  ],
+  "supportedLocales": [
+    "zh-CN",
+    "en-US",
+    "ja-JP",
+    "de-DE",
+    "fr-FR",
+    "ru-RU",
+    "ko-KR"
+  ],
+  "activeLocales": [
+    "zh-CN",
+    "en-US"
+  ],
+  "localeSets": {
+    "zh-CN": {
+      "version": "1.0.0",
+      "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+      "files": [
+        "common/001_bootstrap.sql"
+      ]
+    },
+    "en-US": {
+      "version": "1.0.0",
+      "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+      "files": [
+        "common/001_bootstrap.sql"
+      ]
+    }
+  },
+  "i18nVersion": "1.0.0",
+  "fallbackLocale": "en-US"
+}

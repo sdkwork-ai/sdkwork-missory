@@ -1,0 +1,2 @@
+-- Bootstrap seed: intentional no-op in the initialization state.
+-- Missory data is owner-created at runtime; no reference data is required.

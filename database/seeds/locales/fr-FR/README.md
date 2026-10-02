@@ -1,0 +1,1 @@
+# Locale seeds (fr-FR)

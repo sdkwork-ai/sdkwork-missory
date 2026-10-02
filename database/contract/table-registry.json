@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.database.table-registry",
+  "module": "missory",
+  "tables": [
+    { "table_name": "missory_my_profile", "description": "Owner profile of the current user." },
+    { "table_name": "missory_person", "description": "Person profiles in the owner's social memory." },
+    { "table_name": "missory_relationship", "description": "Owner-to-person relationship edges." },
+    { "table_name": "missory_memory", "description": "Structured memories with Fact/Inference separation." },
+    { "table_name": "missory_story", "description": "Stories bundling shared experiences." },
+    { "table_name": "missory_reminder_state", "description": "Dismiss/snooze state for derived reminders." }
+  ]
+}

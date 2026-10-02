@@ -7,8 +7,8 @@ mod generated;
 
 pub use bootstrap::{
     assemble_api_assembly_from_env, assemble_api_router, assemble_api_router_from_env,
-    assemble_business_router, assemble_business_router_from_env, ApiAssembly,
-    MissoryReadinessCheck, OPENAPI_YAML, PERMISSION_CATALOG, ROUTE_MANIFEST_JSON,
+    assemble_business_router, assemble_business_router_from_env, run_database_migrate_only,
+    ApiAssembly, MissoryReadinessCheck, OPENAPI_JSON, PERMISSION_CATALOG, ROUTE_MANIFEST_JSON,
 };
 
 /// Number of route crates composed into this assembly.

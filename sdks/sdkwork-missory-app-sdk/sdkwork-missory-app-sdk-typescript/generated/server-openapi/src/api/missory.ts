@@ -136,7 +136,7 @@ export class MissoryMemoriesApi {
       { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
       { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
       { name: 'q', value: params?.q, style: 'form', explode: true, allowReserved: false },
-      { name: 'personId', value: params?.personId, style: 'form', explode: true, allowReserved: false },
+      { name: 'person_id', value: params?.personId, style: 'form', explode: true, allowReserved: false },
       { name: 'type', value: params?.type_, style: 'form', explode: true, allowReserved: false },
       { name: 'status', value: params?.status, style: 'form', explode: true, allowReserved: false },
       { name: 'origin', value: params?.origin, style: 'form', explode: true, allowReserved: false },
@@ -236,7 +236,7 @@ export class MissoryPersonsApi {
       { name: 'page', value: params?.page, style: 'form', explode: true, allowReserved: false },
       { name: 'page_size', value: params?.pageSize, style: 'form', explode: true, allowReserved: false },
       { name: 'q', value: params?.q, style: 'form', explode: true, allowReserved: false },
-      { name: 'relationshipType', value: params?.relationshipType, style: 'form', explode: true, allowReserved: false },
+      { name: 'relationship_type', value: params?.relationshipType, style: 'form', explode: true, allowReserved: false },
     ]);
     return this.client.request<{ items: MissoryPerson[]; pageInfo: PageInfo; }>(appendQueryString(appApiPath(`/app/v3/api/missory/persons`), query), { ...(requestOptions?.signal !== undefined ? { signal: requestOptions.signal } : {}), ...(requestOptions?.timeout !== undefined ? { timeout: requestOptions.timeout } : {}), method: 'GET' as any, sdkworkUnwrapKind: 'page' });
   }

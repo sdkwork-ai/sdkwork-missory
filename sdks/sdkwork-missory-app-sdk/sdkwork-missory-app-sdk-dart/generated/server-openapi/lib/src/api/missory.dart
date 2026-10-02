@@ -46,7 +46,7 @@ class MissoryApi {
       QueryParameterSpec('page', page, 'form', true, false, null),
       QueryParameterSpec('page_size', pageSize, 'form', true, false, null),
       QueryParameterSpec('q', q, 'form', true, false, null),
-      QueryParameterSpec('relationshipType', relationshipType, 'form', true, false, null)
+      QueryParameterSpec('relationship_type', relationshipType, 'form', true, false, null)
     ]);
     final response = await _client.get(ApiPaths.appendQueryString(ApiPaths.appPath('/app/v3/api/missory/persons'), query));
     return (() {
@@ -119,7 +119,7 @@ class MissoryApi {
       QueryParameterSpec('page', page, 'form', true, false, null),
       QueryParameterSpec('page_size', pageSize, 'form', true, false, null),
       QueryParameterSpec('q', q, 'form', true, false, null),
-      QueryParameterSpec('personId', personId, 'form', true, false, null),
+      QueryParameterSpec('person_id', personId, 'form', true, false, null),
       QueryParameterSpec('type', type, 'form', true, false, null),
       QueryParameterSpec('status', status, 'form', true, false, null),
       QueryParameterSpec('origin', origin, 'form', true, false, null)

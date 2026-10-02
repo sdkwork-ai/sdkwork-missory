@@ -1,0 +1,33 @@
+[package]
+rust-version.workspace = true
+name = "sdkwork-communication-missory-repository-sqlx"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "PostgreSQL (sqlx) repository implementing the sdkwork-missory-spi store ports."
+
+[lib]
+name = "sdkwork_communication_missory_repository_sqlx"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait.workspace = true
+sdkwork-database-config.workspace = true
+sdkwork-database-id.workspace = true
+sdkwork-database-lifecycle.workspace = true
+sdkwork-database-spi.workspace = true
+sdkwork-database-sqlx.workspace = true
+sdkwork-missory-contract.workspace = true
+sdkwork-missory-plugin-store-memory.workspace = true
+sdkwork-missory-spi.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+serde.workspace = true
+time.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true

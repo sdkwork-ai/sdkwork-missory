@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: sdkwork.database.drift-policy
+module: missory
+checks:
+  tableSet:
+    strategy: registry
+    registry: contract/table-registry.json
+  columnDrift:
+    strategy: baseline-diff
+    baseline: ddl/baseline/postgres/0001_missory_baseline.sql
+schedule:
+  intervalSec: 60
+onDrift:
+  - alert
+  - blockRuntimeReadiness
