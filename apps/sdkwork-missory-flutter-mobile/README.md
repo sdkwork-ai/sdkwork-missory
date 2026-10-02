@@ -1,17 +1,26 @@
-# sdkwork_missory_flutter_mobile
+# sdkwork-missory-flutter-mobile
 
-A new Flutter project.
+Flutter mobile app for 念忆 · Missory (AI personal social memory): home digest,
+people, memories (Fact ≠ Inference confirm workflow), and the draft-only AI
+assistant.
 
-## Getting Started
+## Run against the local gateway
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run --dart-define-from-file=env/sdkwork.standalone.development.json
+```
 
-A few resources to get you started if this is your first Flutter project:
+`env/sdkwork.<profile>.<environment>.json` declares the dart-define contract
+(`SDKWORK_ENVIRONMENT`, `SDKWORK_PROFILE_ID`, app API base URL — Android
+emulator loopback uses `10.0.2.2`).
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Verify
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter analyze   # zero findings expected
+flutter test      # environment + home-screen widget tests
+```
+
+Release builds (`flutter build apk|appbundle|ipa`) run through the `bin/`
+packaging pipeline; release metadata lives in `sdkwork.app.config.json`.

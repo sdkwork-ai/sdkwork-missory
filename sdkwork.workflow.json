@@ -1,0 +1,122 @@
+{
+  "$schema": "../sdkwork-github-workflow/schemas/sdkwork-workflow.schema.json",
+  "schemaVersion": "2026-06-06.sdkwork.workflow.v1",
+  "app": {
+    "id": "sdkwork-missory",
+    "name": "SDKWork Missory",
+    "repository": "sdkwork-ai/sdkwork-missory",
+    "sourcePath": ".",
+    "configPath": "sdkwork.app.config.json"
+  },
+  "release": {
+    "artifactPrefix": "sdkwork-missory",
+    "defaultVersion": "0.1.0",
+    "changelog": {
+      "source": "app-manifest",
+      "maxCommitSubjects": 50
+    }
+  },
+  "dependencies": [
+    {
+      "id": "sdkwork-utils",
+      "repository": "sdkwork-ai/sdkwork-utils",
+      "refInput": "SDKWORK_UTILS_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-app-topology",
+      "repository": "sdkwork-ai/sdkwork-app-topology",
+      "refInput": "SDKWORK_APP_TOPOLOGY_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-web-framework",
+      "repository": "sdkwork-ai/sdkwork-web-framework",
+      "refInput": "SDKWORK_WEB_FRAMEWORK_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-database",
+      "repository": "sdkwork-ai/sdkwork-database",
+      "refInput": "SDKWORK_DATABASE_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-iam",
+      "repository": "sdkwork-ai/sdkwork-iam",
+      "refInput": "SDKWORK_IAM_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-sdk-generator",
+      "repository": "sdkwork-ai/sdkwork-sdk-generator",
+      "refInput": "SDKWORK_SDK_GENERATOR_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-id",
+      "repository": "sdkwork-ai/sdkwork-id",
+      "refInput": "SDKWORK_ID_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-sdk-commons",
+      "repository": "sdkwork-ai/sdkwork-sdk-commons",
+      "refInput": "SDKWORK_SDK_COMMONS_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    }
+  ],
+  "toolchains": {
+    "rust": {
+      "channel": "stable"
+    },
+    "node": {
+      "version": ">=22"
+    },
+    "flutter": {
+      "channel": "stable"
+    },
+    "pnpm": {
+      "version": "10.33.0"
+    }
+  },
+  "lifecycle": {
+    "build": {
+      "server": {
+        "command": "pnpm build",
+        "cwd": "."
+      },
+      "pc": {
+        "command": "pnpm build:pc:prod",
+        "cwd": "."
+      },
+      "h5": {
+        "command": "pnpm build:h5:prod",
+        "cwd": "."
+      },
+      "mini-program": {
+        "command": "pnpm build:mini-program",
+        "cwd": "."
+      },
+      "flutter-android": {
+        "command": "pnpm check:flutter",
+        "cwd": "."
+      }
+    },
+    "verify": {
+      "command": "pnpm verify && pnpm check:flutter && pnpm check:mini-program",
+      "cwd": "."
+    }
+  },
+  "targets": [],
+  "security": {
+    "checksumAlgorithm": "SHA-256",
+    "sbom": false,
+    "signing": {
+      "required": false
+    }
+  },
+  "publish": {
+    "status": "DRAFT"
+  }
+}

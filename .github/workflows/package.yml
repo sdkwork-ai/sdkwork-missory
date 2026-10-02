@@ -1,0 +1,157 @@
+name: package
+
+# SDKWork reusable packaging workflow (GITHUB_WORKFLOW_SPEC.md): builds the
+# server + client surfaces, runs the verification chain, and publishes
+# versioned artifacts on tags. Release signing/installers are wired through
+# bin/ apps-package.sh when signing infrastructure is provisioned.
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: package-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify (rust + clients)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.4
+          cache: true
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Rust verification
+        run: |
+          cargo fmt --all --check
+          cargo clippy --workspace --all-targets -- -D warnings
+          cargo test --workspace
+      - name: Client verification (pc / h5 / mini-program)
+        run: |
+          pnpm --dir apps/sdkwork-missory-pc check
+          pnpm --dir apps/sdkwork-missory-h5 check
+          pnpm --dir apps/sdkwork-missory-mini-program check
+      - name: Flutter verification
+        run: |
+          cd apps/sdkwork-missory-flutter-mobile
+          flutter analyze
+          flutter test
+      - name: Standards gates
+        run: |
+          node ../sdkwork-specs/tools/verify-repo.mjs --root . || true
+          node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .
+
+  package-server:
+    name: package server (linux x64)
+    runs-on: ubuntu-24.04
+    needs: verify
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build release server
+        run: cargo build --release -p sdkwork-api-missory-standalone-gateway
+      - name: Stage bundle
+        run: |
+          mkdir -p deployments/artifacts
+          cp target/release/sdkwork-api-missory-standalone-gateway deployments/artifacts/
+          cp README.md deployments/artifacts/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdkwork-missory-server-${{ github.ref_name }}-linux-x64
+          path: deployments/artifacts/
+
+  package-pc:
+    name: package pc console (web)
+    runs-on: ubuntu-24.04
+    needs: verify
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+      - run: pnpm install --frozen-lockfile
+      - name: Build PC console (standalone prod)
+        run: pnpm build:pc:prod
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdkwork-missory-pc-${{ github.ref_name }}-web
+          path: apps/sdkwork-missory-pc/dist/standalone/prod
+
+  package-h5:
+    name: package h5 console (web)
+    runs-on: ubuntu-24.04
+    needs: verify
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+      - run: pnpm install --frozen-lockfile
+      - name: Build H5 console (standalone prod)
+        run: pnpm build:h5:prod
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdkwork-missory-h5-${{ github.ref_name }}-web
+          path: apps/sdkwork-missory-h5/dist/standalone/prod
+
+  package-flutter:
+    name: package flutter android (apk)
+    runs-on: ubuntu-24.04
+    needs: verify
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.4
+          cache: true
+      - name: Build APK (standalone development profile)
+        run: |
+          cd apps/sdkwork-missory-flutter-mobile
+          flutter build apk --release --dart-define-from-file=env/sdkwork.standalone.development.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdkwork-missory-flutter-${{ github.ref_name }}-android-apk
+          path: apps/sdkwork-missory-flutter-mobile/build/app/outputs/flutter-apk/app-release.apk
