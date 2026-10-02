@@ -101,7 +101,10 @@ export function createMissorySessionFacade(
 
   return {
     tokenManager,
-    isAuthenticated: () => tokenManager.hasAuthToken() && tokenManager.hasAccessToken(),
+    // Gate truth is the persisted dual-token session; the token manager seeds
+  // development-only tokens for bypass-topology API calls, which must never
+  // count as a signed-in session.
+    isAuthenticated: () => loadStoredSession() !== undefined,
     async loginWithPassword({ account, password }) {
       const trimmed = account.trim();
       if (!trimmed || !password) {
