@@ -11,8 +11,7 @@
     "capability": "missory",
     "surface": "app",
     "languages": [
-      "typescript",
-      "javascript"
+      "typescript"
     ],
     "generated": false,
     "manifests": [
@@ -41,6 +40,11 @@
       "file": "CODE_STYLE_SPEC.md",
       "path": "../../../../../sdkwork-specs/CODE_STYLE_SPEC.md",
       "purpose": "Authored code style baseline."
+    },
+    {
+      "file": "TYPESCRIPT_CODE_SPEC.md",
+      "path": "../../../../../sdkwork-specs/TYPESCRIPT_CODE_SPEC.md",
+      "purpose": "TypeScript strict baseline for authored mini-program sources."
     }
   ],
   "contracts": {
@@ -51,7 +55,7 @@
     "providedPorts": [],
     "requiredPorts": [],
     "runtimeEntrypoints": [
-      "src/app.js"
+      "src/app.ts"
     ],
     "routeManifest": null,
     "sdkClients": [

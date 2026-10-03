@@ -4,9 +4,13 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "isolatedModules": true,
     "types": [
       "miniprogram-api-typings"
     ],
@@ -17,7 +21,7 @@
     "allowImportingTsExtensions": true
   },
   "include": [
-    "src/bootstrap/runtimeBundle.ts",
+    "src/**/*.ts",
     "packages/*/src/**/*.ts"
   ]
 }

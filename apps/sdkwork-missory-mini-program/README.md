@@ -3,6 +3,13 @@
 WeChat mini program for 念忆 · Missory: home digest, people, memories
 (Fact ≠ Inference confirm workflow), and the draft-only AI assistant.
 
+All authored sources (`src/app.ts`, `src/pages/**/index.ts`,
+`src/bootstrap/*.ts`, `packages/*/src/**/*.ts`) are TypeScript under the
+`TYPESCRIPT_CODE_SPEC.md` strict baseline. WeChat DevTools compiles the
+`src/` TypeScript through the `typescript` compiler plugin declared in
+`project.config.json`; the only JavaScript under `src/` is the generated
+runtime bundle.
+
 ## Build & open
 
 ```bash

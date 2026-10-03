@@ -1,17 +1,47 @@
-const { page } = getApp().runtime;
+import type { FieldEditEvent, MissoryAppInstance } from "../../typings/runtime";
 
-function splitList(raw) {
-  return String(raw || "")
+const { page, resolveErrorMessage } = getApp<MissoryAppInstance>().runtime;
+
+function splitList(raw: string): string[] {
+  return raw
     .split(/[,，]/)
     .map((item) => item.trim())
     .filter(Boolean);
 }
 
-function joinList(raw) {
+function joinList(raw: ReadonlyArray<string> | undefined): string {
   return (raw ?? []).join("，");
 }
 
-Page({
+type ProfileForm = {
+  displayName: string;
+  nickname: string;
+  city: string;
+  occupation: string;
+  company: string;
+  education: string;
+  interests: string;
+  likes: string;
+  dislikes: string;
+  communicationStyle: string;
+  bio: string;
+};
+
+type ProfileData = {
+  form: ProfileForm;
+  loading: boolean;
+  saving: boolean;
+  note: string;
+};
+
+type ProfileCustom = {
+  refresh(): Promise<void>;
+  onFormField(event: FieldEditEvent<keyof ProfileForm>): void;
+  save(): Promise<void>;
+  exportData(): Promise<void>;
+};
+
+Page<ProfileData, ProfileCustom>({
   data: {
     form: {
       displayName: "",
@@ -30,7 +60,9 @@ Page({
     saving: false,
     note: "",
   },
-  onLoad() { this.refresh(); },
+  onLoad() {
+    void this.refresh();
+  },
   async refresh() {
     this.setData({ loading: true, note: "" });
     try {
@@ -51,12 +83,13 @@ Page({
           bio: profile.bio ?? "",
         },
       });
-    } catch (e) {
-      this.setData({ loading: false, note: (e && e.message) || "加载失败" });
+    } catch (error) {
+      this.setData({ loading: false, note: resolveErrorMessage(error, "加载失败") });
     }
   },
   onFormField(event) {
-    this.setData({ ["form." + event.currentTarget.dataset.field]: event.detail.value });
+    const field = event.currentTarget.dataset.field;
+    this.setData({ form: { ...this.data.form, [field]: event.detail.value } });
   },
   async save() {
     if (this.data.saving) return;
@@ -81,8 +114,8 @@ Page({
         bio: this.data.form.bio.trim(),
       });
       this.setData({ note: "已保存资料" });
-    } catch (e) {
-      this.setData({ note: (e && e.message) || "保存失败" });
+    } catch (error) {
+      this.setData({ note: resolveErrorMessage(error, "保存失败") });
     } finally {
       this.setData({ saving: false });
     }
@@ -91,16 +124,19 @@ Page({
     if (this.data.saving) return;
     this.setData({ saving: true, note: "" });
     try {
-      const item = await page.client.missory.dataExports.create({});
-      const payload = item && item.exportedAt ? item : (item && item.item) || item;
+      const item: unknown = await page.client.missory.dataExports.create({});
+      // Whole-account privacy export: accept both the bare item and a
+      // `{ item }` envelope from older deployments before copying the JSON.
+      const record = (item ?? {}) as Record<string, unknown>;
+      const payload = "exportedAt" in record && record.exportedAt ? record : (record.item ?? record);
       wx.setClipboardData({
         data: JSON.stringify(payload ?? {}, null, 2),
         success: () => {
           this.setData({ note: "导出成功，完整 JSON 已复制到剪贴板" });
         },
       });
-    } catch (e) {
-      this.setData({ note: (e && e.message) || "导出失败" });
+    } catch (error) {
+      this.setData({ note: resolveErrorMessage(error, "导出失败") });
     } finally {
       this.setData({ saving: false });
     }

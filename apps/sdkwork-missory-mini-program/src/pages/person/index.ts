@@ -1,4 +1,11 @@
-const { page } = getApp().runtime;
+import type {
+  CheckboxGroupChangeEvent,
+  FieldEditEvent,
+  MissoryAppInstance,
+  TapEvent,
+} from "../../typings/runtime";
+
+const { page, resolveErrorMessage } = getApp<MissoryAppInstance>().runtime;
 
 const RELATIONSHIP_TYPE_LABELS = {
   family: "家人",
@@ -12,11 +19,54 @@ const RELATIONSHIP_TYPE_LABELS = {
   neighbor: "邻居",
   spouse: "配偶",
   other: "其他",
+} as const;
+
+type RelationshipType = keyof typeof RELATIONSHIP_TYPE_LABELS;
+
+const RELATIONSHIP_TYPE_OPTIONS: Array<{ value: RelationshipType; label: string }> = Object.entries(
+  RELATIONSHIP_TYPE_LABELS,
+).map(([value, label]) => ({ value: value as RelationshipType, label }));
+
+function isRelationshipType(value: string): value is RelationshipType {
+  return value in RELATIONSHIP_TYPE_LABELS;
+}
+
+type PersonDetail = Awaited<ReturnType<typeof page.client.missory.persons.retrieve>>;
+
+type PersonEditForm = { displayName: string; title: string; city: string };
+
+type PersonData = {
+  person: { name: string; title: string; city: string; knownDays: number; memoryCount: number } | null;
+  relationships: Array<{ id: string; label: string }>;
+  memories: Array<{ id: string; content: string; type: string }>;
+  timeline: Array<{ at: string; title: string }>;
+  briefing: string;
+  editing: boolean;
+  editForm: PersonEditForm;
+  relationshipOptions: Array<{ value: RelationshipType; label: string; checked?: boolean }>;
+  selectedRelationshipTypes: string[];
+  savingRelationship: boolean;
+  note: string;
 };
 
-const RELATIONSHIP_TYPE_OPTIONS = Object.keys(RELATIONSHIP_TYPE_LABELS).map((value) => ({ value, label: RELATIONSHIP_TYPE_LABELS[value] }));
+type PersonCustom = {
+  personId: string;
+  personDetail: PersonDetail | null;
+  refresh(): Promise<void>;
+  brief(): Promise<void>;
+  startEdit(): void;
+  cancelEdit(): void;
+  onEditField(event: FieldEditEvent<keyof PersonEditForm>): void;
+  saveEdit(): Promise<void>;
+  remove(): Promise<void>;
+  onRelationshipChange(event: CheckboxGroupChangeEvent): void;
+  saveRelationship(): Promise<void>;
+  removeRelationship(event: TapEvent<{ id: string }>): Promise<void>;
+};
 
-Page({
+Page<PersonData, PersonCustom>({
+  personId: "",
+  personDetail: null,
   data: {
     person: null,
     relationships: [],
@@ -31,17 +81,19 @@ Page({
     note: "",
   },
   onLoad(query) {
-    this.personId = query.id;
+    this.personId = query.id ?? "";
     this.personDetail = null;
-    this.refresh();
+    void this.refresh();
   },
   async refresh() {
     const detail = await page.client.missory.persons.retrieve(this.personId);
     this.personDetail = detail;
     const timeline = await page.client.missory.persons.timeline.list(this.personId);
-    const selected = new Set();
+    const selected = new Set<RelationshipType>();
     for (const edge of detail.relationships ?? []) {
-      for (const relationshipType of edge.relationshipTypes ?? []) selected.add(relationshipType);
+      for (const relationshipType of edge.relationshipTypes ?? []) {
+        if (isRelationshipType(relationshipType)) selected.add(relationshipType);
+      }
     }
     this.setData({
       person: {
@@ -53,12 +105,24 @@ Page({
       },
       relationships: (detail.relationships ?? []).map((edge) => ({
         id: String(edge.id),
-        label: (edge.relationshipTypes ?? []).map((t) => RELATIONSHIP_TYPE_LABELS[t] ?? t).join(" / "),
+        label: (edge.relationshipTypes ?? [])
+          .map((relationshipType) => RELATIONSHIP_TYPE_LABELS[relationshipType] ?? relationshipType)
+          .join(" / "),
       })),
-      relationshipOptions: RELATIONSHIP_TYPE_OPTIONS.map((option) => ({ ...option, checked: selected.has(option.value) })),
+      relationshipOptions: RELATIONSHIP_TYPE_OPTIONS.map((option) => ({
+        ...option,
+        checked: selected.has(option.value),
+      })),
       selectedRelationshipTypes: [...selected],
-      memories: detail.recentMemories.map((m) => ({ id: String(m.id), content: m.content, type: m.type })),
-      timeline: timeline.items.map((t) => ({ at: (t.occurredAt || "").slice(0, 10), title: t.title })),
+      memories: detail.recentMemories.map((memory) => ({
+        id: String(memory.id),
+        content: memory.content,
+        type: memory.type,
+      })),
+      timeline: timeline.items.map((entry) => ({
+        at: (entry.occurredAt || "").slice(0, 10),
+        title: entry.title,
+      })),
     });
   },
   async brief() {
@@ -66,21 +130,26 @@ Page({
     this.setData({ briefing: result.briefing });
   },
   startEdit() {
-    const person = this.personDetail.person;
+    const person = this.personDetail?.person;
+    if (!person) return;
     this.setData({
       editing: true,
       note: "",
       editForm: { displayName: person.displayName ?? "", title: person.title ?? "", city: person.city ?? "" },
     });
   },
-  cancelEdit() { this.setData({ editing: false }); },
+  cancelEdit() {
+    this.setData({ editing: false });
+  },
   onEditField(event) {
-    this.setData({ ["editForm." + event.currentTarget.dataset.field]: event.detail.value });
+    const field = event.currentTarget.dataset.field;
+    this.setData({ editForm: { ...this.data.editForm, [field]: event.detail.value } });
   },
   async saveEdit() {
     const displayName = this.data.editForm.displayName.trim();
-    if (!displayName || !this.personDetail) return;
-    const person = this.personDetail.person;
+    const detail = this.personDetail;
+    if (!displayName || !detail) return;
+    const person = detail.person;
     try {
       // PUT carries the untouched profile fields through so the update keeps them.
       await page.client.missory.persons.update(this.personId, {
@@ -100,9 +169,9 @@ Page({
         notes: person.notes,
       });
       this.setData({ editing: false, note: "" });
-      this.refresh();
-    } catch (e) {
-      this.setData({ note: (e && e.message) || "保存失败" });
+      await this.refresh();
+    } catch (error) {
+      this.setData({ note: resolveErrorMessage(error, "保存失败") });
     }
   },
   async remove() {
@@ -116,8 +185,8 @@ Page({
     try {
       await page.client.missory.persons.delete(this.personId);
       wx.navigateBack();
-    } catch (e) {
-      this.setData({ note: (e && e.message) || "删除失败" });
+    } catch (error) {
+      this.setData({ note: resolveErrorMessage(error, "删除失败") });
     }
   },
   onRelationshipChange(event) {
@@ -131,10 +200,12 @@ Page({
     }
     this.setData({ savingRelationship: true, note: "" });
     try {
-      await page.client.missory.relationships.create(this.personId, { relationshipTypes: this.data.selectedRelationshipTypes });
-      this.refresh();
-    } catch (e) {
-      this.setData({ note: (e && e.message) || "保存失败" });
+      await page.client.missory.relationships.create(this.personId, {
+        relationshipTypes: this.data.selectedRelationshipTypes.filter(isRelationshipType),
+      });
+      await this.refresh();
+    } catch (error) {
+      this.setData({ note: resolveErrorMessage(error, "保存失败") });
     } finally {
       this.setData({ savingRelationship: false });
     }
@@ -148,9 +219,9 @@ Page({
     if (!confirmation.confirm) return;
     try {
       await page.client.missory.relationships.delete(this.personId, event.currentTarget.dataset.id);
-      this.refresh();
-    } catch (e) {
-      this.setData({ note: (e && e.message) || "解除失败" });
+      await this.refresh();
+    } catch (error) {
+      this.setData({ note: resolveErrorMessage(error, "解除失败") });
     }
   },
 });

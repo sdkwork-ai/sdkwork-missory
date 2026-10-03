@@ -1,7 +1,12 @@
 // The single safe runtime module bundled by esbuild into src/runtime/runtime.js
 // (MINI_PROGRAM_APP_ARCHITECTURE_SPEC section 5): host adapter registration,
-// SDK client construction, and services exposed to page JS through one object.
+// SDK client construction, and services exposed to page TS through one object.
 import { bootstrapMissoryMpRuntime } from "@sdkwork/missory-mp-core";
+
+// Error primitives live in mp-commons (package taxonomy: domain-neutral error
+// primitives); pages reach them through the runtime module because page
+// sources must not require package internals directly.
+export { resolveErrorMessage } from "@sdkwork/missory-mp-commons";
 
 const env = {
   environment: "__SDKWORK_MISSORY_ENVIRONMENT__",
