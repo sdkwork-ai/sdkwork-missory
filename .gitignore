@@ -92,3 +92,16 @@ sdks/sdkwork-missory-app-sdk/sdkwork-missory-app-sdk-dart/generated/server-opena
 sdks/sdkwork-missory-app-sdk/sdkwork-missory-app-sdk-dart/generated/server-openapi/pubspec.lock
 # Local GUI-regression evidence (not repo content)
 gui-test-screenshots/
+
+# ---- auto-audited: local artifacts that must never be committed ----
+*.key
+*.pem
+*.p12
+*.pfx
+*.keystore
+temp/
+*.tmp
+*.temp
+.cache/
+.turbo/
+.next/
