@@ -86,7 +86,7 @@ production-like environments refuse the in-memory adapter).
   without an explicit `development|test|staging|demo|production` value (fail-closed), with
   `SDKWORK_MISSORY_RUNTIME_TARGET=test-runner` as the test escape hatch.
 - Bind address: `SDKWORK_MISSORY_APPLICATION_PUBLIC_INGRESS_BIND` (default `127.0.0.1:8080`).
-- Deployment profiles: `standalone` and `cloud` (see `sdkwork.app.config.json` and
+- Deployment profiles: `standalone` and `cloud` (see `agent.app.config.json` and
   `etc/sdkwork.deployment.config.json`).
 
 ## 8. Adoption Debt (Explicit)

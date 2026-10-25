@@ -20,7 +20,7 @@ Do not copy root standard text into this repository. If these relative paths do 
 
 ## Application Identity
 
-`sdkwork.app.config.json` is present at this root with application code `missory`
+`agent.app.config.json` is present at this root with application code `missory`
 (application key `sdkwork-missory`, runtime family `server`, framework `rust-axum`,
 deployment profiles `standalone` and `cloud`). If the task changes application behavior,
 runtime config, SDK wiring, release metadata, or app-owned capabilities, read that manifest
@@ -30,7 +30,7 @@ and keep it consistent with `etc/sdkwork.deployment.config.json`.
 
 - `AGENTS.md`: local agent entrypoint and relative SDKWORK spec index.
 - `CLAUDE.md`, `GEMINI.md`, `CODEX.md`: tool compatibility shims that point to `AGENTS.md` and must not duplicate rules.
-- `sdkwork.app.config.json`: application identity manifest for `sdkwork-missory`.
+- `agent.app.config.json`: application identity manifest for `sdkwork-missory`.
 - `.sdkwork/`: source-controlled workspace metadata (`skills/`, `plugins/`).
 - `specs/`: root topology and workspace component contracts (`topology.spec.json`, `component.spec.json`).
 - `sdks/`: SDK family workspaces (`sdkwork-missory-app-sdk` TypeScript + Dart), route manifests (`sdks/_route-manifests/`). Generated output is generator-owned (`SDKWORK-SDK-GENERATION-STANDARD`).
@@ -59,7 +59,7 @@ and keep it consistent with `etc/sdkwork.deployment.config.json`.
 ## Spec Resolution Order
 
 1. Read this `AGENTS.md` and any nearer component-level `AGENTS.md`.
-2. Read `sdkwork.app.config.json`.
+2. Read `agent.app.config.json`.
 3. Read local `specs/README.md` and `specs/component.spec.json`.
 4. Read local `.sdkwork/README.md`, `.sdkwork/skills/`, and `.sdkwork/plugins/` when relevant.
 5. Read `../sdkwork-specs/README.md` and the task-specific root specs.

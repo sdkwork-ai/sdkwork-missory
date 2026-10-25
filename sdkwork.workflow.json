@@ -6,7 +6,7 @@
     "name": "SDKWork Missory",
     "repository": "sdkwork-ai/sdkwork-missory",
     "sourcePath": ".",
-    "configPath": "sdkwork.app.config.json"
+    "configPath": "agent.app.config.json"
   },
   "release": {
     "artifactPrefix": "sdkwork-missory",

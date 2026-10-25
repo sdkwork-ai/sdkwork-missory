@@ -53,4 +53,4 @@ flutter test      # environment + home-screen widget tests
 ```
 
 Release builds (`flutter build apk|appbundle|ipa`) run through the `bin/`
-packaging pipeline; release metadata lives in `sdkwork.app.config.json`.
+packaging pipeline; release metadata lives in `agent.app.config.json`.
