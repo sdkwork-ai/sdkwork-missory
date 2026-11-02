@@ -29,6 +29,29 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 
+  testWidgets('bottom tabs pair outline and filled glyphs', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final environment = MissoryEnvironment.fromDefines();
+    final runtime = await MissoryRuntime.bootstrap(environment);
+    await tester.pumpWidget(MissoryApp(runtime: runtime));
+    await tester.pump(const Duration(milliseconds: 50));
+
+    final destinations = tester
+        .widgetList<NavigationDestination>(find.byType(NavigationDestination))
+        .toList();
+    expect(destinations, hasLength(5));
+    expect((destinations[0].icon as Icon).icon, Icons.home_outlined);
+    expect((destinations[0].selectedIcon as Icon).icon, Icons.home);
+    expect((destinations[1].icon as Icon).icon, Icons.people_outline);
+    expect((destinations[1].selectedIcon as Icon).icon, Icons.people);
+    expect((destinations[2].icon as Icon).icon, Icons.auto_stories_outlined);
+    expect((destinations[2].selectedIcon as Icon).icon, Icons.auto_stories);
+    expect((destinations[3].icon as Icon).icon, Icons.book_outlined);
+    expect((destinations[3].selectedIcon as Icon).icon, Icons.book);
+    expect((destinations[4].icon as Icon).icon, Icons.smart_toy_outlined);
+    expect((destinations[4].selectedIcon as Icon).icon, Icons.smart_toy);
+  });
+
   test('session store round-trips the dual-token pair', () {
     const stored = MissoryStoredSession(
       authToken: 'auth-token',

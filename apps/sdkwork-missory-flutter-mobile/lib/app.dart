@@ -30,7 +30,8 @@ class _MissoryAppState extends State<MissoryApp> {
     final authenticated = bypassed || widget.runtime.session.isAuthenticated;
     return MaterialApp(
       title: '念忆 · Missory',
-      theme: ThemeData(colorSchemeSeed: const Color(0xFF0F766E), useMaterial3: true),
+      theme: ThemeData(
+          colorSchemeSeed: const Color(0xFF0F766E), useMaterial3: true),
       home: authenticated
           ? HomeScreen(
               runtime: widget.runtime,
@@ -45,11 +46,13 @@ class _MissoryAppState extends State<MissoryApp> {
               '/people': (context) => PeopleScreen(runtime: widget.runtime),
               '/memories': (context) => MemoriesScreen(runtime: widget.runtime),
               '/stories': (context) => StoriesScreen(runtime: widget.runtime),
-              '/assistant': (context) => AssistantScreen(runtime: widget.runtime),
+              '/assistant': (context) =>
+                  AssistantScreen(runtime: widget.runtime),
               '/profile': (context) => ProfileScreen(runtime: widget.runtime),
               '/person': (context) => PersonDetailScreen(
                     runtime: widget.runtime,
-                    personId: ModalRoute.of(context)?.settings.arguments as String?,
+                    personId:
+                        ModalRoute.of(context)?.settings.arguments as String?,
                   ),
             }
           : const <String, WidgetBuilder>{},
@@ -69,11 +72,31 @@ class MissoryNavBar extends StatelessWidget {
     return NavigationBar(
       selectedIndex: currentIndex,
       destinations: const [
-        NavigationDestination(icon: Icon(Icons.home_outlined), label: '首页'),
-        NavigationDestination(icon: Icon(Icons.people_outline), label: '人物'),
-        NavigationDestination(icon: Icon(Icons.auto_stories_outlined), label: '记忆'),
-        NavigationDestination(icon: Icon(Icons.menu_book_outlined), label: '故事'),
-        NavigationDestination(icon: Icon(Icons.smart_toy_outlined), label: 'AI'),
+        NavigationDestination(
+          icon: Icon(Icons.home_outlined),
+          selectedIcon: Icon(Icons.home),
+          label: '首页',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.people_outline),
+          selectedIcon: Icon(Icons.people),
+          label: '人物',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.auto_stories_outlined),
+          selectedIcon: Icon(Icons.auto_stories),
+          label: '记忆',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.book_outlined),
+          selectedIcon: Icon(Icons.book),
+          label: '故事',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.smart_toy_outlined),
+          selectedIcon: Icon(Icons.smart_toy),
+          label: 'AI',
+        ),
       ],
       onDestinationSelected: (index) {
         const routes = ['/people', '/memories', '/stories', '/assistant'];
