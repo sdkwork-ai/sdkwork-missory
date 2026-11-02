@@ -67,56 +67,76 @@
     }
   ],
   "toolchains": {
-    "rust": {
-      "channel": "stable"
-    },
-    "node": {
-      "version": ">=22"
-    },
-    "flutter": {
-      "channel": "stable"
-    },
-    "pnpm": {
-      "version": "10.33.0"
-    }
+    "rust": "[object Object]",
+    "node": "[object Object]",
+    "flutter": "[object Object]",
+    "pnpm": "[object Object]"
   },
   "lifecycle": {
-    "build": {
-      "server": {
-        "command": "pnpm build",
-        "cwd": "."
+    "build": [
+      {
+        "name": "server",
+        "run": "pnpm build",
+        "workingDirectory": "."
       },
-      "pc": {
-        "command": "pnpm build:pc:prod",
-        "cwd": "."
+      {
+        "name": "pc",
+        "run": "pnpm build:pc:prod",
+        "workingDirectory": "."
       },
-      "h5": {
-        "command": "pnpm build:h5:prod",
-        "cwd": "."
+      {
+        "name": "h5",
+        "run": "pnpm build:h5:prod",
+        "workingDirectory": "."
       },
-      "mini-program": {
-        "command": "pnpm build:mini-program",
-        "cwd": "."
+      {
+        "name": "mini-program",
+        "run": "pnpm build:mini-program",
+        "workingDirectory": "."
       },
-      "flutter-android": {
-        "command": "pnpm check:flutter",
-        "cwd": "."
+      {
+        "name": "flutter-android",
+        "run": "pnpm check:flutter",
+        "workingDirectory": "."
       }
+    ]
+  },
+  "targets": [
+    {
+      "id": "container-x64-standalone-container-oci",
+      "packageId": "container-x64-standalone-container-oci",
+      "profileBinding": "fixed",
+      "deploymentProfile": "standalone",
+      "runtimeTarget": "container",
+      "profile": "container",
+      "platform": "container",
+      "architecture": "x64",
+      "formats": [
+        "oci"
+      ],
+      "runner": "ubuntu-24.04",
+      "outputGlobs": [
+        "dist/container/*.tar"
+      ]
     },
-    "verify": {
-      "command": "pnpm verify && pnpm check:flutter && pnpm check:mini-program",
-      "cwd": "."
+    {
+      "id": "container-x64-cloud-container-oci",
+      "packageId": "container-x64-cloud-container-oci",
+      "profileBinding": "fixed",
+      "deploymentProfile": "cloud",
+      "runtimeTarget": "container",
+      "profile": "container",
+      "platform": "container",
+      "architecture": "x64",
+      "formats": [
+        "oci"
+      ],
+      "runner": "ubuntu-24.04",
+      "outputGlobs": [
+        "dist/container/*.tar"
+      ]
     }
-  },
-  "targets": [],
-  "security": {
-    "checksumAlgorithm": "SHA-256",
-    "sbom": false,
-    "signing": {
-      "required": false
-    }
-  },
-  "publish": {
-    "status": "DRAFT"
-  }
+  ],
+  "security": {},
+  "publish": {}
 }
