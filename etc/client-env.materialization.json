@@ -67,7 +67,7 @@
         "tenantId": "100001",
         "organizationId": "0",
         "permissionScope": [
-          "missory.personal-data.owner"
+          "iam:self"
         ]
       }
     },
@@ -107,7 +107,7 @@
         "tenantId": "100001",
         "organizationId": "0",
         "permissionScope": [
-          "missory.personal-data.owner"
+          "iam:self"
         ]
       }
     },
